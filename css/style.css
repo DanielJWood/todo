@@ -18,3 +18,42 @@ Map
     height: 800px;
  }
  #map { position:absolute; top:0; height: 500px; width:100%;}
+.background {
+  fill: none;
+  pointer-events: all;
+}
+
+.subunit-boundary {
+  fill: none;
+  stroke: #777;
+  stroke-dasharray: 2,2;
+  stroke-linejoin: round;
+}
+.main-boundary {
+  fill: none;
+  stroke: #777;
+  stroke-width:2px;
+  stroke-linejoin: round;
+}
+
+.region:hover {
+	cursor: pointer;
+	opacity: .8;
+}
+
+.region.HI { fill: #FF9E9A; }
+.region.AK { fill: #adc9c9; }
+.region.NW { fill: #adc9ad; }
+.region.SW { fill: #C9ADC9; }
+.region.NP { fill: #FFBE70; }
+.region.SP { fill: #93B9FD; }
+.region.MW { fill: #FEF55B; }
+.region.SE { fill: #7FF5A5; }
+.region.NE { fill: #FF9E9A; }
+.region.IRL { display: none; }
+
+.subunit { opacity: 0; fill:none; }
+
+#regions .active {
+  opacity: .6
+}
