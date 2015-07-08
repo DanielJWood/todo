@@ -22,7 +22,7 @@ svg.append("rect")
 
 var g = svg.append("g");
 
-d3.json("js/test.json", function(error, regions) {
+d3.json("js/statesregion2.json", function(error, regions) {
 	if (error) throw error;
 
 	g.append("g")

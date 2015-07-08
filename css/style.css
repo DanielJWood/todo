@@ -1,12 +1,3 @@
-/********************************************
-
-	Styles to be added to energy.gov in order 
-	to allow it to look however you want it.
-	Reminder: make it responsive
-
-********************************************/
-
-
 /*+++++++++++++++++++++++++++
 Map
 ++++++++++++++++++++++++++++++++++++++*/
@@ -17,7 +8,7 @@ Map
     width: 100%;
     height: 800px;
  }
- #map { position:absolute; top:0; height: 500px; width:100%;}
+
 .background {
   fill: none;
   pointer-events: all;
@@ -56,4 +47,344 @@ Map
 
 #regions .active {
   opacity: .6
+}
+
+/**********************************************
+Foundation pieces and DOM
+***********************************************/
+
+        .rowDOE {
+            margin-bottom: 10px;
+        }
+
+        .rowDOE .green-text    {
+            color: rgb(140,198,63) !important;
+        }
+
+        .rowDOE .white-text    {
+            color: #fff !important;
+        }
+
+        /*Typography*/
+
+        .rowDOE h1, .rowDOE h2, .rowDOE h3, .rowDOE h4 {
+            text-align: center;
+            border:none
+        }
+
+        .rowDOE h1 {
+            font-size: 33px;
+            letter-spacing: 7px;
+            color: rgb(51,51,51) !important;
+            line-height: normal;
+            padding-top: 0.5rem;
+            padding-bottom: 0.5rem;            
+            text-decoration: none !important;
+        }
+
+        .rowDOE h2 {
+            font-size: 38px;
+            color: #fff !important;
+            text-transform: none;
+            line-height: normal;
+            padding-top: 1rem;
+            padding-bottom: 1rem;
+            font-family: "Avenir LT W02 35 Light",verdana,sans-serif;
+            letter-spacing: .1rem;
+        }
+
+        .rowDOE h3 {
+            font-size: 26px;
+            color: #fff !important;
+            margin-top: 0.5rem;
+            margin-bottom: 0.6rem;
+            text-transform: none;
+            line-height: normal;
+        }
+
+        .rowDOE h4 {
+            font-size: 20px;
+            text-transform: uppercase;
+            margin-top: 0.5rem;
+            margin-bottom: 0.4rem;
+            color: rgb(0, 0, 0) !important;
+        }
+
+        .rowDOE .inner-text {
+            font-size: 28px;
+            text-transform: uppercase;
+            font-family: "Avenir LT W02 85 Heavy",verdana,sans-serif;
+            letter-spacing: .1rem;
+            line-height: normal;    
+            padding-top: 15px;
+            padding-left: 0.9375rem;
+            color: #fff !important;
+        }
+
+        .rowDOE .inner-text.large-8 {position: absolute;}
+
+        .inner-text p {
+            text-align: center;
+        }
+
+        #select-text h4 {
+            color: #fff !important;
+        }       
+
+        .subheadline p {
+            text-align: center;
+            font-size: 20px;            
+            margin: 0 !important;
+            line-height: normal;
+            color: rgb(68,68,68) !important;
+            padding-top: .3rem !important; 
+            padding-bottom: .3rem !important;
+            font-family: "Avenir LT W02 35 Light",verdana,sans-serif;
+            border-bottom: none !important;
+        }       
+
+    /* The Colors duke, the colors*/
+        .header-color {
+            background-color: rgb(140,198,63);
+        }
+
+        .headline {
+            background-color: rgb(51,51,51)
+        }
+
+    /*Other*/
+
+        .sub-blocks-full {
+            padding-left: 0px;
+            height: 500px;
+        }
+
+        .subheadline {
+            background-color: rgb(197,225,159); 
+        }
+
+        .triple, .double {
+            padding-left: 0rem;
+            padding-right: 0rem;
+            padding-bottom: .5rem;
+        }
+
+        .third-blocks {
+            background-color: rgb(197,225,159);
+            height: 240px;
+            position: relative;
+        }
+
+        .third-blocks.top {
+            height: 190px;
+            padding-top: 20px;
+            position: relative;
+        }
+
+        .third-blocks.top div {
+            margin: 0 auto;
+            /*width: 51px;*/
+        }
+        .triple:first-child .third-blocks.top div {
+            margin: 0 auto;
+            /*width: 228px;*/
+        }
+        .triple:last-child .third-blocks.top div {
+            margin: 0 auto;
+            /*width: 112px;*/
+            padding-top: 10px;
+        }
+
+        .third-blocks.top div img{
+            /*width: 100%;*/
+            margin: 0 auto;
+            display: block;
+            height: auto;
+        }
+
+        .unit {
+            position: absolute;
+            bottom: 0px;
+            text-align: center;
+            padding-bottom: 10px;
+            font-family: 'Avenir LT W02 35 Light',verdana,sans-serif;
+            color: rgb(68,68,68) !important;
+        }
+
+
+        .middle-block {
+            background-color: rgb(168,212,110) !important;
+            height: 90px;
+            padding-top: 5px;
+        }
+
+        .middle-block p {       
+            border-bottom: none !important;     
+            margin:0px !important;
+            text-align: center;
+            color: rgb(12,15,8) !important;
+            padding-top: 10px;
+            padding-bottom: 10px;
+            font-size: 18px;
+            font-weight: bold;
+            font-family: 'Avenir LT W02 35 Light',verdana,sans-serif;
+        }
+
+        .green {
+            background-color: rgb(197,225,159); 
+        }
+
+        .full-size-blocks {
+            /*border: 1px solid rgb(151,203,81);*/
+            overflow: hidden;
+        }       
+
+        .dropdown {
+            padding-left: 0px;
+            padding-right: 0px;
+        }
+        /*
+        .button1:hover {
+            cursor: pointer;
+            background-color: rgb(197,225,159);  
+        }
+
+        .button1 h1:hover {
+            text-decoration: none !important;
+        }*/
+        .button1 {
+            width: 100%;
+            border-style: solid;
+            border-width: 0px;
+            cursor: pointer;
+            line-height: normal;
+            /*margin: 0 0 1.25rem;*/
+            position: relative;
+            text-decoration: none !important;
+            text-align: center;
+            -webkit-appearance: none;
+            -webkit-border-radius: 0;
+            display: inline-block;
+            /*padding-top: 1rem;
+            padding-right: 2rem;
+            padding-bottom: 1.0625rem;
+            padding-left: 2rem;*/            
+            background-color: #008cba;
+            border-color: #007095;
+            transition: background-color 300ms ease-out;
+            /*Turn off highlight*/
+            /*-webkit-touch-callout: none;
+            -webkit-user-select: none;
+            -khtml-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;*/
+        }
+
+        .button1 h2 {
+            text-transform: uppercase !important;
+            /*color: rgb(51,51,51)*/
+
+        }
+
+        .inner-text p {
+        margin-bottom: 10px !important; 
+        }
+
+        .button1:hover {
+            cursor: pointer;
+            background-color: rgb(0,112,149); 
+            transition: background-color 300ms ease-out;
+        }
+
+
+
+
+@media only screen and (min-width: 40.063em) { 
+        .rowDOE h1 {
+            font-size: 52px;        
+            letter-spacing: 15px;
+            padding-top: 1rem;
+            padding-bottom: 1rem;
+        }
+
+        .triple {
+            padding-left: 0.1rem;
+            padding-right: 0.1rem;
+            padding-bottom: 0rem;
+        }
+
+        .triple:first-child {
+            padding-left: 0px;   
+            padding-right: 0.56rem;         
+        }
+
+        .triple:last-child {
+            padding-right: 0px;         
+            padding-left: 0.56rem;
+        }
+    } /* min-width 641px, medium screens */
+@media only screen and (min-width: 64.063em) { 
+        .dropdown {
+            padding-left: 0.9375rem;
+            padding-right: 0.9375rem;
+        }
+    } /* min-width 1025px, large screens */
+
+
+@media only screen and (max-width: 480px) { 
+        .rowDOE h2 {
+            font-size: 30px;
+            padding-top: 0.5rem;
+            padding-bottom: 0.5rem;
+            letter-spacing: .05rem;
+        }
+        .subheadline p {
+            font-size: 17px;
+            padding-top: .2rem;
+            padding-bottom: .2rem
+        }
+        
+        .rowDOE h3 {
+            font-size: 16px;
+            margin-top: .25rem;
+            margin-bottom: .25rem;
+        }
+
+        .middle-block p {
+            padding-top: 03px !important;
+            padding-bottom: 5px !important;
+            font-size: 14px;
+        }
+
+        .middle-block {
+            height: 75px !important; 
+        }
+
+        .sub-blocks-full {
+            height: 300px
+        }
+
+        .rowDOE .inner-text {
+            font-size: 18px !important;
+            line-height: 18px !important; 
+            letter-spacing: 0rem;
+        }
+
+}
+
+
+@media only screen and (max-width: 320px) { 
+    #sub-blocks-full {
+        height: 300px;
+    }
+    .rowDOE h1 {
+        font-size: 28px
+    }
+    .rowDOE h2 {
+            font-size: 26px;
+            padding-top: 0.25rem;
+            padding-bottom: 0.25rem;
+            letter-spacing: .025rem;
+        }
 }
