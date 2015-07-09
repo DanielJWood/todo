@@ -1,10 +1,10 @@
 // Insert your scripts here
 
-var width = parseInt(d3.select("#master_container").style("width")),
+var width = parseInt(d3.select("#map").style("width")),
   height = width / 2,
   centered;
 
-
+// var projection = d3.geo.albersUsaPr()
 var projection = d3.geo.albersUsa()
     .scale(width)
     .translate([width / 2, ((height / 2))])  ;
@@ -12,7 +12,7 @@ var projection = d3.geo.albersUsa()
 var path = d3.geo.path()
     .projection(projection);
 
-var svg = d3.select("#master_container").append("svg")
+var svg = d3.select("#map").append("svg")
     .attr("width", width)
     .attr("height", height);
 
@@ -23,6 +23,8 @@ var rect = svg.append("rect")
     .on("click", clicked);
 
 var g = svg.append("g");
+
+
 
 d3.json("js/statesregion2.json", function(error, regions) {
 	if (error) throw error;
@@ -50,9 +52,10 @@ d3.json("js/statesregion2.json", function(error, regions) {
 });
 
 function clicked(d) {
-console.log(d) 
+console.log(d)
+
 // D3 stuff on click
-  var x, y, k;
+  var x, y, k, id, name, hash;
 
   if (d && centered !== d) {
     var centroid = path.centroid(d);
@@ -60,11 +63,17 @@ console.log(d)
     y = centroid[1];
     k = 2 ;
     centered = d;
+    id = d.id;
+    name = d.properties.name;
+    hash = "#" + name.replace(/\s+/g, '-').toLowerCase();
   } else {
     x = width / 2;
     y = height / 2;
     k = 1;
     centered = null;
+    id = null;
+    name = "Click on a region to learn more"
+    hash = "#"
   }
 
   g.selectAll("path")
@@ -76,16 +85,53 @@ console.log(d)
       .style("stroke-width", 1.5 / k + "px");
 
 // Add the dom elements.
+  //Change the color of the header based on the region.
+  var clickstate = document.getElementById("clickstate")
+  clickstate.className = "large-12 columnsDOE subheadline " + id;
+  clickstate.innerHTML = "<p>" + name + "</p>";
+
+  //change bottom tab
+  var below = document.getElementById("below")
+  if (id==null) {  below.className = below.className.replace( /(?:^|\s)active(?!\S)/g , '' );
+  } else {  below.className = "active " + id
+  };
+
+  window.location = hash;
+
+  var linkBelow = document.getElementById("link-below")
+  linkBelow.href =  hash + "/2"
+  
+
 }
 
-d3.select(window).on('resize', resize); 
+// function scrollTo(hash) {
+//   location.hash = "#" + hash;
+// }
+
+
+  // $(function() {
+  //   $('a[href*=#]:not([href=#])').click(function() {
+  //     if (location.pathname.replace(/^\//,'') == this.pathname.replace(/^\//,'') && location.hostname == this.hostname) {
+
+  //       var target = $(this.hash);
+  //       target = target.length ? target : $('[name=' + this.hash.slice(1) +']');
+  //       if (target.length) {
+  //         $('html,body').animate({
+  //           scrollTop: target.offset().top
+  //         }, 1000);
+  //         return false;
+  //       }
+  //     }
+  //   });
+  // });
+// d3.select(window).on('resize', resize); 
 
 function resize() {   
 
 // console.log(d3.select("subunit-boundary"))
 //   // Do some resize stuff here
 
-//     var width = parseInt(d3.select("#master_container").style("width")),
+//     var width = parseInt(d3.select("#map").style("width")),
 //       height = width / 2;
 
 //     var x, y, k;
