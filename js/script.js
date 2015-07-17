@@ -1,23 +1,16 @@
-// fake data
-var context_data = [{"id":"HI","summary":"In sagittis dui vel nisl. Duis ac nibh. Fusce lacus purus, aliquet at, feugiat non, pretium quis, lectus. Suspendisse potenti. In eleifend quam a odio. In hac habitasse platea dictumst. Maecenas ut massa quis augue luctus tincidunt. Nulla mollis molestie lorem. Quisque ut erat. Curabitur gravida nisi at nibh.","icons":"maecenas tincidunt lacus at"},
-{"id":"AK","summary":"Suspendisse accumsan tortor quis turpis. Sed ante. Vivamus tortor. Duis mattis egestas metus. Aenean fermentum. Donec ut mauris eget massa tempor convallis. Nulla neque libero, convallis eget, eleifend luctus, ultricies eu, nibh. Quisque id justo sit amet sapien dignissim vestibulum. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Nulla dapibus dolor vel est. Donec odio justo, sollicitudin ut, suscipit a, feugiat et, eros.","icons":"iaculis congue vivamus metus arcu"},
-{"id":"NW","summary":"Aliquam non mauris. Morbi non lectus. Aliquam sit amet diam in magna bibendum imperdiet.","icons":"quam nec dui luctus rutrum nulla"},
-{"id":"SW","summary":"Curabitur at ipsum ac tellus semper interdum.","icons":"sit amet turpis elementum"},
-{"id":"NP","summary":"Nulla suscipit ligula in lacus.","icons":"duis ac nibh"},
-{"id":"SP","summary":"Mauris enim leo, rhoncus sed, vestibulum sit amet, cursus id, turpis. Integer aliquet, massa id lobortis convallis, tortor risus dapibus augue, vel accumsan tellus nisi eu orci. Mauris lacinia sapien quis libero. Nullam sit amet turpis elementum ligula vehicula consequat. Morbi a ipsum. Integer a nibh. In quis justo. Maecenas rhoncus aliquam lacus.","icons":"ac leo pellentesque"},
-{"id":"MW","summary":"Morbi quis tortor id nulla ultrices aliquet. Maecenas leo odio, condimentum id, luctus nec, molestie sed, justo.","icons":"sagittis nam congue risus semper"},
-{"id":"SE","summary":"Integer ac leo. Pellentesque ultrices mattis odio. Donec vitae nisi. Nam ultrices, libero non mattis pulvinar, nulla pede ullamcorper augue, a suscipit nulla elit ac nulla. Sed vel enim sit amet nunc viverra dapibus. Nulla suscipit ligula in lacus. Curabitur at ipsum ac tellus semper interdum.","icons":"at"},
-{"id":"NE","summary":"Vestibulum sed magna at nunc commodo placerat. Praesent blandit.","icons":"tincidunt ante vel ipsum praesent blandit"}]
-
 console.log(context_data)
 console.log(context_data[0])
 console.log(context_data[0].summary)
+console.log(context_data[0].FuelTransport)
 
 // Insert your scripts here
 
 var width = parseInt(d3.select("#map").style("width")),
   height = width / 2,
   centered;
+
+var boxWidth = 160,
+    boxHeight = 100;
 
 // var projection = d3.geo.albersUsaPr()
 var projection = d3.geo.albersUsa()
@@ -31,6 +24,11 @@ var svg = d3.select("#map").append("svg")
     .attr("width", width)
     .attr("height", height);
 
+var svg2 = d3.select("#map").append("svg")
+    .attr("width",boxWidth)
+    .attr("height",boxHeight)
+    .attr("id","svg2");
+
 var rect = svg.append("rect")
     .attr("class", "background")
     .attr("width", width)
@@ -38,6 +36,7 @@ var rect = svg.append("rect")
     .on("click", clicked);
 
 var g = svg.append("g");
+var g2 = svg2.append("g");
 
 d3.json("js/statesregion2.json", function(error, regions) {
 	if (error) throw error;
@@ -52,14 +51,51 @@ d3.json("js/statesregion2.json", function(error, regions) {
       .on("click", clicked);
 
 	g.append("path")
-	    .datum(topojson.mesh(regions, regions.objects.regions_usa, function(a, b) { return a !== b}))
-	    .attr("d", path)
-	    .attr("class", "main-boundary");
+    .datum(topojson.mesh(regions, regions.objects.regions_usa, function(a, b) { return a !== b}))
+    .attr("d", path)
+    .attr("class", "main-boundary");
 
 	g.append("path")
-	    .datum(topojson.mesh(regions, regions.objects.states2, function(a, b) { return a !== b}))
-	    .attr("d", path)
-	    .attr("class", "subunit-boundary");	    
+    .datum(topojson.mesh(regions, regions.objects.states2, function(a, b) { return a !== b}))
+    .attr("d", path)
+    .attr("cursor","pointer")
+    .attr("class", "subunit-boundary");	    
+
+  var threatBox = g2.append("rect")
+    .attr("id","threats2")
+    .attr("fill","#ff00ff")
+    .attr("width",boxWidth)
+    .attr("height",boxHeight)
+    .attr("x","0")
+    .attr("y","0")
+
+  g2.append("svg:text")
+    .text("Key Climate Impacts")
+    // .attr("class","header")
+    .attr("x", "10")
+    .attr("y", "10")
+    .attr("text-anchor","left")
+    .attr('font-size','10pt')
+    .attr('fill','#fff');
+
+
+    // Add titles to regions
+  g.selectAll("text")
+    .data(topojson.feature(regions, regions.objects.regions_usa).features)
+    .enter()
+    .append("svg:text")
+    .text(function(d){
+        return d.properties.name;
+    })
+    .attr("x", function(d){
+        return path.centroid(d)[0];
+    })
+    .attr("y", function(d){
+        return  path.centroid(d)[1];
+    })
+    .attr("text-anchor","middle")
+    .attr('font-size','10pt');
+
 });
 
 // Bind things that happen on first click 
@@ -77,7 +113,7 @@ console.log(d)
 
   console.log(context_data)
   for (var i = context_data.length - 1; i >= 0; i--) {
-    if (d.id == context_data[i].id) {
+    if (d && d.id == context_data[i].id) {
       summary = context_data[i].summary
       icons = context_data[i].icons
     } 
@@ -99,7 +135,7 @@ console.log(d)
     y = height / 2;
     k = 1;
     centered = null;
-    id = null;
+    id = "";
     name = "Click on a region to learn more"
     hash = "#"
     button = "Climate Change"
@@ -109,7 +145,6 @@ console.log(d)
   }
 
   console.log(summary)
-  console.log(icons)
 
   g.selectAll("path")
       .classed("active", centered && function(d) { return d === centered; });
@@ -127,7 +162,7 @@ console.log(d)
 
   //change bottom tab
   var below = document.getElementById("below")
-  if (id==null) {  below.className = below.className.replace( /(?:^|\s)active(?!\S)/g , '' );
+  if (id=="") {  below.className = below.className.replace( /(?:^|\s)active(?!\S)/g , '' );
   } else {  below.className = "active " + id
   };
 
@@ -142,6 +177,9 @@ console.log(d)
   };
   greenTextchange[1].innerHTML = button;
   // greenTextchange[1].href = SOMETHING
+
+  var region_text = document.getElementById("region-text")
+  region_text.innerHTML = "<p style='padding-top: 50px;'>" + summary + "</p>";
 }
 
 function ReadMore() { 
