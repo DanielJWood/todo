@@ -1,7 +1,7 @@
 console.log(context_data)
 console.log(context_data[0])
 console.log(context_data[0].summary)
-console.log(context_data[0].FuelTransport)
+console.log(context_data[0].properties)
 
 // Insert your scripts here
 
@@ -70,6 +70,7 @@ d3.json("js/statesregion2.json", function(error, regions) {
     .attr("y","0")
 
   g2.append("svg:text")
+    .attr("class","title")
     .text("Key Climate Impacts")
     // .attr("class","header")
     .attr("x", "10")
@@ -106,20 +107,33 @@ d3.json("js/statesregion2.json", function(error, regions) {
   });  
 }(jQuery));  
 
+// On click Get the length of the longest threat + icons in pixels
+// Create the length of box as a result
+// Create a centroid to hang the text from, from that length
+// Build the text
+// sort the text based on icon length, then alphabeticala
+
+
 function clicked(d) {
 console.log(d)
 // D3 stuff on click
-  var x, y, k, id, name, hash, green, summary, icons;
+  var x, y, k, id, name, hash, green, summary, properties;
+  var p = [[],[]]
 
-  console.log(context_data)
-  for (var i = context_data.length - 1; i >= 0; i--) {
-    if (d && d.id == context_data[i].id) {
-      summary = context_data[i].summary
-      icons = context_data[i].icons
-    } 
-  };  
-
-  if (d && centered !== d) {
+  //click on a state    
+  if (d && centered !== d) {      
+    for (var i = context_data.length - 1; i >= 0; i--) {
+      if (d.id == context_data[i].id) {
+        summary = context_data[i].summary
+        properties = context_data[i].properties
+        for (var key in properties) {
+          if (properties[key] != "") {
+            p[0].push(key)
+            p[1].push(properties[key])
+          };          
+        }        
+      } 
+    };  
     var centroid = path.centroid(d);
     x = centroid[0];
     y = centroid[1];
@@ -131,6 +145,7 @@ console.log(d)
     button = "The " + name;
     green = d.id; 
   } else {
+      //outclick
     x = width / 2;
     y = height / 2;
     k = 1;
@@ -141,18 +156,30 @@ console.log(d)
     button = "Climate Change"
     green = "green-text"    
     summary = ""
-    icons = ""
   }
 
-  console.log(summary)
-
+// Sets the active topography so that it highlights the states
   g.selectAll("path")
       .classed("active", centered && function(d) { return d === centered; });
 
+//transitions the map.
   g.transition()
       .duration(750)
       .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")scale(" + k + ")translate(" + -x + "," + -y + ")")
       .style("stroke-width", 1.5 / k + "px");
+
+  var text = g2.selectAll("text:not(.title)")
+    .data(p[0])
+
+  text.attr("class","update")
+
+  text.enter().append("text")
+    .attr("class","enter")
+    .attr("y", function(d,i) { return i*10});
+
+  text.text(function(d) {console.log(d); return d;})
+
+  text.exit().remove();
 
 // Add the dom elements.
   //Change the color of the header based on the region.
