@@ -1,7 +1,11 @@
-console.log(context_data)
-console.log(context_data[0])
-console.log(context_data[0].summary)
-console.log(context_data[0].properties)
+function getMaxOfArray(numArray) {
+  return Math.max.apply(null, numArray);
+}
+
+// console.log(context_data)
+// console.log(context_data[0])
+// console.log(context_data[0].summary)
+// console.log(context_data[0].properties)
 
 // Insert your scripts here
 
@@ -10,7 +14,7 @@ var width = parseInt(d3.select("#map").style("width")),
   centered;
 
 var boxWidth = 160,
-    boxHeight = 100;
+    boxHeight = 120;
 
 // var projection = d3.geo.albersUsaPr()
 var projection = d3.geo.albersUsa()
@@ -38,6 +42,14 @@ var rect = svg.append("rect")
 var g = svg.append("g");
 var g2 = svg2.append("g");
 
+var threatBox = g2.append("rect")
+    .attr("id","threats2")
+    .attr("fill","#ff00ff")
+    .attr("width",boxWidth)
+    .attr("height",boxHeight)
+    .attr("x","0")
+    .attr("y","0")
+
 d3.json("js/statesregion2.json", function(error, regions) {
 	if (error) throw error;
 
@@ -61,21 +73,13 @@ d3.json("js/statesregion2.json", function(error, regions) {
     .attr("cursor","pointer")
     .attr("class", "subunit-boundary");	    
 
-  var threatBox = g2.append("rect")
-    .attr("id","threats2")
-    .attr("fill","#ff00ff")
-    .attr("width",boxWidth)
-    .attr("height",boxHeight)
-    .attr("x","0")
-    .attr("y","0")
-
   g2.append("svg:text")
     .attr("class","title")
     .text("Key Climate Impacts")
     // .attr("class","header")
-    .attr("x", "10")
-    .attr("y", "10")
-    .attr("text-anchor","left")
+    .attr("x", function(d) {return boxWidth/2})
+    .attr("y", "15")
+    .attr("text-anchor","middle")
     .attr('font-size','10pt')
     .attr('fill','#fff');
 
@@ -115,10 +119,12 @@ d3.json("js/statesregion2.json", function(error, regions) {
 
 
 function clicked(d) {
-console.log(d)
+// console.log(d)
+// console.log(context_data)
+
 // D3 stuff on click
-  var x, y, k, id, name, hash, green, summary, properties;
-  var p = [[],[]]
+  var x, y, k, id, name, hash, green, summary, properties, boxWidth;
+  var p = [[],[],[],[]]
 
   //click on a state    
   if (d && centered !== d) {      
@@ -129,7 +135,8 @@ console.log(d)
         for (var key in properties) {
           if (properties[key] != "") {
             p[0].push(key)
-            p[1].push(properties[key])
+            p[1].push(properties[key])              
+            p[2].push(key.length + properties[key].length)
           };          
         }        
       } 
@@ -144,6 +151,7 @@ console.log(d)
     hash = "#" + name.replace(/\s+/g, '-').toLowerCase();    
     button = "The " + name;
     green = d.id; 
+    boxWidth = getMaxOfArray(p[2]) * 10;
   } else {
       //outclick
     x = width / 2;
@@ -155,7 +163,8 @@ console.log(d)
     hash = "#"
     button = "Climate Change"
     green = "green-text"    
-    summary = ""
+    summary = "";
+    boxWidth = 0;
   }
 
 // Sets the active topography so that it highlights the states
@@ -168,20 +177,62 @@ console.log(d)
       .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")scale(" + k + ")translate(" + -x + "," + -y + ")")
       .style("stroke-width", 1.5 / k + "px");
 
+
+// Transitions for the key  
+// Resize the key
+  svg2
+    .attr("width",function(d) {
+      return boxWidth
+    });
+
+  threatBox
+    .attr("width","100%")
+
+  g2.selectAll("text").attr("x",function(d) { return boxWidth / 2});
+
   var text = g2.selectAll("text:not(.title)")
     .data(p[0])
 
   text.attr("class","update")
 
+
   text.enter().append("text")
     .attr("class","enter")
-    .attr("y", function(d,i) { return i*10});
+    .attr("y", function(d,i) { return (i*15)+30 })
+    .attr("x",function(d) { return boxWidth / 2});  
 
   text.text(function(d) {console.log(d); return d;})
 
   text.exit().remove();
 
-// Add the dom elements.
+
+  // var text = textg.enter().append("g")
+  //   .attr("class","entertextgbox")
+  //     .append("text")
+  //     .attr("class","enter")    
+  //     .attr("y", function(d,i) { return (i*15)+30});
+
+// Think i need to add the text in each above, rather than below
+
+  // var text = g2.selectAll("textg").selectAll("text:not(.title)")
+  //   .data(p[0])
+
+
+
+  // text.attr("class","update")
+
+  // text.append("text")
+  //   .attr("class","enter")    
+  //   .attr("y", function(d,i) {console.log(d); return (i*15)+30});
+
+  // text.text(function(d) { return d;})
+
+  // text.exit().remove();
+        // ************* //
+        //***************** //
+
+
+// Add the dom elements. HTML, basically no D3
   //Change the color of the header based on the region.
   var clickstate = document.getElementById("clickstate")
   clickstate.className = "large-12 columnsDOE subheadline " + id;
