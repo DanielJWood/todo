@@ -16,6 +16,9 @@ var width = parseInt(d3.select("#map").style("width")),
 var boxWidth = 160,
     boxHeight = 120;
 
+var iconWidth = 10,
+    iconHeight = 10;
+
 // var projection = d3.geo.albersUsaPr()
 var projection = d3.geo.albersUsa()
     .scale(width)
@@ -44,7 +47,7 @@ var g2 = svg2.append("g");
 
 var threatBox = g2.append("rect")
     .attr("id","threats2")
-    .attr("fill","#ff00ff")
+    .attr("fill","#777")
     .attr("width",boxWidth)
     .attr("height",boxHeight)
     .attr("x","0")
@@ -122,8 +125,11 @@ function clicked(d) {
 // console.log(d)
 // console.log(context_data)
 
+//remove existing threat icons
+g2.selectAll(".threat").remove();
+
 // D3 stuff on click
-  var x, y, k, id, name, hash, green, summary, properties, boxWidth;
+  var x, y, k, id, name, hash, green, summary, properties, boxWidth, offset;
   var p = [[],[],[],[]]
 
   //click on a state    
@@ -136,9 +142,10 @@ function clicked(d) {
           if (properties[key] != "") {
             p[0].push(key)
             p[1].push(properties[key])              
-            p[2].push(key.length + properties[key].length)
-          };          
-        }        
+            p[2].push(key.length + properties[key].length)            
+          };              
+        }   
+        p[3].push(context_data[i].id)     
       } 
     };  
     var centroid = path.centroid(d);
@@ -152,6 +159,7 @@ function clicked(d) {
     button = "The " + name;
     green = d.id; 
     boxWidth = getMaxOfArray(p[2]) * 10;
+    offset = 30;
   } else {
       //outclick
     x = width / 2;
@@ -188,46 +196,89 @@ function clicked(d) {
   threatBox
     .attr("width","100%")
 
-  g2.selectAll("text").attr("x",function(d) { return boxWidth / 2});
+  g2.selectAll("text").attr("x",function(d) { return (boxWidth / 2) - offset});
+
+  g2.select(".title").attr("x",function(d) { return (boxWidth / 2)});
 
   var text = g2.selectAll("text:not(.title)")
     .data(p[0])
 
-  text.attr("class","update")
+// console.log(text)
 
+  text.attr("class","update")
 
   text.enter().append("text")
     .attr("class","enter")
-    .attr("y", function(d,i) { return (i*15)+30 })
-    .attr("x",function(d) { return boxWidth / 2});  
+    .attr("y", function(d,i) { return (i*15)+35 })
+    .attr("x",function(d) { return (boxWidth / 2) - offset});  
 
-  text.text(function(d) {console.log(d); return d;})
+  text
+    .text(function(d) {return d;})
+    .attr("industry",function(d){
+      return d
+    })
 
   text.exit().remove();
 
+  // for (var i = 0; i < Things.length; i++) {
+  //   Things[i]
+  // };
 
-  // var text = textg.enter().append("g")
-  //   .attr("class","entertextgbox")
-  //     .append("text")
-  //     .attr("class","enter")    
-  //     .attr("y", function(d,i) { return (i*15)+30});
+  var raw = []
 
-// Think i need to add the text in each above, rather than below
+  // console.log(p)
+  // add the boxes of the icons
+  for (var k = p[1].length - 1; k >= 0; k--) {
+    var iconList = p[1][k].split(",") 
+    var inner = [iconList.length,p[0][k]] 
+    raw.push(inner)
+    // Check to make sure that the reverse for loop isn't screwing up the ordering of the threats
+    for (var j = iconList.length - 1; j >= 0; j--) {
+      g2.append("rect")
+        .attr("class","threat")     
+        .attr("type",function(d){
+          // console.log(iconList[j])
+          return iconList[j]
+        })   
+        .attr("industry",function(d){
+          return p[0][k]
+        })
+        .attr("fill", function(d) { return "hsl(" + (Math.random() * 360) + ",100%,50%)"})
+        .attr("width",iconWidth)
+        .attr("height",iconHeight)
+        .attr("y", function(d) { return (k*15)+(2*iconHeight+5) })
+        .attr("x",function(d) {
+          return (boxWidth/2)-(j*15)-(iconWidth*2)-offset;
+        })
+    };
+  };
 
-  // var text = g2.selectAll("textg").selectAll("text:not(.title)")
-  //   .data(p[0])
+  // Does this work?
+  raw = raw.sort();
 
 
+  text.transition().duration(1000)
+    .attr("y",function(d){
+      // console.log(d)
+      for (var i = 0; i < raw.length; i++) {
+        if (raw[i][1] == d) {
+          return ((i)*15)+(2*iconHeight+15)
+          break;
+        } 
+      };
+    })
 
-  // text.attr("class","update")
+var test = g2.selectAll("industry","FuelTransport")
+console.log(test)
 
-  // text.append("text")
-  //   .attr("class","enter")    
-  //   .attr("y", function(d,i) {console.log(d); return (i*15)+30});
+// text.transition().duration(900)
 
-  // text.text(function(d) { return d;})
+//   .attr("fill", function(d,i){ console.log("hello"); return "#ff00ff"})
 
-  // text.exit().remove();
+  // var icons = g2.selectAll(".threat")
+  // console.log(icons)
+
+
         // ************* //
         //***************** //
 
@@ -258,6 +309,15 @@ function clicked(d) {
 
   var region_text = document.getElementById("region-text")
   region_text.innerHTML = "<p style='padding-top: 50px;'>" + summary + "</p>";
+
+}
+
+function update2(){
+  console.log('fe')
+  var text = svg2.selectAll("text")
+  text.transition().duration(1000)
+    .attr("fill","pink")
+    .attr("x","30")
 }
 
 function ReadMore() { 
