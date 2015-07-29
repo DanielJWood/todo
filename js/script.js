@@ -1,12 +1,6 @@
 function getMaxOfArray(numArray) {
   return Math.max.apply(null, numArray);
 }
-
-// console.log(context_data)
-// console.log(context_data[0])
-// console.log(context_data[0].summary)
-// console.log(context_data[0].properties)
-
 // Insert your scripts here
 
 var width = parseInt(d3.select("#map").style("width")),
@@ -86,7 +80,6 @@ d3.json("js/statesregion2.json", function(error, regions) {
     .attr('font-size','10pt')
     .attr('fill','#fff');
 
-
     // Add titles to regions
   g.selectAll("text")
     .data(topojson.feature(regions, regions.objects.regions_usa).features)
@@ -122,14 +115,15 @@ d3.json("js/statesregion2.json", function(error, regions) {
 
 
 function clicked(d) {
-// console.log(d)
-// console.log(context_data)
+
+var title = g2.select(".title")
+console.log(title)
 
 //remove existing threat icons
 g2.selectAll(".threat").remove();
 
 // D3 stuff on click
-  var x, y, k, id, name, hash, green, summary, properties, boxWidth, offset;
+  var x, y, k, id, name, hash, green, summary, properties, boxWidth, offset, title1;
   var p = [[],[],[],[]]
 
   //click on a state    
@@ -160,6 +154,7 @@ g2.selectAll(".threat").remove();
     green = d.id; 
     boxWidth = getMaxOfArray(p[2]) * 10;
     offset = 30;
+    halfBox = boxWidth / 2;
   } else {
       //outclick
     x = width / 2;
@@ -173,6 +168,7 @@ g2.selectAll(".threat").remove();
     green = "green-text"    
     summary = "";
     boxWidth = 0;
+    halfBox = 100;
   }
 
 // Sets the active topography so that it highlights the states
@@ -188,22 +184,26 @@ g2.selectAll(".threat").remove();
 
 // Transitions for the key  
 // Resize the key
-  svg2
+  svg2.transition()
+    .duration(1000)
     .attr("width",function(d) {
       return boxWidth
     });
 
+  title.transition().duration(1000).attr("x",function(d) { return halfBox});
+  // title.transition().duration(100).attr("x",function(d){return 100})
+
   threatBox
     .attr("width","100%")
 
-  g2.selectAll("text").attr("x",function(d) { return (boxWidth / 2) - offset});
+// Right now this throws an error, could be a problem...
+  g2.selectAll("text:not(.title)").attr("x",function(d) { return (boxWidth / 2) - offset});
+  // g2.selectAll("text").attr("x",function(d) { return 0});
 
-  g2.select(".title").attr("x",function(d) { return (boxWidth / 2)});
+  // g2.select(".title").attr("x",function(d) { return (boxWidth / 2)});
 
   var text = g2.selectAll("text:not(.title)")
     .data(p[0])
-
-// console.log(text)
 
   text.attr("class","update")
 
@@ -226,7 +226,6 @@ g2.selectAll(".threat").remove();
 
   var raw = []
 
-  // console.log(p)
   // add the boxes of the icons
   for (var k = p[1].length - 1; k >= 0; k--) {
     var iconList = p[1][k].split(",") 
@@ -235,49 +234,75 @@ g2.selectAll(".threat").remove();
     // Check to make sure that the reverse for loop isn't screwing up the ordering of the threats
     for (var j = iconList.length - 1; j >= 0; j--) {
       g2.append("rect")
-        .attr("class","threat")     
+        .attr("class",function(d) {
+          return "threat " + iconList[j]
+        })     
         .attr("type",function(d){
-          // console.log(iconList[j])
           return iconList[j]
         })   
         .attr("industry",function(d){
           return p[0][k]
         })
-        .attr("fill", function(d) { return "hsl(" + (Math.random() * 360) + ",100%,50%)"})
         .attr("width",iconWidth)
         .attr("height",iconHeight)
-        .attr("y", function(d) { return (k*15)+(2*iconHeight+5) })
-        .attr("x",function(d) {
-          return (boxWidth/2)-(j*15)-(iconWidth*2)-offset;
+        .attr("fill-opacity","0")
+        .attr("y", function(d) { 
+          return (k*15)+(2*iconHeight+5) 
         })
+        .attr("x",function(d) {
+          return (boxWidth/2)
+        })
+        .on("mouseover",threatHover); 
     };
   };
 
-  // Does this work?
-  raw = raw.sort();
+  // Sort Everything!!!
+  raw = raw.sort(function(a,b){
+    if (a[0] < b[0]) {
+        return 1;
+    } else if (a[0] > b[0]) { 
+        return -1;
+    }
 
+    // Else go to the 2nd item
+    if (a[1] < b[1]) { 
+        return -1;
+    } else if (a[1] > b[1]) {
+        return 1
+    } else { // nothing to split them
+        return 0;
+    }
 
-  text.transition().duration(1000)
-    .attr("y",function(d){
-      // console.log(d)
-      for (var i = 0; i < raw.length; i++) {
-        if (raw[i][1] == d) {
-          return ((i)*15)+(2*iconHeight+15)
-          break;
-        } 
-      };
+  });
+
+for (var i = 0; i < raw.length; i++) {
+  var industry = raw[i][1]
+  var industry2 = d3.selectAll("[industry="+industry+"]")
+  industry2.transition().duration(1000)
+  .delay(function(d, i) {
+      return i * 100;
     })
+    .attr("y",function(d){
+      if (d !== undefined) {
+        return (i*15)+(2*iconHeight+15)
+      } else{
+        return (i*15)+(2*iconHeight+5)
+      };      
+    })
+  var test = svg2.selectAll("[industry="+industry+"]:not(text)")
 
-var test = g2.selectAll("industry","FuelTransport")
-console.log(test)
 
-// text.transition().duration(900)
-
-//   .attr("fill", function(d,i){ console.log("hello"); return "#ff00ff"})
-
-  // var icons = g2.selectAll(".threat")
-  // console.log(icons)
-
+  test.transition().duration(1000)
+    .ease("elastic")
+    .delay(function(d, i) {
+      return i*100+1000;
+    })
+    .attr("x",function(d,j){
+      // console.log(test[i][j])
+      return (boxWidth/2)-(j*15)-(iconWidth*2)-offset;
+    })
+    .attr("fill-opacity","1")
+};
 
         // ************* //
         //***************** //
@@ -298,7 +323,7 @@ console.log(test)
   window.location = hash;
 
   var linkBelow = document.getElementById("link-below")
-  linkBelow.href =  hash + "/2"
+  linkBelow.href =  hash;
   
   var greenTextchange = document.getElementsByClassName("change-text")
   for (var i = greenTextchange.length - 1; i >= 0; i--) {
@@ -312,13 +337,20 @@ console.log(test)
 
 }
 
-function update2(){
-  console.log('fe')
+function threatHover(){
   var text = svg2.selectAll("text")
   text.transition().duration(1000)
     .attr("fill","pink")
     .attr("x","30")
 }
+
+function update2(){
+  var text = svg2.selectAll("text")
+  text.transition().duration(1000)
+    .attr("fill","pink")
+    .attr("x","30")
+}
+
 
 function ReadMore() { 
   $('#summary').scrollView();
