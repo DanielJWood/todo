@@ -7,8 +7,8 @@ var width = parseInt(d3.select("#map").style("width")),
   height = width / 2,
   centered;
 
-var boxWidth = 160,
-    boxHeight = 120;
+var boxWidth = 0,
+    boxHeight = 0;
 
 var iconWidth = 10,
     iconHeight = 10;
@@ -30,6 +30,11 @@ var svg2 = d3.select("#map").append("svg")
     .attr("height",boxHeight)
     .attr("id","svg2");
 
+var svg3 = d3.select("#map").append("svg")
+    .attr("width", "0")
+    .attr("height", "0")
+    .attr("id","svg3");
+
 var rect = svg.append("rect")
     .attr("class", "background")
     .attr("width", width)
@@ -38,12 +43,21 @@ var rect = svg.append("rect")
 
 var g = svg.append("g");
 var g2 = svg2.append("g");
+var g3 = svg3.append("g");
 
 var threatBox = g2.append("rect")
     .attr("id","threats2")
     .attr("fill","#777")
-    .attr("width",boxWidth)
-    .attr("height",boxHeight)
+    .attr("width","100%")
+    .attr("height","100%")
+    .attr("x","0")
+    .attr("y","0")
+
+var popup = g3.append("rect")
+    .attr("id","popup")
+    .attr("fill","#ddd")
+    .attr("width","100%")
+    .attr("height","100%")
     .attr("x","0")
     .attr("y","0")
 
@@ -117,14 +131,14 @@ d3.json("js/statesregion2.json", function(error, regions) {
 function clicked(d) {
 
 var title = g2.select(".title")
-console.log(title)
 
 //remove existing threat icons
 g2.selectAll(".threat").remove();
 
 // D3 stuff on click
-  var x, y, k, id, name, hash, green, summary, properties, boxWidth, offset, title1;
-  var p = [[],[],[],[]]
+  var x, y, k, id, name, hash, green, summary, properties, boxWidth, title1, numIcon, IW, TW, halfBox;
+  var p = [[],[],[],[],[]];
+  var boxHeight = 0;
 
   //click on a state    
   if (d && centered !== d) {      
@@ -134,12 +148,14 @@ g2.selectAll(".threat").remove();
         properties = context_data[i].properties
         for (var key in properties) {
           if (properties[key] != "") {
-            p[0].push(key)
-            p[1].push(properties[key])              
-            p[2].push(key.length + properties[key].length)            
+            boxHeight += 1
+            p[0].push(key);
+            p[1].push(properties[key]);
+            p[2].push(key.length);
+            p[3].push(properties[key].length);
           };              
         }   
-        p[3].push(context_data[i].id)     
+        p[4].push(context_data[i].id)     
       } 
     };  
     var centroid = path.centroid(d);
@@ -152,8 +168,11 @@ g2.selectAll(".threat").remove();
     hash = "#" + name.replace(/\s+/g, '-').toLowerCase();    
     button = "The " + name;
     green = d.id; 
-    boxWidth = getMaxOfArray(p[2]) * 10;
-    offset = 30;
+    numIcon = (getMaxOfArray(p[3]) + 1) / 2
+    IW = numIcon * 1.5 * iconWidth;
+    TW = getMaxOfArray(p[2]) * 7 + 5 ;    
+    boxWidth = IW + TW;
+    boxHeight = boxHeight * 15 + 25;
     halfBox = boxWidth / 2;
   } else {
       //outclick
@@ -168,6 +187,7 @@ g2.selectAll(".threat").remove();
     green = "green-text"    
     summary = "";
     boxWidth = 0;
+    boxHeight = 100;
     halfBox = 100;
   }
 
@@ -184,20 +204,23 @@ g2.selectAll(".threat").remove();
 
 // Transitions for the key  
 // Resize the key
-  svg2.transition()
+  svg2.transition()    
     .duration(1000)
     .attr("width",function(d) {
       return boxWidth
-    });
+    })
+    .attr("height",function(d) {
+      return boxHeight
+    });;
 
   title.transition().duration(1000).attr("x",function(d) { return halfBox});
-  // title.transition().duration(100).attr("x",function(d){return 100})
 
   threatBox
     .attr("width","100%")
+    .attr("height","100%")
 
 // Right now this throws an error, could be a problem...
-  g2.selectAll("text:not(.title)").attr("x",function(d) { return (boxWidth / 2) - offset});
+  g2.selectAll("text:not(.title)").attr("x",function(d) { return IW + 10});
   // g2.selectAll("text").attr("x",function(d) { return 0});
 
   // g2.select(".title").attr("x",function(d) { return (boxWidth / 2)});
@@ -210,7 +233,7 @@ g2.selectAll(".threat").remove();
   text.enter().append("text")
     .attr("class","enter")
     .attr("y", function(d,i) { return (i*15)+35 })
-    .attr("x",function(d) { return (boxWidth / 2) - offset});  
+    .attr("x",function(d) { return IW + 10});  
 
   text
     .text(function(d) {return d;})
@@ -289,17 +312,16 @@ for (var i = 0; i < raw.length; i++) {
         return (i*15)+(2*iconHeight+5)
       };      
     })
-  var test = svg2.selectAll("[industry="+industry+"]:not(text)")
+  var babyboxes = svg2.selectAll("[industry="+industry+"]:not(text)")
 
 
-  test.transition().duration(1000)
+  babyboxes.transition().duration(1000)
     .ease("elastic")
     .delay(function(d, i) {
       return i*100+1000;
     })
     .attr("x",function(d,j){
-      // console.log(test[i][j])
-      return (boxWidth/2)-(j*15)-(iconWidth*2)-offset;
+      return IW-(j*15)-10;
     })
     .attr("fill-opacity","1")
 };
@@ -338,10 +360,12 @@ for (var i = 0; i < raw.length; i++) {
 }
 
 function threatHover(){
-  var text = svg2.selectAll("text")
-  text.transition().duration(1000)
-    .attr("fill","pink")
-    .attr("x","30")
+  var x, y;
+  console.log(d3.select(".background").node().getBBox().width)
+
+console.log(d3.select(this).attr("x"))
+// d3.select(this).transition().duration(1000).attr("x","100")
+
 }
 
 function update2(){
