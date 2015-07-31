@@ -30,11 +30,6 @@ var svg2 = d3.select("#map").append("svg")
     .attr("height",boxHeight)
     .attr("id","svg2");
 
-var svg3 = d3.select("#map").append("svg")
-    .attr("width", "0")
-    .attr("height", "0")
-    .attr("id","svg3");
-
 var rect = svg.append("rect")
     .attr("class", "background")
     .attr("width", width)
@@ -43,7 +38,6 @@ var rect = svg.append("rect")
 
 var g = svg.append("g");
 var g2 = svg2.append("g");
-var g3 = svg3.append("g");
 
 var threatBox = g2.append("rect")
     .attr("id","threats2")
@@ -53,13 +47,11 @@ var threatBox = g2.append("rect")
     .attr("x","0")
     .attr("y","0")
 
-var popup = g3.append("rect")
+var popup = g2.append("rect")
     .attr("id","popup")
     .attr("fill","#ddd")
     .attr("width","100%")
-    .attr("height","100%")
-    .attr("x","0")
-    .attr("y","0")
+    .attr("height","0")
 
 d3.json("js/statesregion2.json", function(error, regions) {
 	if (error) throw error;
@@ -211,7 +203,7 @@ g2.selectAll(".threat").remove();
     })
     .attr("height",function(d) {
       return boxHeight
-    });;
+    });
 
   title.transition().duration(1000).attr("x",function(d) { return halfBox});
 
@@ -221,12 +213,9 @@ g2.selectAll(".threat").remove();
 
 // Right now this throws an error, could be a problem...
   g2.selectAll("text:not(.title)").attr("x",function(d) { return IW + 10});
-  // g2.selectAll("text").attr("x",function(d) { return 0});
-
-  // g2.select(".title").attr("x",function(d) { return (boxWidth / 2)});
 
   var text = g2.selectAll("text:not(.title)")
-    .data(p[0])
+    .data(p[0])    
 
   text.attr("class","update")
 
@@ -240,12 +229,11 @@ g2.selectAll(".threat").remove();
     .attr("industry",function(d){
       return d
     })
+    .attr("cursor","pointer")
+    .on("mouseover",threatHover(boxHeight))
+    .on("mouseout",threatOut(boxHeight)); 
 
   text.exit().remove();
-
-  // for (var i = 0; i < Things.length; i++) {
-  //   Things[i]
-  // };
 
   var raw = []
 
@@ -275,7 +263,8 @@ g2.selectAll(".threat").remove();
         .attr("x",function(d) {
           return (boxWidth/2)
         })
-        .on("mouseover",threatHover); 
+        .on("mouseover",threatHover(boxHeight, halfBox))
+        // .on("mouseout",threatOut(boxHeight)); 
     };
   };
 
@@ -298,74 +287,122 @@ g2.selectAll(".threat").remove();
 
   });
 
-for (var i = 0; i < raw.length; i++) {
-  var industry = raw[i][1]
-  var industry2 = d3.selectAll("[industry="+industry+"]")
-  industry2.transition().duration(1000)
-  .delay(function(d, i) {
-      return i * 100;
-    })
-    .attr("y",function(d){
-      if (d !== undefined) {
-        return (i*15)+(2*iconHeight+15)
-      } else{
-        return (i*15)+(2*iconHeight+5)
-      };      
-    })
-  var babyboxes = svg2.selectAll("[industry="+industry+"]:not(text)")
-
-
-  babyboxes.transition().duration(1000)
-    .ease("elastic")
+  for (var i = 0; i < raw.length; i++) {
+    var industry = raw[i][1]
+    var industry2 = d3.selectAll("[industry="+industry+"]")
+    industry2.transition().duration(1000)
     .delay(function(d, i) {
-      return i*100+1000;
-    })
-    .attr("x",function(d,j){
-      return IW-(j*15)-10;
-    })
-    .attr("fill-opacity","1")
-};
+        return i * 100;
+      })
+      .attr("y",function(d){
+        if (d !== undefined) {
+          return (i*15)+(2*iconHeight+15)
+        } else{
+          return (i*15)+(2*iconHeight+5)
+        };      
+      })
+    var babyboxes = svg2.selectAll("[industry="+industry+"]:not(text)")
 
-        // ************* //
-        //***************** //
 
-
-// Add the dom elements. HTML, basically no D3
-  //Change the color of the header based on the region.
-  var clickstate = document.getElementById("clickstate")
-  clickstate.className = "large-12 columnsDOE subheadline " + id;
-  clickstate.innerHTML = "<p>" + name + "</p>";
-
-  //change bottom tab
-  var below = document.getElementById("below")
-  if (id=="") {  below.className = below.className.replace( /(?:^|\s)active(?!\S)/g , '' );
-  } else {  below.className = "active " + id
+    babyboxes.transition().duration(1000)
+      .ease("elastic")
+      .delay(function(d, i) {
+        return i*100+1000;
+      })
+      .attr("x",function(d,j){
+        return IW-(j*15)-10;
+      })
+      .attr("fill-opacity","1")
   };
 
-  window.location = hash;
+// Hang the hover box below the threatBox
+    
+  popup
+    .attr("x","0")
+    .attr("y",boxHeight)
 
-  var linkBelow = document.getElementById("link-below")
-  linkBelow.href =  hash;
-  
-  var greenTextchange = document.getElementsByClassName("change-text")
-  for (var i = greenTextchange.length - 1; i >= 0; i--) {
-    greenTextchange[i].className = "change-text " + green;    
-  };
-  greenTextchange[1].innerHTML = button;
-  // greenTextchange[1].href = SOMETHING
+            // ************* //
+            //***************** //
 
-  var region_text = document.getElementById("region-text")
-  region_text.innerHTML = "<p style='padding-top: 50px;'>" + summary + "</p>";
+
+    // Add the dom elements. HTML, basically no D3
+      //Change the color of the header based on the region.
+      var clickstate = document.getElementById("clickstate")
+      clickstate.className = "large-12 columnsDOE subheadline " + id;
+      clickstate.innerHTML = "<p>" + name + "</p>";
+
+      //change bottom tab
+      var below = document.getElementById("below")
+      if (id=="") {  below.className = below.className.replace( /(?:^|\s)active(?!\S)/g , '' );
+      } else {  below.className = "active " + id
+      };
+
+      window.location = hash;
+
+      var linkBelow = document.getElementById("link-below")
+      linkBelow.href =  hash;
+      
+      var greenTextchange = document.getElementsByClassName("change-text")
+      for (var i = greenTextchange.length - 1; i >= 0; i--) {
+        greenTextchange[i].className = "change-text " + green;    
+      };
+      greenTextchange[1].innerHTML = button;
+      // greenTextchange[1].href = SOMETHING
+
+      var region_text = document.getElementById("region-text")
+      region_text.innerHTML = "<p style='padding-top: 50px;'>" + summary + "</p>";
 
 }
 
-function threatHover(){
-  var x, y;
-  console.log(d3.select(".background").node().getBBox().width)
+function threatOut(bH){
+  return function() {
+    popup.transition().duration(500).delay(500)
+      .attr("height","0")
 
-console.log(d3.select(this).attr("x"))
-// d3.select(this).transition().duration(1000).attr("x","100")
+    svg2.transition().duration(500).delay(500)
+      .attr("height", bH)
 
+  }
+}
+
+function threatHover(bH, hB){
+  return function() {
+    var hoverHeight;
+    // console.log(d3.select(this).attr("industry"))
+    // d3.select(this).transition().duration(1000).attr("x","100")
+    var title = d3.select(this).attr("type")
+
+    hoverHeight = 50;
+
+    var boxHeight = bH + hoverHeight;
+
+    // Resize the key
+    svg2.transition()    
+      .duration(1000)    
+      .attr("height", boxHeight);
+
+    popup.transition()
+      .duration(1000)  
+      .attr("height",hoverHeight)
+
+    g2.append("text")
+      .attr("class","popuph1")
+      .attr("y", bH + 20)
+      .attr("x", hB)
+      .attr("fill","#333")
+      .attr("text-anchor","middle")
+      .attr('font-size','16pt')
+      .text(function(d) {return title;});
+
+    g2.append("text")
+      .attr("class","popupP")
+      .attr("y", bH + 35)
+      .attr("x", 5)
+      .attr("fill","#333")
+      .attr("text-anchor","left")
+      .attr('font-size','10pt')
+      .text(function(d) {return "Lorem ipsum dolor sit amet, consectetur adipiscing elit. In hac habitasse platea dictumst. "});
+  }
 }
 
 function update2(){
