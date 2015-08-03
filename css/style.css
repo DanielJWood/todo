@@ -245,6 +245,12 @@ body {
     background-image: url(../img/gray_arrow_down.svg);
 }
 
+/*Some typography*/
+.popupText.head {
+    font-size: 13pt;
+    text-anchor: middle;
+    fill: #333;          
+}
 
 /**********************************************
 Foundation pieces and DOM

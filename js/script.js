@@ -1,3 +1,14 @@
+var threatLetters = [
+  ["a","Increasing Temperatures and Heat Waves"  ],
+  ["b","Increasing Precipitation or Heavy Downpours"  ],
+  ["c","Decreasing Water Availability"  ],
+  ["d","Increasing Wildfire"  ],
+  ["e","Increasing Sea Level Rise and Storm Surge"  ],
+  ["f","Increasing Frequency of Intense Hurricanes"  ]
+]
+console.log(threatLetters)
+console.log(threatLetters[0][0])
+
 function getMaxOfArray(numArray) {
   return Math.max.apply(null, numArray);
 }
@@ -264,7 +275,7 @@ g2.selectAll(".threat").remove();
           return (boxWidth/2)
         })
         .on("mouseover",threatHover(boxHeight, halfBox))
-        // .on("mouseout",threatOut(boxHeight)); 
+        .on("mouseout",threatOut(boxHeight)); 
     };
   };
 
@@ -356,21 +367,30 @@ g2.selectAll(".threat").remove();
 
 function threatOut(bH){
   return function() {
-    popup.transition().duration(500).delay(500)
+    popup.transition().duration(200).delay(500)
       .attr("height","0")
 
-    svg2.transition().duration(500).delay(500)
-      .attr("height", bH)
-
+    svg2.transition().duration(200).delay(500)
+      .attr("height", bH)    
   }
 }
 
 function threatHover(bH, hB){
-  return function() {
+  return function() {    
+    d3.selectAll(".popupText").remove();
     var hoverHeight;
     // console.log(d3.select(this).attr("industry"))
     // d3.select(this).transition().duration(1000).attr("x","100")
     var title = d3.select(this).attr("type")
+    for (var i = 0; i < threatLetters.length; i++) {
+      if (threatLetters[i][0] == title) {
+
+        var title = threatLetters[i][1];
+        break;
+      }; 
+    };
+
+    console.log(title)
 
     hoverHeight = 50;
 
@@ -378,24 +398,21 @@ function threatHover(bH, hB){
 
     // Resize the key
     svg2.transition()    
-      .duration(1000)    
+      .duration(500)    
       .attr("height", boxHeight);
 
     popup.transition()
-      .duration(1000)  
+      .duration(500)  
       .attr("height",hoverHeight)
 
-    g2.append("text")
-      .attr("class","popuph1")
+    g2.append("text")      
+      .attr("class","popupText head")
       .attr("y", bH + 20)
       .attr("x", hB)
-      .attr("fill","#333")
-      .attr("text-anchor","middle")
-      .attr('font-size','16pt')
-      .text(function(d) {return title;});
+      .text(function(d) {return title});
 
     g2.append("text")
-      .attr("class","popupP")
+      .attr("class","popupText p")
       .attr("y", bH + 35)
       .attr("x", 5)
       .attr("fill","#333")
@@ -497,9 +514,29 @@ function resize() {
   //   .duration(750)
   //   .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")scale(" + k + ")translate(" + -x + "," + -y + ")");
 
-
-
 }
 
-
+// function wrap(text, width) {
+//   text.each(function() {
+//     var text = d3.select(this),
+//         words = text.text().split(/\s+/).reverse(),
+//         word,
+//         line = [],
+//         lineNumber = 0,
+//         lineHeight = 1.1, // ems
+//         y = text.attr("y"),
+//         dy = parseFloat(text.attr("dy")),
+//         tspan = text.text(null).append("tspan").attr("x", 0).attr("y", y).attr("dy", dy + "em");
+//     while (word = words.pop()) {
+//       line.push(word);
+//       tspan.text(line.join(" "));
+//       if (tspan.node().getComputedTextLength() > width) {
+//         line.pop();
+//         tspan.text(line.join(" "));
+//         line = [word];
+//         tspan = text.append("tspan").attr("x", 0).attr("y", y).attr("dy", ++lineNumber * lineHeight + dy + "em").text(word);
+//       }
+//     }
+//   });
+// }
 
