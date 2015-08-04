@@ -26,9 +26,14 @@ Map
 
  #svg2 {
     position: absolute;
-    fill: #ff00ff;
     right: 0px;
     top: 0px;
+ }
+
+ #svg3 {
+    position: absolute;
+    fill: #ff00ff;
+    right: 0px;
  }
 
 .background {

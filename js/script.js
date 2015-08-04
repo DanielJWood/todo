@@ -1,3 +1,4 @@
+
 var threatLetters = [
   ["a","Increasing Temperatures and Heat Waves"  ],
   ["b","Increasing Precipitation or Heavy Downpours"  ],
@@ -41,6 +42,11 @@ var svg2 = d3.select("#map").append("svg")
     .attr("height",boxHeight)
     .attr("id","svg2");
 
+var svg3 = d3.select("#map").append("svg")
+    .attr("width",boxWidth)
+    .attr("height","0")
+    .attr("id","svg3");    
+
 var rect = svg.append("rect")
     .attr("class", "background")
     .attr("width", width)
@@ -49,6 +55,7 @@ var rect = svg.append("rect")
 
 var g = svg.append("g");
 var g2 = svg2.append("g");
+var g3 = svg3.append("g").classed("g3",true);
 
 var threatBox = g2.append("rect")
     .attr("id","threats2")
@@ -58,11 +65,11 @@ var threatBox = g2.append("rect")
     .attr("x","0")
     .attr("y","0")
 
-var popup = g2.append("rect")
+var popup = g3.append("rect")
     .attr("id","popup")
     .attr("fill","#ddd")
     .attr("width","100%")
-    .attr("height","0")
+    .attr("height","100%")
 
 d3.json("js/statesregion2.json", function(error, regions) {
 	if (error) throw error;
@@ -94,7 +101,7 @@ d3.json("js/statesregion2.json", function(error, regions) {
     .attr("x", function(d) {return boxWidth/2})
     .attr("y", "15")
     .attr("text-anchor","middle")
-    .attr('font-size','10pt')
+    .attr('font-size','12px')
     .attr('fill','#fff');
 
     // Add titles to regions
@@ -112,7 +119,7 @@ d3.json("js/statesregion2.json", function(error, regions) {
         return  path.centroid(d)[1];
     })
     .attr("text-anchor","middle")
-    .attr('font-size','10pt');
+    .attr('font-size','12px');
 
 });
 
@@ -209,12 +216,13 @@ g2.selectAll(".threat").remove();
 // Resize the key
   svg2.transition()    
     .duration(1000)
-    .attr("width",function(d) {
-      return boxWidth
-    })
-    .attr("height",function(d) {
-      return boxHeight
-    });
+    .attr("width", boxWidth)
+    .attr("height", boxHeight);
+
+  svg3
+    .attr("width", boxWidth)
+    .style("top",boxHeight)    
+
 
   title.transition().duration(1000).attr("x",function(d) { return halfBox});
 
@@ -327,10 +335,10 @@ g2.selectAll(".threat").remove();
   };
 
 // Hang the hover box below the threatBox
-    
+
   popup
     .attr("x","0")
-    .attr("y",boxHeight)
+    .attr("y","0")
 
             // ************* //
             //***************** //
@@ -367,18 +375,22 @@ g2.selectAll(".threat").remove();
 
 function threatOut(bH){
   return function() {
-    popup.transition().duration(200).delay(500)
-      .attr("height","0")
-
-    svg2.transition().duration(200).delay(500)
-      .attr("height", bH)    
+    svg3.transition().duration(200).delay(500)
+      .attr("height", "0")    
   }
 }
 
 function threatHover(bH, hB){
   return function() {    
-    d3.selectAll(".popupText").remove();
-    var hoverHeight;
+
+    var hoverHeight,
+        padding,
+        bounds,
+        target_wrapper,
+        text_wrapper,
+        text_node,
+        text_content;        
+
     // console.log(d3.select(this).attr("industry"))
     // d3.select(this).transition().duration(1000).attr("x","100")
     var title = d3.select(this).attr("type")
@@ -390,35 +402,50 @@ function threatHover(bH, hB){
       }; 
     };
 
-    console.log(title)
+    // console.log(title)
 
-    hoverHeight = 50;
+    hoverHeight = 100;
 
-    var boxHeight = bH + hoverHeight;
+    // var boxHeight = bH + hoverHeight;
+    target_wrapper = d3.select('.g3');
+
+    svg3.selectAll("g.text-wrapper").remove();
 
     // Resize the key
-    svg2.transition()    
-      .duration(500)    
-      .attr("height", boxHeight);
-
-    popup.transition()
+    svg3.transition()
       .duration(500)  
       .attr("height",hoverHeight)
 
-    g2.append("text")      
-      .attr("class","popupText head")
-      .attr("y", bH + 20)
-      .attr("x", hB)
-      .text(function(d) {return title});
+    text_wrapper = target_wrapper.append('g').classed('text-wrapper', true);
 
-    g2.append("text")
+    text_wrapper.append("text")
+      .attr("id","fart")
       .attr("class","popupText p")
-      .attr("y", bH + 35)
+      .attr("y", 35)
       .attr("x", 5)
       .attr("fill","#333")
       .attr("text-anchor","left")
-      .attr('font-size','10pt')
+      .style("line-height","12px")
+      .attr('font-size','12px')
       .text(function(d) {return "Lorem ipsum dolor sit amet, consectetur adipiscing elit. In hac habitasse platea dictumst. "});
+
+    // var bounds = {
+    //     x: 0, // bounding box is 300 pixels from the left
+    //     y: 0, // bounding box is 400 pixels from the top
+    //     width: 50, // bounding box is 500 pixels across
+    //     height: 60 // bounding box is 600 pixels tall
+    // };
+
+bounds = d3.select('rect#popup');
+padding = 10;
+
+d3.select('text#fart').textwrap(bounds);
+svg3.selectAll("foreignobject")
+  .attr("x",padding)
+  .attr("y",padding)
+
+// console.log(svg3.selectAll("foreignobject"))
+
   }
 }
 
