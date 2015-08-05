@@ -83,6 +83,20 @@ var popup = g3.append("rect")
 d3.json("js/statesregion2.json", function(error, regions) {
 	if (error) throw error;
 
+  window.onload = function(){
+    var dataLoad = topojson.feature(regions, regions.objects.regions_usa).features;
+    var hash = (window.location.hash).replace('#', '');
+    if (hash.length != 0) {
+      for (var i = 0; i < dataLoad.length; i++) {
+        dhash = dataLoad[i].properties.name.replace(/\s+/g, '-').toLowerCase();
+        if (dhash == hash) {
+          clicked(dataLoad[i])
+          break
+        };
+      };      
+    }
+  }
+
 	g.append("g")
 		.attr("id","regions")
 		.selectAll(".region")
@@ -140,15 +154,9 @@ d3.json("js/statesregion2.json", function(error, regions) {
   });  
 }(jQuery));  
 
-// On click Get the length of the longest threat + icons in pixels
-// Create the length of box as a result
-// Create a centroid to hang the text from, from that length
-// Build the text
-// sort the text based on icon length, then alphabeticala
 
-
+// What happens when clicked
 function clicked(d) {
-
 var title = g2.select(".title")
 
 //remove existing threat icons
@@ -184,7 +192,7 @@ g2.selectAll(".threat").remove();
     centered = d;
     id = d.id;
     name = d.properties.name;
-    hash = "#" + name.replace(/\s+/g, '-').toLowerCase();    
+    hash = "#" + name.replace(/\s+/g, '-').toLowerCase();        
     button = "The " + name;
     green = d.id; 
     numIcon = (getMaxOfArray(p[3]) + 1) / 2
@@ -484,9 +492,7 @@ function ReadMore() {
   });  
 }(jQuery));  
 
-// function scrollTo(hash) {
-//   location.hash = "#" + hash;
-// }
+
 
 
   // $(function() {
@@ -577,4 +583,3 @@ function resize() {
 //     }
 //   });
 // }
-
