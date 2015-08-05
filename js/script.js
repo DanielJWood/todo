@@ -7,8 +7,17 @@ var threatLetters = [
   ["e","Increasing Sea Level Rise and Storm Surge"  ],
   ["f","Increasing Frequency of Intense Hurricanes"  ]
 ]
-console.log(threatLetters)
-console.log(threatLetters[0][0])
+
+var ind = [
+  ["ElectricGrid","Electric Grid"],
+  ["ElectricityDemand","Electricity Demand"],
+  ["FuelTransport","Fuel Transport"],
+  ["Hydropower","Hydropower"],
+  ["OilGas","Oil & Gas E&P"],
+  ["Thermoelectric","Thermoelectric"],
+  ["WindPower","Wind Power"],
+  ["Bioenergy","Bioenergy"]
+]
 
 function getMaxOfArray(numArray) {
   return Math.max.apply(null, numArray);
@@ -180,8 +189,11 @@ g2.selectAll(".threat").remove();
     green = d.id; 
     numIcon = (getMaxOfArray(p[3]) + 1) / 2
     IW = numIcon * 1.5 * iconWidth;
-    TW = getMaxOfArray(p[2]) * 7 + 5 ;    
+    TW = getMaxOfArray(p[2]) * 7 + 10;        
     boxWidth = IW + TW;
+    if (boxWidth < 160) {
+      boxWidth = 160;
+    } 
     boxHeight = boxHeight * 15 + 25;
     halfBox = boxWidth / 2;
   } else {
@@ -244,13 +256,21 @@ g2.selectAll(".threat").remove();
     .attr("x",function(d) { return IW + 10});  
 
   text
-    .text(function(d) {return d;})
+    .text(function(d) {
+      for (var i in ind) {
+        if (ind[i][0] == d){
+          return ind[i][1];
+          break;
+        }
+      };
+      // return d;
+    })
     .attr("industry",function(d){
       return d
     })
-    .attr("cursor","pointer")
-    .on("mouseover",threatHover(boxHeight))
-    .on("mouseout",threatOut(boxHeight)); 
+    // .attr("cursor","pointer")
+    // .on("mouseover",threatHover(boxHeight))
+    // .on("mouseout",threatOut(boxHeight)); 
 
   text.exit().remove();
 
@@ -350,7 +370,7 @@ g2.selectAll(".threat").remove();
       clickstate.className = "large-12 columnsDOE subheadline " + id;
       clickstate.innerHTML = "<p>" + name + "</p>";
 
-      //change bottom tab
+      //change bottom tab/button
       var below = document.getElementById("below")
       if (id=="") {  below.className = below.className.replace( /(?:^|\s)active(?!\S)/g , '' );
       } else {  below.className = "active " + id
@@ -387,12 +407,10 @@ function threatHover(bH, hB){
         padding,
         bounds,
         target_wrapper,
-        text_wrapper,
-        text_node,
-        text_content;        
+        text_wrapper,        
+        boundsHeight,
+        boundsWidth;        
 
-    // console.log(d3.select(this).attr("industry"))
-    // d3.select(this).transition().duration(1000).attr("x","100")
     var title = d3.select(this).attr("type")
     for (var i = 0; i < threatLetters.length; i++) {
       if (threatLetters[i][0] == title) {
@@ -402,11 +420,8 @@ function threatHover(bH, hB){
       }; 
     };
 
-    // console.log(title)
+    hoverHeight = 37;
 
-    hoverHeight = 100;
-
-    // var boxHeight = bH + hoverHeight;
     target_wrapper = d3.select('.g3');
 
     svg3.selectAll("g.text-wrapper").remove();
@@ -419,33 +434,29 @@ function threatHover(bH, hB){
     text_wrapper = target_wrapper.append('g').classed('text-wrapper', true);
 
     text_wrapper.append("text")
-      .attr("id","fart")
-      .attr("class","popupText p")
+      .attr("id","hoverbody")
+      .attr("class","popupText")
       .attr("y", 35)
       .attr("x", 5)
       .attr("fill","#333")
-      .attr("text-anchor","left")
-      .style("line-height","12px")
+      .attr("text-anchor","middle")
+      .style("line-height","14px")
       .attr('font-size','12px')
-      .text(function(d) {return "Lorem ipsum dolor sit amet, consectetur adipiscing elit. In hac habitasse platea dictumst. "});
+      .text(title)
+      // .text(function(d) {return "Lorem ipsum dolor sit amet, consectetur adipiscing elit. In hac habitasse platea dictumst. "});
 
-    // var bounds = {
-    //     x: 0, // bounding box is 300 pixels from the left
-    //     y: 0, // bounding box is 400 pixels from the top
-    //     width: 50, // bounding box is 500 pixels across
-    //     height: 60 // bounding box is 600 pixels tall
-    // };
+    padding = 5;
+    bounds = d3.select('rect#popup');
+    boundsHeight = bounds[0][0].height.animVal.value - (2*padding);
+    boundsWidth = bounds[0][0].width.animVal.value - (2*padding);
+    bounds = {
+      x: padding, // bounding box is 300 pixels from the left
+      y: padding, // bounding box is 400 pixels from the top
+      width: boundsWidth, // bounding box is 500 pixels across
+      height: hoverHeight // bounding box is 600 pixels tall
+    };
 
-bounds = d3.select('rect#popup');
-padding = 10;
-
-d3.select('text#fart').textwrap(bounds);
-svg3.selectAll("foreignobject")
-  .attr("x",padding)
-  .attr("y",padding)
-
-// console.log(svg3.selectAll("foreignobject"))
-
+    d3.select('text#hoverbody').textwrap(bounds);
   }
 }
 
