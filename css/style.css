@@ -1,3 +1,13 @@
+
+/*experimental*/
+.enter {
+  fill: #fff;
+}
+
+.update {
+  fill: #fff;
+}
+
 /*+++++++++++++++++++++++++++
 Map
 ++++++++++++++++++++++++++++++++++++++*/
@@ -12,6 +22,18 @@ Map
  #map {
     position: relative;
     width: 100%;
+ }
+
+ #svg2 {
+    position: absolute;
+    right: 0px;
+    top: 0px;
+ }
+
+ #svg3 {
+    position: absolute;
+    fill: #ff00ff;
+    right: 0px;
  }
 
 .background {
@@ -79,6 +101,11 @@ Map
 .execclass:hover #exec {
     max-height: 1000px;
 }
+#below p {
+    padding-top: 5px;
+    margin-bottom: 0px;
+    color: #222;
+}
 
 #below {
     position: absolute;    
@@ -93,7 +120,7 @@ Map
     text-align: center;    
 }
 
-#below.active {
+#below.active, #threats.active {
     max-height: 1000px;
 }
 
@@ -102,11 +129,41 @@ Map
     cursor: pointer;
 }
 
-#below p {
-    padding-top: 5px;
-    margin-bottom: 0px;
-    color: #777;
+/*Threats and Icons*/
+#threats {
+    padding: 5px;
+    position: absolute;
+    top:10px;
+    right: 0px;
+    overflow: hidden;
+    max-height: 0;
+    transition: max-height 1500ms, background-color 750ms ease-in;
+    opacity: 1;
+    text-align: left;  
+    background-color: lime;
 }
+
+#threats2.header, #threats p {
+    font-size: 14px;
+    line-height: 14px;
+    margin-bottom: 5px;
+}
+
+#threats li {
+    font-size: 12px;
+    line-height: 13px;    
+}
+
+rect.threat {cursor: pointer;}
+
+rect.threat.active {transition: color 750ms ease-in-out;}
+
+rect.threat.a {fill:hsl(0,100%,50%)}
+rect.threat.b {fill:hsl(50,100%,50%)}
+rect.threat.c {fill:hsl(100,100%,50%)}
+rect.threat.d {fill:hsl(150,100%,50%)}
+rect.threat.e {fill:hsl(200,100%,50%)}
+rect.threat.f {fill:hsl(250,100%,50%)}
 
 /*Arrow*/
 @-moz-keyframes bounce {
@@ -193,6 +250,16 @@ body {
     background-image: url(../img/gray_arrow_down.svg);
 }
 
+/*Some typography*/
+.popupText.head {
+    font-size: 13pt;
+    text-anchor: middle;
+    fill: #333;          
+}
+
+.wrapped {
+    text-align: center;
+}
 
 /**********************************************
 Foundation pieces and DOM
