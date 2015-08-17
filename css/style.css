@@ -158,12 +158,12 @@ rect.threat {cursor: pointer;}
 
 rect.threat.active {transition: color 750ms ease-in-out;}
 
-rect.threat.a {fill:hsl(0,100%,50%)}
+/*rect.threat.a {fill:hsl(0,100%,50%)}
 rect.threat.b {fill:hsl(50,100%,50%)}
 rect.threat.c {fill:hsl(100,100%,50%)}
 rect.threat.d {fill:hsl(150,100%,50%)}
 rect.threat.e {fill:hsl(200,100%,50%)}
-rect.threat.f {fill:hsl(250,100%,50%)}
+rect.threat.f {fill:hsl(250,100%,50%)}*/
 
 /*Arrow*/
 @-moz-keyframes bounce {
