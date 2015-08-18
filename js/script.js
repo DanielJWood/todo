@@ -490,13 +490,6 @@ function threatHover(bH, hB){
   }
 }
 
-function update2(){
-  var text = svg2.selectAll("text")
-  text.transition().duration(1000)
-    .attr("fill","pink")
-    .attr("x","30")
-}
-
 
 function ReadMore() { 
   $('#summary').scrollView();
