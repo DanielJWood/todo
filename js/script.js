@@ -1,11 +1,11 @@
 
 var threatLetters = [
   ["a","Increasing Temperatures and Heat Waves","sun.png"  ],
-  ["b","Increasing Precipitation or Heavy Downpours","water.png"  ],
+  ["b","Increasing Precipitation or Heavy Downpours","water2.png"  ],
   ["c","Decreasing Water Availability","drought.png"  ],
   ["d","Increasing Wildfire","fire.png"  ],
-  ["e","Increasing Sea Level Rise and Storm Surge","wave.png"  ],
-  ["f","Increasing Frequency of Intense Hurricanes","hurricane.png"  ]
+  ["e","Increasing Sea Level Rise and Storm Surge","wave2.png"  ],
+  ["f","Increasing Frequency of Intense Hurricanes","hurricane3.png"  ]
 ]
 
 var ind = [
@@ -68,7 +68,7 @@ var g3 = svg3.append("g").classed("g3",true);
 
 var threatBox = g2.append("rect")
     .attr("id","threats2")
-    .attr("fill","#777")
+    .attr("fill","#ddd  ")
     .attr("width","100%")
     .attr("height","100%")
     .attr("x","0")
@@ -76,7 +76,7 @@ var threatBox = g2.append("rect")
 
 var popup = g3.append("rect")
     .attr("id","popup")
-    .attr("fill","#ddd")
+    .attr("fill","#eee")
     .attr("width","100%")
     .attr("height","100%")
 
@@ -122,10 +122,10 @@ d3.json("js/statesregion2.json", function(error, regions) {
     .text("Key Climate Impacts")
     // .attr("class","header")
     .attr("x", function(d) {return boxWidth/2})
-    .attr("y", "15")
+    .attr("y", "18")
     .attr("text-anchor","middle")
-    .attr('font-size','12px')
-    .attr('fill','#fff');
+    .attr('font-size','16px')
+    .attr('fill','#333');
 
     // Add titles to regions
   g.selectAll("text")
@@ -213,8 +213,8 @@ g2.selectAll(".threat").remove();
     button = "The " + name;
     green = d.id; 
     numIcon = (getMaxOfArray(p[3]) + 1) / 2
-    IW = numIcon * 1.5 * iconWidth;
-    TW = getMaxOfArray(p[2]) * 7 + 10;        
+    IW = numIcon * 1.3 * iconWidth;
+    TW = getMaxOfArray(p[2]) * 7 + 15;        
     boxWidth = IW + TW;
     if (boxWidth < 160) {
       boxWidth = 160;
@@ -470,8 +470,8 @@ function threatHover(bH, hB){
       .attr("x", 5)
       .attr("fill","#333")
       .attr("text-anchor","middle")
-      .style("line-height","14px")
-      .attr('font-size','12px')
+      .style("line-height","16px")
+      .attr('font-size','14px')
       .text(title)
       // .text(function(d) {return "Lorem ipsum dolor sit amet, consectetur adipiscing elit. In hac habitasse platea dictumst. "});
 
@@ -488,13 +488,6 @@ function threatHover(bH, hB){
 
     d3.select('text#hoverbody').textwrap(bounds);
   }
-}
-
-function update2(){
-  var text = svg2.selectAll("text")
-  text.transition().duration(1000)
-    .attr("fill","pink")
-    .attr("x","30")
 }
 
 
