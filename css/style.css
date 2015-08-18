@@ -1,11 +1,11 @@
 
 /*experimental*/
 .enter {
-  fill: #fff;
+  fill: #333;
 }
 
 .update {
-  fill: #fff;
+  fill: #333;
 }
 
 /*+++++++++++++++++++++++++++
@@ -101,6 +101,13 @@ Map
 .execclass:hover #exec {
     max-height: 1000px;
 }
+
+#exec p, #region-text p {
+    font-size: 15px;    
+    margin-bottom: 15px;
+    color:#444;
+}
+
 #below p {
     padding-top: 5px;
     margin-bottom: 0px;
@@ -129,30 +136,6 @@ Map
     cursor: pointer;
 }
 
-/*Threats and Icons*/
-#threats {
-    padding: 5px;
-    position: absolute;
-    top:10px;
-    right: 0px;
-    overflow: hidden;
-    max-height: 0;
-    transition: max-height 1500ms, background-color 750ms ease-in;
-    opacity: 1;
-    text-align: left;  
-    background-color: lime;
-}
-
-#threats2.header, #threats p {
-    font-size: 14px;
-    line-height: 14px;
-    margin-bottom: 5px;
-}
-
-#threats li {
-    font-size: 12px;
-    line-height: 13px;    
-}
 
 rect.threat {cursor: pointer;}
 
@@ -371,11 +354,12 @@ Foundation pieces and DOM
         }       
 
         #subber p {
-            font-size: 14px;
+            font-size: 18px;
         }
 
         #subber h4 {
             text-transform: capitalize;
+            font-size: 26px;
         }
 
     /* The Colors duke, the colors*/
