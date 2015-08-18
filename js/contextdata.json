@@ -111,8 +111,8 @@
     "properties":{
         "ElectricGrid":"a,e,f",
         "ElectricityDemand":"a",
-        "FuelTransport":"e,f",
-        "Hydropower":"",
+        "FuelTransport":"c,e,f",
+        "Hydropower":"c",
         "OilGas":"c,e,f",
         "Thermoelectric":"a,c,e,f",
         "WindPower":"",
