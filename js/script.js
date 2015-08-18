@@ -1,11 +1,11 @@
 
 var threatLetters = [
-  ["a","Increasing Temperatures and Heat Waves"  ],
-  ["b","Increasing Precipitation or Heavy Downpours"  ],
-  ["c","Decreasing Water Availability"  ],
-  ["d","Increasing Wildfire"  ],
-  ["e","Increasing Sea Level Rise and Storm Surge"  ],
-  ["f","Increasing Frequency of Intense Hurricanes"  ]
+  ["a","Increasing Temperatures and Heat Waves","sun.png"  ],
+  ["b","Increasing Precipitation or Heavy Downpours","water.png"  ],
+  ["c","Decreasing Water Availability","drought.png"  ],
+  ["d","Increasing Wildfire","fire.png"  ],
+  ["e","Increasing Sea Level Rise and Storm Surge","wave.png"  ],
+  ["f","Increasing Frequency of Intense Hurricanes","hurricane.png"  ]
 ]
 
 var ind = [
@@ -31,8 +31,8 @@ var width = parseInt(d3.select("#map").style("width")),
 var boxWidth = 0,
     boxHeight = 0;
 
-var iconWidth = 10,
-    iconHeight = 10;
+var iconWidth = 20,
+    iconHeight = 20;
 
 // var projection = d3.geo.albersUsaPr()
 var projection = d3.geo.albersUsa()
@@ -143,8 +143,25 @@ d3.json("js/statesregion2.json", function(error, regions) {
     })
     .attr("text-anchor","middle")
     .attr('font-size','12px');
-
 });
+
+svg2.selectAll('defs')
+  .data(threatLetters)
+  .enter()
+  .append("defs")
+    .append("pattern")
+    .attr("id", function(d,i) {
+      console.log(d)
+      return "icon" + d[0]
+    })
+    .attr("width",iconWidth)
+    .attr("height",iconHeight)
+      .append("image")
+      .attr("xlink:href", function(d){
+        return "img/icons/" + d[2]
+      })
+      .attr("width",iconWidth)
+      .attr("height",iconHeight);
 
 // Bind things that happen on first click 
 (function ($) { 
@@ -202,7 +219,7 @@ g2.selectAll(".threat").remove();
     if (boxWidth < 160) {
       boxWidth = 160;
     } 
-    boxHeight = boxHeight * 15 + 25;
+    boxHeight = boxHeight * iconHeight + 45;
     halfBox = boxWidth / 2;
   } else {
       //outclick
@@ -304,6 +321,9 @@ g2.selectAll(".threat").remove();
         .attr("width",iconWidth)
         .attr("height",iconHeight)
         .attr("fill-opacity","0")
+        .attr("fill",function(d){
+          return "url(#icon" + iconList[j] + ")"
+        })
         .attr("y", function(d) { 
           return (k*15)+(2*iconHeight+5) 
         })
@@ -343,9 +363,11 @@ g2.selectAll(".threat").remove();
       })
       .attr("y",function(d){
         if (d !== undefined) {
-          return (i*15)+(2*iconHeight+15)
+          //Y of the right side
+          return (i*(iconHeight+3)+40) 
         } else{
-          return (i*15)+(2*iconHeight+5)
+          //Y of the icons (left side)
+          return (i*(iconHeight+3)+25) 
         };      
       })
     var babyboxes = svg2.selectAll("[industry="+industry+"]:not(text)")
@@ -357,7 +379,7 @@ g2.selectAll(".threat").remove();
         return i*100+1000;
       })
       .attr("x",function(d,j){
-        return IW-(j*15)-10;
+        return IW-(j*(iconWidth+5))-iconWidth;
       })
       .attr("fill-opacity","1")
   };
