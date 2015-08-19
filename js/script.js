@@ -1,6 +1,6 @@
 
 var threatLetters = [
-  ["a","Increasing Temperatures and Heat Waves","sun.png"  ],
+  ["a","Increasing Temperatures and Heat Waves","sun2.png"  ],
   ["b","Increasing Precipitation or Heavy Downpours","water2.png"  ],
   ["c","Decreasing Water Availability","drought.png"  ],
   ["d","Increasing Wildfire","fire.png"  ],
