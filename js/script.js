@@ -80,7 +80,9 @@ var popup = g3.append("rect")
     .attr("width","100%")
     .attr("height","100%")
 
-d3.json("js/statesregion2.json", function(error, regions) {
+// d3.json("js/statesregion2.json", function(error, regions) {
+  d3.json("http://energyapps.github.io/climate-frame/js/statesregion2.json", function(error, regions) {
+  
 	if (error) throw error;
 
   window.onload = function(){
@@ -151,14 +153,14 @@ svg2.selectAll('defs')
   .append("defs")
     .append("pattern")
     .attr("id", function(d,i) {
-      console.log(d)
       return "icon" + d[0]
     })
     .attr("width",iconWidth)
     .attr("height",iconHeight)
       .append("image")
       .attr("xlink:href", function(d){
-        return "img/icons/" + d[2]
+        var base = 'http://energyapps.github.io/climate-frame/img/icons/'
+        return base + d[2]
       })
       .attr("width",iconWidth)
       .attr("height",iconHeight);
@@ -492,7 +494,9 @@ function threatHover(bH, hB){
 
 
 function ReadMore() { 
-  $('#summary').scrollView();
+  (function ($) {   
+    $('#summary').scrollView();
+  }(jQuery));  
 }
 
 (function ($) { 
@@ -506,95 +510,3 @@ function ReadMore() {
     }
   });  
 }(jQuery));  
-
-
-
-
-  // $(function() {
-  //   $('a[href*=#]:not([href=#])').click(function() {
-  //     if (location.pathname.replace(/^\//,'') == this.pathname.replace(/^\//,'') && location.hostname == this.hostname) {
-
-  //       var target = $(this.hash);
-  //       target = target.length ? target : $('[name=' + this.hash.slice(1) +']');
-  //       if (target.length) {
-  //         $('html,body').animate({
-  //           scrollTop: target.offset().top
-  //         }, 1000);
-  //         return false;
-  //       }
-  //     }
-  //   });
-  // });
-// d3.select(window).on('resize', resize); 
-
-function resize() {   
-
-// console.log(d3.select("subunit-boundary"))
-//   // Do some resize stuff here
-
-//     var width = parseInt(d3.select("#map").style("width")),
-//       height = width / 2;
-
-//     var x, y, k;
-//     var k = 0.5;
-//     var x = width / 2;
-//     var y = height / 2;        
-
-  //     // resize projection
-  //     // Smaller viewport
-  //     if (width <= 800) {
-  //       projection
-  //         .scale(width * 1.05)
-  //         .translate([width / 2, ((height / 2) + 45)])             
-  //     } else if (width <= 900) {
-  //       projection
-  //         .scale(width * 1.2)
-  //         .translate([width / 2, ((height / 2) + 30)])  
-  //     } 
-
-  //     // full viewport
-  //     else {
-  //       projection
-  //         .scale(width)
-  //         .translate([width / 2, ((height / 2) + 10)])   
-  //     };      
-
-  // console.log(width)
-
-  // svg.transition().duration(750)
-  //   .attr("width", width)
-  //   .attr("height", height);
-
-  // rect.transition().duration(750)  
-  //     .attr("width", width)
-  //     .attr("height", height);
-
-  // g.transition()
-  //   .duration(750)
-  //   .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")scale(" + k + ")translate(" + -x + "," + -y + ")");
-
-}
-
-// function wrap(text, width) {
-//   text.each(function() {
-//     var text = d3.select(this),
-//         words = text.text().split(/\s+/).reverse(),
-//         word,
-//         line = [],
-//         lineNumber = 0,
-//         lineHeight = 1.1, // ems
-//         y = text.attr("y"),
-//         dy = parseFloat(text.attr("dy")),
-//         tspan = text.text(null).append("tspan").attr("x", 0).attr("y", y).attr("dy", dy + "em");
-//     while (word = words.pop()) {
-//       line.push(word);
-//       tspan.text(line.join(" "));
-//       if (tspan.node().getComputedTextLength() > width) {
-//         line.pop();
-//         tspan.text(line.join(" "));
-//         line = [word];
-//         tspan = text.append("tspan").attr("x", 0).attr("y", y).attr("dy", ++lineNumber * lineHeight + dy + "em").text(word);
-//       }
-//     }
-//   });
-// }
