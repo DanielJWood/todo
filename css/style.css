@@ -1,3 +1,11 @@
+/*fallback*/
+.fallback {
+    display: none;
+  }
+
+.f-dropdown li {
+    color: rgb(68,68,68) !important;
+}
 
 /*experimental*/
 .enter {
@@ -54,7 +62,7 @@ Map
   stroke-linejoin: round;
 }
 
-.region:hover {
+#regions .region:hover {
 	cursor: pointer;
 	opacity: .8;
 }
@@ -106,6 +114,8 @@ Map
     font-size: 15px;    
     margin-bottom: 15px;
     color:#444;
+    padding-right: 10px;
+    padding-left: 10px;
 }
 
 #below p {
@@ -197,9 +207,6 @@ rect.threat.f {fill:hsl(250,100%,50%)}*/
     transform: translateY(-7px);
   }
 }
-body {
-  background: black;
-}
 
 .arrow {
   position: relative;
@@ -221,16 +228,16 @@ body {
 }
 
 .arrow.black {
-  background-image: url(../img/gray_arrow_down.svg);
+  background-image: url(http://energyapps.github.io/climate-frame/img/gray_arrow_down.svg);
   bottom:10px;
 }
 
 .arrow.white {
-    background-image: url(../img/white_arrow.svg);
+    background-image: url(http://energyapps.github.io/climate-frame/img/white_arrow.svg);
 }
 
 .arrow.gray {
-    background-image: url(../img/gray_arrow_down.svg);
+    background-image: url(http://energyapps.github.io/climate-frame/img/gray_arrow_down.svg);
 }
 
 /*Some typography*/
@@ -516,6 +523,17 @@ Foundation pieces and DOM
             transition: background-color 300ms ease-out;
         }
 
+        .energy-dark .wrapped {
+            color: #333 !important;
+        }
+
+        .energy-dark #subber p, .energy-dark #exec p, .energy-dark #region-text p, .energy-dark #clickstate p {
+            color: #fff !important;
+        }
+
+        #master_container p {
+            border: none !important;
+        }
 
 
 
@@ -589,6 +607,9 @@ Foundation pieces and DOM
             line-height: 18px !important; 
             letter-spacing: 0rem;
         }
+        #subber h4 {
+            font-size: 20px;
+        }
 
 }
 
@@ -606,6 +627,7 @@ Foundation pieces and DOM
             padding-bottom: 0.25rem;
             letter-spacing: .025rem;
         }
+
 }
 
 
