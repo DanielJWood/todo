@@ -1,3 +1,11 @@
+/*fallback*/
+.fallback {
+    display: none;
+  }
+
+.f-dropdown li {
+    color: rgb(68,68,68) !important;
+}
 
 /*experimental*/
 .enter {
