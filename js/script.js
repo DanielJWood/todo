@@ -260,7 +260,7 @@ g2.selectAll(".threat").remove();
 
   svg3
     .attr("width", boxWidth)
-    .style("top",boxHeight)    
+    .style("top",boxHeight+"px");   
 
 
   title.transition().duration(1000).attr("x",function(d) { return halfBox});
