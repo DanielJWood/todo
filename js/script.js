@@ -34,8 +34,8 @@ var boxWidth = 0,
 var iconWidth = 20,
     iconHeight = 20;
 
-// var projection = d3.geo.albersUsaPr()
-var projection = d3.geo.albersUsa()
+var projection = albersUsaPr()
+// var projection = d3.geo.albersUsa()
     .scale(width)
     .translate([width / 2, ((height / 2))])  ;
 
@@ -80,13 +80,13 @@ var popup = g3.append("rect")
     .attr("width","100%")
     .attr("height","100%")
 
-// d3.json("js/statesregion2.json", function(error, regions) {
-  d3.json("http://energyapps.github.io/climate-frame/js/statesregion2.json", function(error, regions) {
+d3.json("js/statesregionspr.json", function(error, regions) {
+  // d3.json("http://energyapps.github.io/climate-frame/js/statesregion2.json", function(error, regions) {
   
 	if (error) throw error;
 
   window.onload = function(){
-    var dataLoad = topojson.feature(regions, regions.objects.regions_usa).features;
+    var dataLoad = topojson.feature(regions, regions.objects.regions_usa_pr).features;
     var hash = (window.location.hash).replace('#', '');
     if (hash.length != 0) {
       for (var i = 0; i < dataLoad.length; i++) {
@@ -102,14 +102,14 @@ var popup = g3.append("rect")
 	g.append("g")
 		.attr("id","regions")
 		.selectAll(".region")
-      .data(topojson.feature(regions, regions.objects.regions_usa).features)
+      .data(topojson.feature(regions, regions.objects.regions_usa_pr).features)
     .enter().append("path")
       .attr("class", function(d) { return "region " + d.id; })
       .attr("d", path)
       .on("click", clicked);
 
 	g.append("path")
-    .datum(topojson.mesh(regions, regions.objects.regions_usa, function(a, b) { return a !== b}))
+    .datum(topojson.mesh(regions, regions.objects.regions_usa_pr, function(a, b) { return a !== b}))
     .attr("d", path)
     .attr("class", "main-boundary");
 
@@ -131,7 +131,7 @@ var popup = g3.append("rect")
 
     // Add titles to regions
   g.selectAll("text")
-    .data(topojson.feature(regions, regions.objects.regions_usa).features)
+    .data(topojson.feature(regions, regions.objects.regions_usa_pr).features)
     .enter()
     .append("svg:text")
     .text(function(d){
