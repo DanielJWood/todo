@@ -22,7 +22,7 @@ function albersUsaPr() {
   // Edited to allow PR to be next to Hawaii --DW
   var puertoRico = d3.geo.conicEqualArea()
       .rotate([66, 0])
-      .center([26, 16.6])
+      .center([25.7, 16.6])
       .parallels([8, 18]);
 
   var point,
@@ -141,7 +141,7 @@ function albersUsaPr() {
   // Edited to allow PR to be next to Hawaii --DW
     puertoRicoPoint = puertoRico
         .translate([x + .350 * k, y + .224 * k])
-        .clipExtent([[x - .115 * k, y + .204 * k], [x - .055 * k, y + .234 * k]])
+        .clipExtent([[x - .110 * k, y + .204 * k], [x - .050 * k, y + .234 * k]])
         // .clipExtent([[x - .115 * k, y + .204 * k], [x + 1 * k, y + .234 * k]])
         .stream(pointStream).point;
 

@@ -113,6 +113,7 @@ d3.json("js/statesregionspr.json", function(error, regions) {
     .attr("d", path)
     .attr("class", "main-boundary");
 
+
 	g.append("path")
     .datum(topojson.mesh(regions, regions.objects.states2, function(a, b) { return a !== b}))
     .attr("d", path)
@@ -141,6 +142,10 @@ d3.json("js/statesregionspr.json", function(error, regions) {
         return path.centroid(d)[0];
     })
     .attr("y", function(d){
+        if (d.id == "HI") {          
+          hawaiiline(d)  
+        }
+        
         return  path.centroid(d)[1];
     })
     .attr("text-anchor","middle")
@@ -499,6 +504,20 @@ function ReadMore() {
   }(jQuery));  
 }
 
+function hawaiiline(d) {
+  var x0 = path.centroid(d)[0]
+  var y0 = path.centroid(d)[1]
+  g.append("line")
+    .attr("x1", x0 + 18)
+    .attr("x2", x0 + 10)
+    .attr("y1", y0 - 25)
+    .attr("y2", y0 + 30)
+    .attr("stroke-width","1.2")
+    .attr("stroke","#777")
+    .attr("stroke-dasharray", "2,2")
+    .attr("stroke-linejoin","round")
+}
+
 (function ($) { 
   $(document).ready(function() { 
     $.fn.scrollView = function () {
@@ -510,3 +529,6 @@ function ReadMore() {
     }
   });  
 }(jQuery));  
+
+
+
