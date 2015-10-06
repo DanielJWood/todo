@@ -1,3 +1,5 @@
+// Initiate pym
+var pymChild = new pym.Child();
 
 var threatLetters = [
   ["a","Increasing Temperatures and Heat Waves","sun2.png"  ],
