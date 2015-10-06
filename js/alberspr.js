@@ -1,5 +1,3 @@
-console.log('test')
-
 // A modified d3.geo.albersUsa to include Puerto Rico.
 function albersUsaPr() {
   var ε = 1e-6;

@@ -19,6 +19,16 @@ var ind = [
   ["Bioenergy","Bioenergy"]
 ]
 
+// var bounds2 = {
+//         x: 300, // bounding box is 300 pixels from the left
+//         y: 400, // bounding box is 400 pixels from the top
+//         width: 500, // bounding box is 500 pixels across
+//         height: 600 // bounding box is 600 pixels tall
+//     };
+
+// var bounds3 = d3.select('rect#popup');
+
+
 function getMaxOfArray(numArray) {
   return Math.max.apply(null, numArray);
 }
@@ -135,6 +145,10 @@ d3.json("js/statesregionspr.json", function(error, regions) {
     .data(topojson.feature(regions, regions.objects.regions_usa_pr).features)
     .enter()
     .append("svg:text")
+    .attr("class","region-title")
+    .attr("id", function(d){
+      return d.id + "-title"
+    })
     .text(function(d){
         return d.properties.name;
     })
@@ -149,8 +163,13 @@ d3.json("js/statesregionspr.json", function(error, regions) {
         return  path.centroid(d)[1];
     })
     .attr("text-anchor","middle")
-    .attr('font-size','12px');
+    .attr('font-size','16px')
 });
+
+// console.log(d3.select('text#AK-title'))
+// d3.select('text#AK-title').textwrap(bounds2)
+    
+
 
 svg2.selectAll('defs')
   .data(threatLetters)
@@ -338,7 +357,7 @@ g2.selectAll(".threat").remove();
           return (boxWidth/2)
         })
         .on("mouseover",threatHover(boxHeight, halfBox))
-        .on("mouseout",threatOut(boxHeight)); 
+        // .on("mouseout",threatOut(boxHeight)); 
     };
   };
 
@@ -493,10 +512,9 @@ function threatHover(bH, hB){
       height: hoverHeight // bounding box is 600 pixels tall
     };
 
-    d3.select('text#hoverbody').textwrap(bounds);
+    d3.select('text#hoverbody').textwrap(bounds);    
   }
 }
-
 
 function ReadMore() { 
   (function ($) {   
