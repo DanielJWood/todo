@@ -557,6 +557,5 @@ function hawaiiline(d) {
 
 d3.select("#execid").on("mouseover",function(){pymChild.sendHeight();})    
 d3.select("#execid").on("mouseleave",function(){
-  console.log('test')
   pymChild.sendHeight();
 })    
