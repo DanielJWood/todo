@@ -109,6 +109,9 @@ d3.json("js/statesregionspr.json", function(error, regions) {
         };
       };      
     }
+
+    // Make sure its big enough on the parent!
+    pymChild.sendHeight();
   }
 
 	g.append("g")
@@ -359,7 +362,7 @@ g2.selectAll(".threat").remove();
           return (boxWidth/2)
         })
         .on("mouseover",threatHover(boxHeight, halfBox))
-        // .on("mouseout",threatOut(boxHeight)); 
+        .on("mouseout",threatOut(boxHeight)); 
     };
   };
 
@@ -448,6 +451,8 @@ g2.selectAll(".threat").remove();
 
       var region_text = document.getElementById("region-text")
       region_text.innerHTML = "<p style='padding-top: 50px;'>" + summary + "</p>";
+
+  pymChild.sendHeight();
 
 }
 
@@ -550,5 +555,8 @@ function hawaiiline(d) {
   });  
 }(jQuery));  
 
-
-
+d3.select("#execid").on("mouseover",function(){pymChild.sendHeight();})    
+d3.select("#execid").on("mouseleave",function(){
+  console.log('test')
+  pymChild.sendHeight();
+})    
