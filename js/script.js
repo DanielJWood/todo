@@ -21,16 +21,6 @@ var ind = [
   ["Bioenergy","Bioenergy"]
 ]
 
-// var bounds2 = {
-//         x: 300, // bounding box is 300 pixels from the left
-//         y: 400, // bounding box is 400 pixels from the top
-//         width: 500, // bounding box is 500 pixels across
-//         height: 600 // bounding box is 600 pixels tall
-//     };
-
-// var bounds3 = d3.select('rect#popup');
-
-
 function getMaxOfArray(numArray) {
   return Math.max.apply(null, numArray);
 }
@@ -220,16 +210,17 @@ var title = g2.selectAll(".title")
 g2.selectAll(".threat").remove();
 
 // D3 stuff on click
-  var x, y, k, id, name, hash, green, summary, properties, boxWidth, title1, numIcon, IW, TW, halfBox;
+  var x, y, k, id, name, hash, green, summary, properties, boxWidth, title1, numIcon, IW, TW, halfBox, url;
   var p = [[],[],[],[],[]];
   var boxHeight = 0;
 
-  //click on a state    
+  //click on a region    
   if (d && centered !== d) {      
     for (var i = context_data.length - 1; i >= 0; i--) {
       if (d.id == context_data[i].id) {
         summary = context_data[i].summary
         properties = context_data[i].properties
+        url = "http://energy.gov/sites/prod/files/2015/10/f27/" + context_data[i].uri
         for (var key in properties) {
           if (properties[key] != "") {
             boxHeight += 1
@@ -276,7 +267,12 @@ g2.selectAll(".threat").remove();
     boxWidth = 0;
     boxHeight = 100;
     halfBox = 100;
+    url = "http://energy.gov/node/1298916/"
   }
+
+  (function ($) {   
+    $('#linkbutton').attr("href",url)
+  }(jQuery));  
 
 // Sets the active topography so that it highlights the states
   g.selectAll("path")
@@ -287,7 +283,6 @@ g2.selectAll(".threat").remove();
       .duration(750)
       .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")scale(" + k + ")translate(" + -x + "," + -y + ")")
       .style("stroke-width", 1.5 / k + "px");
-
 
 // Transitions for the key  
 // Resize the key
