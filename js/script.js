@@ -145,6 +145,15 @@ d3.json("js/statesregionspr.json", function(error, regions) {
     .attr('font-size','16px')
     .attr('fill','#333');
 
+  g2.append("svg:text")
+    .attr("class","title")
+    .text("(Scroll Over Icons)")
+    .attr("x", function(d) {return boxWidth/2})
+    .attr("y", "35")
+    .attr("text-anchor","middle")
+    .attr('font-size','12px')
+    .attr('fill','#333');    
+
     // Add titles to regions
   g.selectAll("text")
     .data(topojson.feature(regions, regions.objects.regions_usa_pr).features)
@@ -205,7 +214,7 @@ svg2.selectAll('defs')
 
 // What happens when clicked
 function clicked(d) {
-var title = g2.select(".title")
+var title = g2.selectAll(".title")
 
 //remove existing threat icons
 g2.selectAll(".threat").remove();
@@ -250,7 +259,7 @@ g2.selectAll(".threat").remove();
     if (boxWidth < 160) {
       boxWidth = 160;
     } 
-    boxHeight = boxHeight * iconHeight + 45;
+    boxHeight = boxHeight * iconHeight + 65;
     halfBox = boxWidth / 2;
   } else {
       //outclick
@@ -395,10 +404,10 @@ g2.selectAll(".threat").remove();
       .attr("y",function(d){
         if (d !== undefined) {
           //Y of the right side
-          return (i*(iconHeight+3)+40) 
+          return (i*(iconHeight+3)+55) 
         } else{
           //Y of the icons (left side)
-          return (i*(iconHeight+3)+25) 
+          return (i*(iconHeight+3)+40) 
         };      
       })
     var babyboxes = svg2.selectAll("[industry="+industry+"]:not(text)")
