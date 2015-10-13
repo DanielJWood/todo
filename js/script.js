@@ -160,8 +160,8 @@ d3.json("js/statesregionspr.json", function(error, regions) {
         return path.centroid(d)[0];
     })
     .attr("y", function(d){
-        if (d.id == "HI") {          
-          hawaiiline(d)  
+        if (d.id == "HI") {                    
+          hawaiiline(d, width)  
         }
         
         return  path.centroid(d)[1];
@@ -532,14 +532,15 @@ function ReadMore() {
   }(jQuery));  
 }
 
-function hawaiiline(d) {
+function hawaiiline(d, width) {
   var x0 = path.centroid(d)[0]
   var y0 = path.centroid(d)[1]
+  // Pass in the width so that we can scale this on resize, small size, etc
   g.append("line")
-    .attr("x1", x0 + 18)
-    .attr("x2", x0 + 10)
-    .attr("y1", y0 - 25)
-    .attr("y2", y0 + 30)
+    .attr("x1", x0 + (0.018*width))
+    .attr("x2", x0 + (0.01*width))
+    .attr("y1", y0 - (0.025*width))
+    .attr("y2", y0 + (0.03*width))
     .attr("stroke-width","1.2")
     .attr("stroke","#777")
     .attr("stroke-dasharray", "2,2")
