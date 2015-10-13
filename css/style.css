@@ -535,9 +535,17 @@ Foundation pieces and DOM
             border: none !important;
         }
 
-
+        /*D3 fixes*/
+        .region-title {
+            display: none; 
+        }
 
 @media only screen and (min-width: 40.063em) { 
+        /*D3 fixes*/
+        .region-title {
+            font-size: 14px; 
+            display: inline-block;
+        }
         .rowDOE h1 {
             font-size: 52px;        
             letter-spacing: 15px;
@@ -562,6 +570,10 @@ Foundation pieces and DOM
         }
     } /* min-width 641px, medium screens */
 @media only screen and (min-width: 64.063em) { 
+        /*D3 fixes*/
+        .region-title {
+            font-size: 16px; 
+        }
         .dropdown {
             padding-left: 0.9375rem;
             padding-right: 0.9375rem;
@@ -570,6 +582,17 @@ Foundation pieces and DOM
 
 
 @media only screen and (max-width: 480px) { 
+     /*   #svg2 {
+            left: 0px;
+            right: 0px;
+            width: 100%;
+            height: 100%;
+        }
+*/
+        #below, #svg2, #svg3 {
+            display: none;
+        }
+
         .rowDOE h2 {
             font-size: 30px;
             padding-top: 0.5rem;

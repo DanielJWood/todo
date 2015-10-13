@@ -167,7 +167,6 @@ d3.json("js/statesregionspr.json", function(error, regions) {
         return  path.centroid(d)[1];
     })
     .attr("text-anchor","middle")
-    .attr('font-size','16px')
 });
 
 // console.log(d3.select('text#AK-title'))
