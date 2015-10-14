@@ -172,8 +172,6 @@ d3.json("js/statesregionspr.json", function(error, regions) {
 // console.log(d3.select('text#AK-title'))
 // d3.select('text#AK-title').textwrap(bounds2)
     
-
-
 svg2.selectAll('defs')
   .data(threatLetters)
   .enter()
@@ -209,7 +207,7 @@ var title = g2.selectAll(".title")
 g2.selectAll(".threat").remove();
 
 // D3 stuff on click
-  var x, y, k, id, name, hash, green, summary, properties, boxWidth, title1, numIcon, IW, TW, halfBox, url;
+  var x, y, k, id, name, hash, green, summary, properties, boxWidth, title1, numIcon, IW, TW, halfBox, url, order, propinter;
   var p = [[],[],[],[],[]];
   var boxHeight = 0;
 
@@ -217,19 +215,22 @@ g2.selectAll(".threat").remove();
   if (d && centered !== d) {      
     for (var i = context_data.length - 1; i >= 0; i--) {
       if (d.id == context_data[i].id) {
-        summary = context_data[i].summary
-        properties = context_data[i].properties
-        url = "http://energy.gov/sites/prod/files/2015/10/f27/" + context_data[i].uri
+        summary = context_data[i].summary;
+        properties = context_data[i].properties;
+        url = "http://energy.gov/sites/prod/files/2015/10/f27/" + context_data[i].uri;
         for (var key in properties) {
+          order = properties[key].charAt(0);
+          propinter = properties[key].substring(2);
+
           if (properties[key] != "") {
             boxHeight += 1
-            p[0].push(key);
-            p[1].push(properties[key]);
-            p[2].push(key.length);
-            p[3].push(properties[key].length);
+            p[0].push(order);
+            p[1].push(key);
+            p[2].push(propinter)
+            p[3].push(key.length);            
+            p[4].push(propinter.length);            
           };              
         }   
-        p[4].push(context_data[i].id)     
       } 
     };  
     var centroid = path.centroid(d);
@@ -242,9 +243,9 @@ g2.selectAll(".threat").remove();
     hash = "#" + name.replace(/\s+/g, '-').toLowerCase();        
     button = "The " + name;
     green = d.id; 
-    numIcon = (getMaxOfArray(p[3]) + 1) / 2
+    numIcon = (getMaxOfArray(p[4]) + 1) / 2
     IW = numIcon * 1.3 * iconWidth;
-    TW = getMaxOfArray(p[2]) * 7 + 15;        
+    TW = getMaxOfArray(p[3]) * 7 + 15;        
     boxWidth = IW + TW;
     if (boxWidth < 160) {
       boxWidth = 160;
@@ -305,7 +306,7 @@ g2.selectAll(".threat").remove();
   g2.selectAll("text:not(.title)").attr("x",function(d) { return IW + 10});
 
   var text = g2.selectAll("text:not(.title)")
-    .data(p[0])    
+    .data(p[1])    
 
   text.attr("class","update")
 
@@ -336,11 +337,10 @@ g2.selectAll(".threat").remove();
   var raw = []
 
   // add the boxes of the icons
-  for (var k = p[1].length - 1; k >= 0; k--) {
-    var iconList = p[1][k].split(",") 
-    var inner = [iconList.length,p[0][k]] 
+  for (var k = p[2].length - 1; k >= 0; k--) {
+    var iconList = p[2][k].split(",") 
+    var inner = [p[0][k],p[1][k]] 
     raw.push(inner)
-    // Check to make sure that the reverse for loop isn't screwing up the ordering of the threats
     for (var j = iconList.length - 1; j >= 0; j--) {
       g2.append("rect")
         .attr("class",function(d) {
@@ -350,7 +350,7 @@ g2.selectAll(".threat").remove();
           return iconList[j]
         })   
         .attr("industry",function(d){
-          return p[0][k]
+          return p[1][k]
         })
         .attr("width",iconWidth)
         .attr("height",iconHeight)
@@ -369,23 +369,13 @@ g2.selectAll(".threat").remove();
     };
   };
 
-  // Sort Everything!!!
+  // Sort Everything based on the order of importance!!!
   raw = raw.sort(function(a,b){
     if (a[0] < b[0]) {
-        return 1;
+        return -1;
     } else if (a[0] > b[0]) { 
-        return -1;
+        return 1;
     }
-
-    // Else go to the 2nd item
-    if (a[1] < b[1]) { 
-        return -1;
-    } else if (a[1] > b[1]) {
-        return 1
-    } else { // nothing to split them
-        return 0;
-    }
-
   });
 
   for (var i = 0; i < raw.length; i++) {
@@ -508,8 +498,7 @@ function threatHover(bH, hB){
       .attr("text-anchor","middle")
       .style("line-height","16px")
       .attr('font-size','14px')
-      .text(title)
-      // .text(function(d) {return "Lorem ipsum dolor sit amet, consectetur adipiscing elit. In hac habitasse platea dictumst. "});
+      .text(title);      
 
     padding = 5;
     bounds = d3.select('rect#popup');
