@@ -67,16 +67,19 @@ Map
 	opacity: .8;
 }
 
-.region.HI { fill: #FF9E9A; }
-.region.AK { fill: #adc9c9; }
-.region.NW { fill: #adc9ad; }
-.region.SW { fill: #C9ADC9; }
-.region.NP { fill: #FFBE70; }
-.region.SP { fill: #93B9FD; }
-.region.MW { fill: #FEF55B; }
-.region.SE { fill: #7FF5A5; }
-.region.NE { fill: #FF9E9A; }
-.region.IRL { display: none; }
+#regions .region.Null:hover {
+    cursor: auto;
+    opacity: 1;
+}
+
+/*.region.HI { fill: #FF9E9A; }
+.region.AK { fill: #adc9c9; }*/
+.region.West { fill: #FFBE70; }
+.region.Southwest { fill: #C9ADC9; }
+.region.Midwest { fill: #FEF55B; }
+.region.Southeast { fill: #7FF5A5; }
+.region.Northeast { fill: #FF9E9A; }
+.region {fill: #ddd;}
 
 .subunit { opacity: 0; fill:none; }
 
@@ -87,8 +90,13 @@ Map
 /********************/
 /*DOM PIECES*/
 /********************/
-.HI { background-color: #FF9E9A; }
-.AK { background-color: #adc9c9; }
+/*.HI { background-color: #FF9E9A; }
+.AK { background-color: #adc9c9; }*/
+.West { fill: #FFBE70; }
+.Southwest { fill: #C9ADC9; }
+.Midwest { fill: #FEF55B; }
+.Southeast { fill: #7FF5A5; }
+.Northeast { fill: #FF9E9A; }
 .NW { background-color: #adc9ad; }
 .SW { background-color: #C9ADC9; }
 .NP { background-color: #FFBE70; }
