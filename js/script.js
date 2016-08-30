@@ -1,25 +1,16 @@
 // Initiate pym
 var pymChild = new pym.Child();
 
-var threatLetters = [
-  ["a","Increasing Temperatures and Heat Waves","sun2.png"  ],
-  ["b","Increasing Precipitation or Heavy Downpours","water2.png"  ],
-  ["c","Decreasing Water Availability","drought.png"  ],
-  ["d","Increasing Wildfire","fire.png"  ],
-  ["e","Increasing Sea Level Rise and Storm Surge","wave2.png"  ],
-  ["f","Increasing Frequency of Intense Hurricanes","hurricane3.png"  ]
-]
-
-var ind = [
-  ["ElectricGrid","Electric Grid"],
-  ["ElectricityDemand","Electricity Demand"],
-  ["FuelTransport","Fuel Transport"],
-  ["Hydropower","Hydropower"],
-  ["OilGas","Oil & Gas E&P"],
-  ["Thermoelectric","Thermoelectric"],
-  ["WindPower","Wind Power"],
-  ["Bioenergy","Bioenergy"]
-]
+// var ind = [
+//   ["ElectricGrid","Electric Grid"],
+//   ["ElectricityDemand","Electricity Demand"],
+//   ["FuelTransport","Fuel Transport"],
+//   ["Hydropower","Hydropower"],
+//   ["OilGas","Oil & Gas E&P"],
+//   ["Thermoelectric","Thermoelectric"],
+//   ["WindPower","Wind Power"],
+//   ["Bioenergy","Bioenergy"]
+// ]
 
 function getMaxOfArray(numArray) {
   return Math.max.apply(null, numArray);
@@ -48,16 +39,6 @@ var svg = d3.select("#map").append("svg")
     .attr("width", width)
     .attr("height", height);
 
-var svg2 = d3.select("#map").append("svg")
-    .attr("width",boxWidth)
-    .attr("height",boxHeight)
-    .attr("id","svg2");
-
-var svg3 = d3.select("#map").append("svg")
-    .attr("width",boxWidth)
-    .attr("height","0")
-    .attr("id","svg3");    
-
 var rect = svg.append("rect")
     .attr("class", "background")
     .attr("width", width)
@@ -65,27 +46,12 @@ var rect = svg.append("rect")
     .on("click", clicked);
 
 var g = svg.append("g");
-var g2 = svg2.append("g");
-var g3 = svg3.append("g").classed("g3",true);
-
-var threatBox = g2.append("rect")
-    .attr("id","threats2")
-    .attr("fill","#ddd  ")
-    .attr("width","100%")
-    .attr("height","100%")
-    .attr("x","0")
-    .attr("y","0")
-
-var popup = g3.append("rect")
-    .attr("id","popup")
-    .attr("fill","#eee")
-    .attr("width","100%")
-    .attr("height","100%")
 
 // d3.json("js/statesregionspr.json", function(error, regions) {
 d3.json("js/usa.json", function(error, regions) {
-  // d3.json("http://energyapps.github.io/climate-frame/js/statesregion2.json", function(error, regions) {
-  
+  if (error) throw error;
+  d3.csv("data/cities.csv", function(error, cities){
+  // d3.json("http://energyapps.github.io/climate-frame/js/statesregion2.json", function(error, regions) {  
 	if (error) throw error;
 
   window.onload = function(){
@@ -126,24 +92,55 @@ d3.json("js/usa.json", function(error, regions) {
     .attr("cursor","pointer")
     .attr("class", "subunit-boundary");	    
 
-  g2.append("svg:text")
-    .attr("class","title")
-    .text("Key Climate Impacts")
-    // .attr("class","header")
-    .attr("x", function(d) {return boxWidth/2})
-    .attr("y", "18")
-    .attr("text-anchor","middle")
-    .attr('font-size','16px')
-    .attr('fill','#333');
+  var BigBubbles = g.selectAll("circle")
+    .data(topojson.feature(regions, regions.objects.regions1).features)
+      .enter().append("circle")
+        .attr("class", "bubble")
+        .attr("transform", function(d) { 
+          if (d.id === "West") {
+            var center = path.centroid(d)
+            center[0] = center[0] - (width/ 20) ;
+          } else {
+            var center = path.centroid(d)
+          };
+          return "translate(" + center + ")"; })          
+        .attr("r", function(d) { 
+          return width / 20
+        })
+         // .attr("text", function(d){ return d.properties.name})
+         //  .on('mouseover', hoverdata)
+         //  .on('mouseout', mouseout);
+  
+// Add city points
+  g.selectAll("city")
+    .data(cities)
+    .enter()
+    .append("circle")
+    .attr("r",3)
+    .attr("transform", function(d) {
+      var latlong = projection([d.longitude,d.latitude])
+      return "translate(" + latlong + ")";
+    })
+    .attr("class", "city");
 
-  g2.append("svg:text")
-    .attr("class","title")
-    .text("(Scroll Over Icons)")
-    .attr("x", function(d) {return boxWidth/2})
-    .attr("y", "35")
-    .attr("text-anchor","middle")
-    .attr('font-size','12px')
-    .attr('fill','#333');    
+  // g2.append("svg:text")
+  //   .attr("class","title")
+  //   .text("Key Climate Impacts")
+  //   // .attr("class","header")
+  //   .attr("x", function(d) {return boxWidth/2})
+  //   .attr("y", "18")
+  //   .attr("text-anchor","middle")
+  //   .attr('font-size','16px')
+  //   .attr('fill','#333');
+
+  // g2.append("svg:text")
+  //   .attr("class","title")
+  //   .text("(Scroll Over Icons)")
+  //   .attr("x", function(d) {return boxWidth/2})
+  //   .attr("y", "35")
+  //   .attr("text-anchor","middle")
+  //   .attr('font-size','12px')
+  //   .attr('fill','#333');    
 
     // Add titles to regions
   g.selectAll("text")
@@ -155,41 +152,39 @@ d3.json("js/usa.json", function(error, regions) {
       return d.id + "-title"
     })
     .text(function(d){
-        return d.properties.name;
+        return d.id
     })
-    .attr("x", function(d){
-        return path.centroid(d)[0];
-    })
-    .attr("y", function(d){
-        if (d.id == "HI") {                    
-          hawaiiline(d, width)  
-        }
-        
-        return  path.centroid(d)[1];
-    })
+    .attr("transform", function(d) { 
+      if (d.id === "West") {
+        var center = path.centroid(d)
+        center[0] = center[0] - (width/ 20) ;
+      } else {
+        var center = path.centroid(d)
+      };
+      return "translate(" + center + ")"; 
+    })          
     .attr("text-anchor","middle")
+  });
 });
 
-// console.log(d3.select('text#AK-title'))
-// d3.select('text#AK-title').textwrap(bounds2)
     
-svg2.selectAll('defs')
-  .data(threatLetters)
-  .enter()
-  .append("defs")
-    .append("pattern")
-    .attr("id", function(d,i) {
-      return "icon" + d[0]
-    })
-    .attr("width",iconWidth)
-    .attr("height",iconHeight)
-      .append("image")
-      .attr("xlink:href", function(d){
-        var base = 'http://energyapps.github.io/climate-frame/img/icons/'
-        return base + d[2]
-      })
-      .attr("width",iconWidth)
-      .attr("height",iconHeight);
+// svg2.selectAll('defs')
+//   .data(threatLetters)
+//   .enter()
+//   .append("defs")
+//     .append("pattern")
+//     .attr("id", function(d,i) {
+//       return "icon" + d[0]
+//     })
+//     .attr("width",iconWidth)
+//     .attr("height",iconHeight)
+//       .append("image")
+//       .attr("xlink:href", function(d){
+//         var base = 'http://energyapps.github.io/climate-frame/img/icons/'
+//         return base + d[2]
+//       })
+//       .attr("width",iconWidth)
+//       .attr("height",iconHeight);
 
 // Bind things that happen on first click 
 (function ($) { 
@@ -202,36 +197,35 @@ svg2.selectAll('defs')
 
 // What happens when clicked
 function clicked(d) {
-var title = g2.selectAll(".title")
-
-//remove existing threat icons
-g2.selectAll(".threat").remove();
 
 // D3 stuff on click
   var x, y, k, id, name, hash, green, summary, properties, boxWidth, title1, numIcon, IW, TW, halfBox, url, order, propinter;
   var p = [[],[],[],[],[]];
   var boxHeight = 0;
 
-  //click on a region    
+  console.log(d)
+  console.log(centered)
+
+  //click on a region and define dates and populate options
   if (d && centered !== d) {      
     for (var i = context_data.length - 1; i >= 0; i--) {
-      if (d.id == context_data[i].id) {
+      if (d.id == context_data[i].Name) {
         summary = context_data[i].summary;
-        properties = context_data[i].properties;
-        url = "http://energy.gov/sites/prod/files/2015/10/f27/" + context_data[i].uri;
-        for (var key in properties) {
-          order = properties[key].charAt(0);
-          propinter = properties[key].substring(2);
+        // properties = context_data[i].properties;
+        // url = "http://energy.gov/sites/prod/files/2015/10/f27/" + context_data[i].uri;
+        // for (var key in properties) {
+        //   order = properties[key].charAt(0);
+        //   propinter = properties[key].substring(2);
 
-          if (properties[key] != "") {
-            boxHeight += 1
-            p[0].push(order);
-            p[1].push(key);
-            p[2].push(propinter)
-            p[3].push(key.length);            
-            p[4].push(propinter.length);            
-          };              
-        }   
+        //   if (properties[key] != "") {
+        //     boxHeight += 1
+        //     p[0].push(order);
+        //     p[1].push(key);
+        //     p[2].push(propinter)
+        //     p[3].push(key.length);            
+        //     p[4].push(propinter.length);            
+        //   };              
+        // }   
       } 
     };  
     var centroid = path.centroid(d);
@@ -240,19 +234,9 @@ g2.selectAll(".threat").remove();
     k = 2 ;
     centered = d;
     id = d.id;
-    name = d.properties.name;
+    name = d.id;
     hash = "#" + name.replace(/\s+/g, '-').toLowerCase();        
-    button = "The " + name;
-    green = d.id; 
-    numIcon = (getMaxOfArray(p[4]) + 1) / 2
-    IW = numIcon * 1.3 * iconWidth;
-    TW = getMaxOfArray(p[3]) * 7 + 15;        
-    boxWidth = IW + TW;
-    if (boxWidth < 160) {
-      boxWidth = 160;
-    } 
-    boxHeight = boxHeight * iconHeight + 65;
-    halfBox = boxWidth / 2;
+    green = d.id;     
   } else {
       //outclick
     x = width / 2;
@@ -262,13 +246,8 @@ g2.selectAll(".threat").remove();
     id = "";
     name = "Click on a region to learn more"
     hash = "#"
-    button = "Climate Change"
     green = "green-text"    
     summary = "";
-    boxWidth = 0;
-    boxHeight = 100;
-    halfBox = 100;
-    url = "http://energy.gov/node/1298916/"
   }
 
   (function ($) {   
@@ -285,56 +264,14 @@ g2.selectAll(".threat").remove();
       .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")scale(" + k + ")translate(" + -x + "," + -y + ")")
       .style("stroke-width", 1.5 / k + "px");
 
+
+
 // Transitions for the key  
 // Resize the key
-  svg2.transition()    
-    .duration(1000)
-    .attr("width", boxWidth)
-    .attr("height", boxHeight);
+  
+  
 
-  svg3
-    .attr("width", boxWidth)
-    .style("top",boxHeight+"px");   
-
-
-  title.transition().duration(1000).attr("x",function(d) { return halfBox});
-
-  threatBox
-    .attr("width","100%")
-    .attr("height","100%")
-
-// Right now this throws an error, could be a problem...
-  g2.selectAll("text:not(.title)").attr("x",function(d) { return IW + 10});
-
-  var text = g2.selectAll("text:not(.title)")
-    .data(p[1])    
-
-  text.attr("class","update")
-
-  text.enter().append("text")
-    .attr("class","enter")
-    .attr("y", function(d,i) { return (i*15)+35 })
-    .attr("x",function(d) { return IW + 10});  
-
-  text
-    .text(function(d) {
-      for (var i in ind) {
-        if (ind[i][0] == d){
-          return ind[i][1];
-          break;
-        }
-      };
-      // return d;
-    })
-    .attr("industry",function(d){
-      return d
-    })
-    // .attr("cursor","pointer")
-    // .on("mouseover",threatHover(boxHeight))
-    // .on("mouseout",threatOut(boxHeight)); 
-
-  text.exit().remove();
-
+  
   var raw = []
 
   // add the boxes of the icons
@@ -409,16 +346,6 @@ g2.selectAll(".threat").remove();
       .attr("fill-opacity","1")
   };
 
-// Hang the hover box below the threatBox
-
-  popup
-    .attr("x","0")
-    .attr("y","0")
-
-            // ************* //
-            //***************** //
-
-
     // Add the dom elements. HTML, basically no D3
       //Change the color of the header based on the region.
       var clickstate = document.getElementById("clickstate")
@@ -440,8 +367,6 @@ g2.selectAll(".threat").remove();
       for (var i = greenTextchange.length - 1; i >= 0; i--) {
         greenTextchange[i].className = "change-text " + green;    
       };
-      greenTextchange[1].innerHTML = button;
-      // greenTextchange[1].href = SOMETHING
 
       var region_text = document.getElementById("region-text")
       region_text.innerHTML = "<p style='padding-top: 50px;'>" + summary + "</p>";
@@ -450,91 +375,10 @@ g2.selectAll(".threat").remove();
 
 }
 
-function threatOut(bH){
-  return function() {
-    svg3.transition().duration(200).delay(500)
-      .attr("height", "0")    
-  }
-}
-
-function threatHover(bH, hB){
-  return function() {    
-
-    var hoverHeight,
-        padding,
-        bounds,
-        target_wrapper,
-        text_wrapper,        
-        boundsHeight,
-        boundsWidth;        
-
-    var title = d3.select(this).attr("type")
-    for (var i = 0; i < threatLetters.length; i++) {
-      if (threatLetters[i][0] == title) {
-
-        var title = threatLetters[i][1];
-        break;
-      }; 
-    };
-
-    hoverHeight = 37;
-
-    target_wrapper = d3.select('.g3');
-
-    svg3.selectAll("g.text-wrapper").remove();
-
-    // Resize the key
-    svg3.transition()
-      .duration(500)  
-      .attr("height",hoverHeight)
-
-    text_wrapper = target_wrapper.append('g').classed('text-wrapper', true);
-
-    text_wrapper.append("text")
-      .attr("id","hoverbody")
-      .attr("class","popupText")
-      .attr("y", 35)
-      .attr("x", 5)
-      .attr("fill","#333")
-      .attr("text-anchor","middle")
-      .style("line-height","16px")
-      .attr('font-size','14px')
-      .text(title);      
-
-    padding = 5;
-    bounds = d3.select('rect#popup');
-    boundsHeight = bounds[0][0].height.animVal.value - (2*padding);
-    boundsWidth = bounds[0][0].width.animVal.value - (2*padding);
-    bounds = {
-      x: padding, // bounding box is 300 pixels from the left
-      y: padding, // bounding box is 400 pixels from the top
-      width: boundsWidth, // bounding box is 500 pixels across
-      height: hoverHeight // bounding box is 600 pixels tall
-    };
-
-    d3.select('text#hoverbody').textwrap(bounds);    
-  }
-}
-
 function ReadMore() { 
   (function ($) {   
     $('#summary').scrollView();
   }(jQuery));  
-}
-
-function hawaiiline(d, width) {
-  var x0 = path.centroid(d)[0]
-  var y0 = path.centroid(d)[1]
-  // Pass in the width so that we can scale this on resize, small size, etc
-  g.append("line")
-    .attr("x1", x0 + (0.018*width))
-    .attr("x2", x0 + (0.01*width))
-    .attr("y1", y0 - (0.025*width))
-    .attr("y2", y0 + (0.03*width))
-    .attr("stroke-width","1.2")
-    .attr("stroke","#777")
-    .attr("stroke-dasharray", "2,2")
-    .attr("stroke-linejoin","round")
 }
 
 (function ($) { 

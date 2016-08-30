@@ -92,18 +92,25 @@ Map
 /********************/
 /*.HI { background-color: #FF9E9A; }
 .AK { background-color: #adc9c9; }*/
-.West { fill: #FFBE70; }
-.Southwest { fill: #C9ADC9; }
-.Midwest { fill: #FEF55B; }
-.Southeast { fill: #7FF5A5; }
-.Northeast { fill: #FF9E9A; }
-.NW { background-color: #adc9ad; }
-.SW { background-color: #C9ADC9; }
-.NP { background-color: #FFBE70; }
-.SP { background-color: #93B9FD; }
-.MW { background-color: #FEF55B; }
-.SE { background-color: #7FF5A5; }
-.NE { background-color: #FF9E9A; }
+.West { fill: #FFBE70; background-color: #FFBE70}
+.Southwest { fill: #C9ADC9; background-color: #C9ADC9}
+.Midwest { fill: #FEF55B; background-color: #FEF55B}
+.Southeast { fill: #7FF5A5; background-color: #7FF5A5}
+.Northeast { fill: #FF9E9A; background-color: #FF9E9A}
+
+/* Bubbles and SHIT*/
+.bubble {
+    cursor: pointer;
+    fill: #000;
+    opacity: .5;
+}
+
+.city {
+    stroke: #000;
+    stroke-opacity:0.2;
+    stroke-width: 8px;
+}
+
 
 .subheadline {
     transition: background-color 750ms ease-out;
@@ -134,7 +141,7 @@ Map
 
 #below {
     position: absolute;    
-    right: 10%;
+    right: 50%;
     bottom: 6px;
     overflow: hidden;
     max-height: 0;
