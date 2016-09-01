@@ -27,13 +27,23 @@ var boxWidth = 0,
 var iconWidth = 20,
     iconHeight = 20;
 
-// var projection = albersUsaPr()
+// main projection
 var projection = d3.geo.albers()
     .scale(width)
     .translate([width / 2, ((height / 2))])  ;
 
 var path = d3.geo.path()
     .projection(projection);
+
+// projection for the drop shadow, coastline
+var offset = 1;
+
+var projection2 = d3.geo.albers()
+    .scale(width)
+    .translate([((width / 2) + (offset)), ((height / 2) + (offset))])  ;
+
+var path2 = d3.geo.path()
+    .projection(projection2);
 
 var svg = d3.select("#map").append("svg")
     .attr("width", width)
@@ -71,6 +81,17 @@ d3.json("js/usa.json", function(error, regions) {
     pymChild.sendHeight();
   }
 
+// The background coastal boundary goes first cuz its underneath
+  g.append("path")
+    .datum(topojson.mesh(regions, regions.objects.regions1, function(a, b) { 
+      return a === b }))
+    .attr("d", function(d){      
+      return path(d)
+    })
+    .attr("d", path2)
+    .attr("class", "coast-boundary");  
+
+// next the regions color
 	g.append("g")
 		.attr("id","regions")
 		.selectAll(".region")
@@ -81,19 +102,19 @@ d3.json("js/usa.json", function(error, regions) {
       .on("click", clicked);
 
 	g.append("path")
-    .datum(topojson.mesh(regions, regions.objects.regions1, function(a, b) { return a !== b}))
-    .attr("d", path)
-    .attr("class", "main-boundary");
-
-
-	g.append("path")
     .datum(topojson.mesh(regions, regions.objects.states1, function(a, b) { return a !== b}))
     .attr("d", path)
     .attr("cursor","pointer")
     .attr("class", "subunit-boundary");	    
 
+g.append("path")
+    .datum(topojson.mesh(regions, regions.objects.regions1, function(a, b) { 
+      return a !== b }))
+    .attr("d", path)
+    .attr("class", "main-boundary");
+
   var BigBubbles = g.selectAll("circle")
-    .data(topojson.feature(regions, regions.objects.regions1).features)
+    .data(topojson.feature(regions, regions.objects.regions1).features.filter(function(d){return d.id !== "Null"}))
       .enter().append("circle")
         .attr("class", "bubble")
         .attr("transform", function(d) { 
@@ -105,7 +126,7 @@ d3.json("js/usa.json", function(error, regions) {
           };
           return "translate(" + center + ")"; })          
         .attr("r", function(d) { 
-          return width / 20
+          return width / 20;            
         })
          // .attr("text", function(d){ return d.properties.name})
          //  .on('mouseover', hoverdata)
@@ -123,28 +144,9 @@ d3.json("js/usa.json", function(error, regions) {
     })
     .attr("class", "city");
 
-  // g2.append("svg:text")
-  //   .attr("class","title")
-  //   .text("Key Climate Impacts")
-  //   // .attr("class","header")
-  //   .attr("x", function(d) {return boxWidth/2})
-  //   .attr("y", "18")
-  //   .attr("text-anchor","middle")
-  //   .attr('font-size','16px')
-  //   .attr('fill','#333');
-
-  // g2.append("svg:text")
-  //   .attr("class","title")
-  //   .text("(Scroll Over Icons)")
-  //   .attr("x", function(d) {return boxWidth/2})
-  //   .attr("y", "35")
-  //   .attr("text-anchor","middle")
-  //   .attr('font-size','12px')
-  //   .attr('fill','#333');    
-
     // Add titles to regions
   g.selectAll("text")
-    .data(topojson.feature(regions, regions.objects.regions1).features)
+    .data(topojson.feature(regions, regions.objects.regions1).features.filter(function(d){return d.id !== "Null"}))
     .enter()
     .append("svg:text")
     .attr("class","region-title")
@@ -167,25 +169,6 @@ d3.json("js/usa.json", function(error, regions) {
   });
 });
 
-    
-// svg2.selectAll('defs')
-//   .data(threatLetters)
-//   .enter()
-//   .append("defs")
-//     .append("pattern")
-//     .attr("id", function(d,i) {
-//       return "icon" + d[0]
-//     })
-//     .attr("width",iconWidth)
-//     .attr("height",iconHeight)
-//       .append("image")
-//       .attr("xlink:href", function(d){
-//         var base = 'http://energyapps.github.io/climate-frame/img/icons/'
-//         return base + d[2]
-//       })
-//       .attr("width",iconWidth)
-//       .attr("height",iconHeight);
-
 // Bind things that happen on first click 
 (function ($) { 
   $(document).ready(function() { 
@@ -203,11 +186,17 @@ function clicked(d) {
   var p = [[],[],[],[],[]];
   var boxHeight = 0;
 
-  console.log(d)
-  console.log(centered)
-
   //click on a region and define dates and populate options
-  if (d && centered !== d) {      
+  if (d && centered !== d && d.id !== "Null") {     
+    
+    setTimeout(
+    function() 
+    {
+      (function ($) {   
+        $('#summary').scrollView();
+      }(jQuery));  
+    }, 1000);  
+    
     for (var i = context_data.length - 1; i >= 0; i--) {
       if (d.id == context_data[i].Name) {
         summary = context_data[i].summary;
@@ -236,7 +225,7 @@ function clicked(d) {
     id = d.id;
     name = d.id;
     hash = "#" + name.replace(/\s+/g, '-').toLowerCase();        
-    green = d.id;     
+    green = d.id;         
   } else {
       //outclick
     x = width / 2;
@@ -264,13 +253,22 @@ function clicked(d) {
       .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")scale(" + k + ")translate(" + -x + "," + -y + ")")
       .style("stroke-width", 1.5 / k + "px");
 
+// Scroll into view  
 
+  if (d && centered !== d && d.id !== "Null") { 
+    // console.log('tata')
+    // setTimeout(
+    // function() 
+    // {
+    //   (function ($) {   
+    //     $('#summary').scrollView();
+    //   }(jQuery));  
+    // }, 1000);  
+    // 
+  }
 
 // Transitions for the key  
 // Resize the key
-  
-  
-
   
   var raw = []
 
