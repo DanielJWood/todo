@@ -116,6 +116,12 @@ Map
     stroke-width: 8px;
 }
 
+.region-title {
+    font-size: 44px !important;
+    fill: #fff;
+    cursor: pointer;
+}
+
 
 .subheadline {
     transition: background-color 750ms ease-out;

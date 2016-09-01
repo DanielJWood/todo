@@ -1,16 +1,29 @@
 // Initiate pym
 var pymChild = new pym.Child();
 
-// var ind = [
-//   ["ElectricGrid","Electric Grid"],
-//   ["ElectricityDemand","Electricity Demand"],
-//   ["FuelTransport","Fuel Transport"],
-//   ["Hydropower","Hydropower"],
-//   ["OilGas","Oil & Gas E&P"],
-//   ["Thermoelectric","Thermoelectric"],
-//   ["WindPower","Wind Power"],
-//   ["Bioenergy","Bioenergy"]
-// ]
+// fake data
+var datesdata = [
+  {
+    "id": "Northeast",
+    "available": 25
+  },
+  {
+    "id": "Midwest",
+    "available": 15
+  },
+  {
+    "id": "Southeast",
+    "available": 10
+  },
+  {
+    "id": "Southwest",
+    "available": 7
+  },
+  {
+    "id": "West",
+    "available": 19
+  }
+];
 
 function getMaxOfArray(numArray) {
   return Math.max.apply(null, numArray);
@@ -18,14 +31,15 @@ function getMaxOfArray(numArray) {
 // Insert your scripts here
 
 var width = parseInt(d3.select("#map").style("width")),
-  height = width / 2,
-  centered;
+  height = width / 2;
 
 var boxWidth = 0,
     boxHeight = 0;
 
 var iconWidth = 20,
     iconHeight = 20;
+
+var centered = [];
 
 // main projection
 var projection = d3.geo.albers()
@@ -128,6 +142,7 @@ g.append("path")
         .attr("r", function(d) { 
           return width / 20;            
         })
+        .on("click", clicked);
          // .attr("text", function(d){ return d.properties.name})
          //  .on('mouseover', hoverdata)
          //  .on('mouseout', mouseout);
@@ -154,14 +169,23 @@ g.append("path")
       return d.id + "-title"
     })
     .text(function(d){
-        return d.id
+        // return "15"
+        var needates;
+        for (var i = datesdata.length - 1; i >= 0; i--) {
+          if (datesdata[i].id === d.id) {
+            needates = datesdata[i].available;
+          };
+        };
+        return needates;
     })
     .attr("transform", function(d) { 
       if (d.id === "West") {
         var center = path.centroid(d)
         center[0] = center[0] - (width/ 20) ;
+        center[1] = center[1] + 15;
       } else {
         var center = path.centroid(d)
+        center[1] = center[1] + 15;
       };
       return "translate(" + center + ")"; 
     })          
@@ -181,14 +205,19 @@ g.append("path")
 // What happens when clicked
 function clicked(d) {
 
+  console.log(d)
+  console.log(centered)
+  // console.log(d.id === centered.id)
+
 // D3 stuff on click
   var x, y, k, id, name, hash, green, summary, properties, boxWidth, title1, numIcon, IW, TW, halfBox, url, order, propinter;
   var p = [[],[],[],[],[]];
   var boxHeight = 0;
 
   //click on a region and define dates and populate options
-  if (d && centered !== d && d.id !== "Null") {     
+  if (d && centered.id !== d.id && d.id !== "Null") {     
     
+    // Scroll bottom into view after newly clicked is zoomed
     setTimeout(
     function() 
     {
@@ -196,10 +225,10 @@ function clicked(d) {
         $('#summary').scrollView();
       }(jQuery));  
     }, 1000);  
-    
+
     for (var i = context_data.length - 1; i >= 0; i--) {
       if (d.id == context_data[i].Name) {
-        summary = context_data[i].summary;
+        // summary = context_data[i].summary;
         // properties = context_data[i].properties;
         // url = "http://energy.gov/sites/prod/files/2015/10/f27/" + context_data[i].uri;
         // for (var key in properties) {
@@ -218,6 +247,7 @@ function clicked(d) {
       } 
     };  
     var centroid = path.centroid(d);
+    // the x and y are from the json and its how it knows where to zoom to 
     x = centroid[0];
     y = centroid[1];
     k = 2 ;
@@ -231,7 +261,7 @@ function clicked(d) {
     x = width / 2;
     y = height / 2;
     k = 1;
-    centered = null;
+    centered = [];
     id = "";
     name = "Click on a region to learn more"
     hash = "#"
@@ -244,28 +274,15 @@ function clicked(d) {
   }(jQuery));  
 
 // Sets the active topography so that it highlights the states
+// AT THE MOMENT DOESN'T ZOOM HIGHLIGHT WHEN BUBBLES ARE CLICKED
   g.selectAll("path")
-      .classed("active", centered && function(d) { return d === centered; });
+      .classed("active", centered && function(d) { return d.id === centered.id; });
 
 //transitions the map.
   g.transition()
       .duration(750)
       .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")scale(" + k + ")translate(" + -x + "," + -y + ")")
       .style("stroke-width", 1.5 / k + "px");
-
-// Scroll into view  
-
-  if (d && centered !== d && d.id !== "Null") { 
-    // console.log('tata')
-    // setTimeout(
-    // function() 
-    // {
-    //   (function ($) {   
-    //     $('#summary').scrollView();
-    //   }(jQuery));  
-    // }, 1000);  
-    // 
-  }
 
 // Transitions for the key  
 // Resize the key
