@@ -1,3 +1,14 @@
+// TO Do
+
+// On zoom, the circle with numbers either disappears or it transitions to something else. Maybe it transitions to below the screen? (table/form???)
+// Browser test
+// mobile test
+
+
+// Nice to have:
+// Cities have names on scroll;)
+
+
 // Initiate pym
 var pymChild = new pym.Child();
 
@@ -142,10 +153,10 @@ g.append("path")
         .attr("r", function(d) { 
           return width / 20;            
         })
-        .on("click", clicked);
+        .on("click", clicked)
          // .attr("text", function(d){ return d.properties.name})
-         //  .on('mouseover', hoverdata)
-         //  .on('mouseout', mouseout);
+        .on('mouseover', hoverbubba)
+        .on('mouseout', mouseout);
   
 // Add city points
   g.selectAll("city")
@@ -201,13 +212,8 @@ g.append("path")
   });  
 }(jQuery));  
 
-
 // What happens when clicked
 function clicked(d) {
-
-  console.log(d)
-  console.log(centered)
-  // console.log(d.id === centered.id)
 
 // D3 stuff on click
   var x, y, k, id, name, hash, green, summary, properties, boxWidth, title1, numIcon, IW, TW, halfBox, url, order, propinter;
@@ -274,7 +280,6 @@ function clicked(d) {
   }(jQuery));  
 
 // Sets the active topography so that it highlights the states
-// AT THE MOMENT DOESN'T ZOOM HIGHLIGHT WHEN BUBBLES ARE CLICKED
   g.selectAll("path")
       .classed("active", centered && function(d) { return d.id === centered.id; });
 
@@ -283,6 +288,34 @@ function clicked(d) {
       .duration(750)
       .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")scale(" + k + ")translate(" + -x + "," + -y + ")")
       .style("stroke-width", 1.5 / k + "px");
+
+  if (k === 2) {
+    g.selectAll(".bubble")
+      .transition()
+      .duration(750)
+      .attr("r","0")
+    
+    g.selectAll(".region-title")
+      .transition()
+      .attr("fill-opacity","0")
+  } else if (k === 1){
+    g.selectAll(".bubble")
+      .transition()
+      .duration(750)
+      .attr("r", function(d) { 
+          return width / 20;            
+        })
+    
+    g.selectAll(".region-title")
+      .transition()
+      .attr("fill-opacity","1")
+      .duration(100)
+      .delay(1000)
+  };
+
+  
+
+
 
 // Transitions for the key  
 // Resize the key
@@ -347,7 +380,6 @@ function clicked(d) {
           return (i*(iconHeight+3)+40) 
         };      
       })
-    var babyboxes = svg2.selectAll("[industry="+industry+"]:not(text)")
 
 
     babyboxes.transition().duration(1000)
@@ -388,6 +420,19 @@ function clicked(d) {
 
   pymChild.sendHeight();
 
+}
+
+// keep the color highlighted when you're over a bubble THIS ISNT WORKING
+function hoverbubba(d) {
+  console.log(d)
+  console.log(centered)
+  // g.selectAll("path")
+  //   .classed("active", centered && function(d) { return d.id === centered.id; });  
+  // g.select("path.region .West").attr("class","active region West");
+}
+
+function mouseout(d) {
+  // console.log(d)   
 }
 
 function ReadMore() { 
