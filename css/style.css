@@ -114,6 +114,13 @@ Map
     stroke: #000;
     stroke-opacity:0.2;
     stroke-width: 8px;
+    cursor: pointer;
+}
+
+.citytext {
+    font-size: 12px !important;
+    fill: #000;
+    cursor: pointer;
 }
 
 .region-title {

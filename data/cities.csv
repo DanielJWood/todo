@@ -1,25 +1,26 @@
-latitude,longitude,name,city,state
-42.3586617,-71.0567398,"Boston, MA",Boston,MA
-38.8903694,-77.0319595,"Washington, DC",Washington,DC
-39.9522781,-75.1624527,"Philadelphi, PA",Philadelphi,PA
-40.7820015,-73.8317032,"New York, NY",New York,NY
-42.3316803,-83.0479965,"Detroit, MI",Detroit,MI
-41.8842506,-87.6324463,"Chicago, IL",Chicago,IL
-41.5047493,-81.6907196,"Cleveland, OH",Cleveland,OH
-44.9790306,-93.2649307,"Minneapolis, MN",Minneapolis,MN
-33.7483101,-84.3911133,"Atlanta, GA",Atlanta,GA
-29.9536991,-90.0777512,"New Orleans, LA",New Orleans,LA
-36.1678391,-86.7781601,"Nashville, TN",Nashville,TN
-28.5382309,-81.377388,"Orlando, FL",Orlando,FL
-25.7748108,-80.197731,"Miami, FL",Miami,FL
-30.2675896,-97.7429886,"Austin, TX",Austin,TX
-32.7781487,-96.7954025,"Dallas, TX",Dallas,TX
-29.7604504,-95.3697815,"Houston, TX",Houston,TX
-33.4482498,-112.075798,"Phoenix, AZ",Phoenix,AZ
-36.1719093,-115.1399689,"Las Vegas, NV",Las Vegas,NV
-39.7400093,-104.9923019,"Denver, CO",Denver,CO
-45.5117912,-122.6756287,"Portland, OR",Portland,OR
-47.603569,-122.3294525,"Seattle, WA",Seattle,WA
-37.7771187,-122.4196396,"San Francisco, CA",San Francisco,CA
-34.0534897,-118.2453232,"Los Angeles, CA",Los Angeles,CA
-32.7156906,-117.1617203,"San Diego, CA",San Diego,CA
+latitude,longitude,name,city,state,id,region
+42.3586617,-71.0567398,"Boston, MA",Boston,MA,Boston,NE
+38.8903694,-77.0319595,"Washington, DC",Washington,DC,Washington,NE
+39.9522781,-75.1624527,"Philadelphia, PA",Philadelphia,PA,Philadelphia,NE
+40.7820015,-73.8317032,"New York, NY",New York,NY,NewYork,NE
+42.3316803,-83.0479965,"Detroit, MI",Detroit,MI,Detroit,MW
+41.8842506,-87.6324463,"Chicago, IL",Chicago,IL,Chicago,MW
+41.5047493,-81.6907196,"Cleveland, OH",Cleveland,OH,Cleveland,MW
+44.9790306,-93.2649307,"Minneapolis, MN",Minneapolis,MN,Minneapolis,MW
+33.7483101,-84.3911133,"Atlanta, GA",Atlanta,GA,Atlanta,SE
+29.9536991,-90.0777512,"New Orleans, LA",New Orleans,LA,NewOrleans,SE
+36.1678391,-86.7781601,"Nashville, TN",Nashville,TN,Nashville,SE
+28.5382309,-81.377388,"Orlando, FL",Orlando,FL,Orlando,SE
+25.7748108,-80.197731,"Miami, FL",Miami,FL,Miami,SE
+30.2675896,-97.7429886,"Austin, TX",Austin,TX,Austin,SW
+32.7781487,-96.7954025,"Dallas, TX",Dallas,TX,Dallas,SW
+29.7604504,-95.3697815,"Houston, TX",Houston,TX,Houston,SW
+33.4482498,-112.075798,"Phoenix, AZ",Phoenix,AZ,Phoenix,SW
+36.1719093,-115.1399689,"Las Vegas, NV",Las Vegas,NV,LasVegas,WC
+39.7400093,-104.9923019,"Denver, CO",Denver,CO,Denver,SW
+45.5117912,-122.6756287,"Portland, OR",Portland,OR,Portland,WC
+47.603569,-122.3294525,"Seattle, WA",Seattle,WA,Seattle,WC
+37.7771187,-122.4196396,"San Francisco, CA",San Francisco,CA,SanFrancisco,WC
+34.0534897,-118.2453232,"Los Angeles, CA",Los Angeles,CA,LosAngeles,WC
+32.7156906,-117.1617203,"San Diego, CA",San Diego,CA,SanDiego,WC
+39.557847,-119.9909256,"Reno, NV",Reno,NV,Reno,WC

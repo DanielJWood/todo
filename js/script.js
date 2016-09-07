@@ -1,14 +1,5 @@
 // TO Do
 
-// On zoom, the circle with numbers either disappears or it transitions to something else. Maybe it transitions to below the screen? (table/form???)
-// Browser test
-// mobile test
-
-
-// Nice to have:
-// Cities have names on scroll;)
-
-
 // Initiate pym
 var pymChild = new pym.Child();
 
@@ -117,21 +108,31 @@ d3.json("js/usa.json", function(error, regions) {
     .attr("class", "coast-boundary");  
 
 // next the regions color
-	g.append("g")
+	var regionColor = g.append("g")
 		.attr("id","regions")
 		.selectAll(".region")
       .data(topojson.feature(regions, regions.objects.regions1).features)
     .enter().append("path")
       .attr("class", function(d) { return "region " + d.id; })
       .attr("d", path)
-      .on("click", clicked);
+      .on("click", clicked)
+      // .on("mouseenter",function(d){
+      //   d3.select(this)
+      //     .style("fill","#E7BBBF")
+      // })
+      // .on("mouseleave",function(d){
+      //   d3.select(this)
+      //     .style("fill","#fff")
+      // });
 
+// states boundary
 	g.append("path")
     .datum(topojson.mesh(regions, regions.objects.states1, function(a, b) { return a !== b}))
     .attr("d", path)
     .attr("cursor","pointer")
     .attr("class", "subunit-boundary");	    
 
+// Regions boundary
 g.append("path")
     .datum(topojson.mesh(regions, regions.objects.regions1, function(a, b) { 
       return a !== b }))
@@ -139,10 +140,13 @@ g.append("path")
     .attr("class", "main-boundary");
 
   var BigBubbles = g.selectAll("circle")
-    .data(topojson.feature(regions, regions.objects.regions1).features.filter(function(d){return d.id !== "Null"}))
+    .data(topojson.feature(regions, regions.objects.regions1).features.filter(function(d){
+      console.log(d)
+      return d.id !== "Null"}))
       .enter().append("circle")
         .attr("class", "bubble")
         .attr("transform", function(d) { 
+          // console.log(d)
           if (d.id === "West") {
             var center = path.centroid(d)
             center[0] = center[0] - (width/ 20) ;
@@ -159,19 +163,80 @@ g.append("path")
         .on('mouseout', mouseout);
   
 // Add city points
-  g.selectAll("city")
+  var citys = g.selectAll(".bubblecontainer")
     .data(cities)
-    .enter()
-    .append("circle")
+    .enter().append("g").attr("class","bubblecontainer")
+
+  var citysinner = citys.append("circle")
     .attr("r",3)
+    .attr("text",function(d){
+      return d.name;
+    })
     .attr("transform", function(d) {
       var latlong = projection([d.longitude,d.latitude])
       return "translate(" + latlong + ")";
     })
-    .attr("class", "city");
+    .attr("class", "city")
+  
+  var citytext = citys.on("mouseover",function(d){
+      d3.select(this).append("svg:text")
+        .text(function(d){
+          return d.name;
+        })
+        .attr("transform", function(d) {      
+          var latlong = projection([d.longitude,d.latitude])
+          latlong[0] = latlong[0] + 10;
+          latlong[1] = latlong[1] + 4;
+          return "translate(" + latlong + ")";
+        })
+        .attr("opacity","0")
+        .attr("text-anchor","start")
+        .attr("class", "citytext")
+        .attr("id",function(d){
+          return d.id;
+        })
+
+      var now = d.id;
+      g.select("#"+now)
+        .transition().duration(750)      
+        .attr("opacity","1")
+    })
+    .on("mouseout",function(d){
+      g.selectAll(".citytext")
+        .transition().duration(750)        
+        .attr("opacity","0")
+        .remove()
+    })
+
+
+
+  // g.selectAll(".citytext")
+  //   .data(cities)
+  //   .enter()
+  //   .append("svg:text")
+    // .attr("text",function(d){
+    //   return d.name;
+    // })
+    // .text(function(d){
+    //   return d.name;
+    // })
+    // .attr("transform", function(d) {      
+    //   var latlong = projection([d.longitude,d.latitude])      
+    //   // latlong[0] = latlong[0] + 10;
+    //   latlong[0] = latlong[0] + 10;
+    //   latlong[1] = latlong[1] + 4;
+    //   return "translate(" + latlong + ")";
+    // })
+    // .attr("opacity","0")
+    // .attr("display","none")
+    // .attr("text-anchor","start")
+    // .attr("class", "citytext")
+    // .attr("id",function(d){
+    //   return d.id;
+    // })
 
     // Add titles to regions
-  g.selectAll("text")
+  g.selectAll(".region-title")
     .data(topojson.feature(regions, regions.objects.regions1).features.filter(function(d){return d.id !== "Null"}))
     .enter()
     .append("svg:text")
@@ -228,7 +293,7 @@ function clicked(d) {
     function() 
     {
       (function ($) {   
-        $('#summary').scrollView();
+        // $('#summary').scrollView();
       }(jQuery));  
     }, 1000);  
 
@@ -313,86 +378,6 @@ function clicked(d) {
       .delay(1000)
   };
 
-  
-
-
-
-// Transitions for the key  
-// Resize the key
-  
-  var raw = []
-
-  // add the boxes of the icons
-  for (var k = p[2].length - 1; k >= 0; k--) {
-    var iconList = p[2][k].split(",") 
-    var inner = [p[0][k],p[1][k]] 
-    raw.push(inner)
-    for (var j = iconList.length - 1; j >= 0; j--) {
-      g2.append("rect")
-        .attr("class",function(d) {
-          return "threat " + iconList[j]
-        })     
-        .attr("type",function(d){
-          return iconList[j]
-        })   
-        .attr("industry",function(d){
-          return p[1][k]
-        })
-        .attr("width",iconWidth)
-        .attr("height",iconHeight)
-        .attr("fill-opacity","0")
-        .attr("fill",function(d){
-          return "url(#icon" + iconList[j] + ")"
-        })
-        .attr("y", function(d) { 
-          return (k*15)+(2*iconHeight+5) 
-        })
-        .attr("x",function(d) {
-          return (boxWidth/2)
-        })
-        .on("mouseover",threatHover(boxHeight, halfBox))
-        .on("mouseout",threatOut(boxHeight)); 
-    };
-  };
-
-  // Sort Everything based on the order of importance!!!
-  raw = raw.sort(function(a,b){
-    if (a[0] < b[0]) {
-        return -1;
-    } else if (a[0] > b[0]) { 
-        return 1;
-    }
-  });
-
-  for (var i = 0; i < raw.length; i++) {
-    var industry = raw[i][1]
-    var industry2 = d3.selectAll("[industry="+industry+"]")
-    industry2.transition().duration(1000)
-    .delay(function(d, i) {
-        return i * 100;
-      })
-      .attr("y",function(d){
-        if (d !== undefined) {
-          //Y of the right side
-          return (i*(iconHeight+3)+55) 
-        } else{
-          //Y of the icons (left side)
-          return (i*(iconHeight+3)+40) 
-        };      
-      })
-
-
-    babyboxes.transition().duration(1000)
-      .ease("elastic")
-      .delay(function(d, i) {
-        return i*100+1000;
-      })
-      .attr("x",function(d,j){
-        return IW-(j*(iconWidth+5))-iconWidth;
-      })
-      .attr("fill-opacity","1")
-  };
-
     // Add the dom elements. HTML, basically no D3
       //Change the color of the header based on the region.
       var clickstate = document.getElementById("clickstate")
@@ -424,8 +409,8 @@ function clicked(d) {
 
 // keep the color highlighted when you're over a bubble THIS ISNT WORKING
 function hoverbubba(d) {
-  console.log(d)
-  console.log(centered)
+  // console.log(d)
+  // console.log(centered)
   // g.selectAll("path")
   //   .classed("active", centered && function(d) { return d.id === centered.id; });  
   // g.select("path.region .West").attr("class","active region West");
