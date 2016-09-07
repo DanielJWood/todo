@@ -398,22 +398,17 @@ function BuildTable(d) {
       // Build the FORM!!!
 
     };  
-
-
   }(jQuery));  
 }
 
 
 $( "#formsubmit" ).click(function() {
+
 // put ids here, capture values, make into a json, send to the INTERNET!!!!!
   var firstname = $('#firstname').val();
   var lastname = $('#lastname').val();
   var email = $('#email').val();
   var company = $('#company').val();
-  console.log(firstname)
-  console.log(lastname)
-  console.log(email)
-  console.log(company)
 
   var senddata = [{
     "firstname": firstname,

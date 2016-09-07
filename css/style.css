@@ -158,6 +158,16 @@ Map
 .signup-panel form input, .signup-panel form span {
   height: 50px;
 }
+
+.check-head {
+    text-transform: uppercase;
+    font-size: 140%;
+}
+
+.signup-panel form input[type=checkbox] {
+    height: auto;
+}
+
 .signup-panel .welcome {
   font-size: 26px;
   text-align: center;
@@ -171,6 +181,8 @@ Map
 .signup-panel .button {
   margin-left: 35%;
 }
+
+
 /*
 .signup-panel .input {
     padding-right: 0.9375rem !important;
