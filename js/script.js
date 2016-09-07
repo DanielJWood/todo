@@ -77,7 +77,6 @@ var g = svg.append("g");
 d3.json("data/usa2.json", function(error, regions) {
   if (error) throw error;
   d3.csv("data/cities.csv", function(error, cities){
-  // d3.json("http://energyapps.github.io/climate-frame/js/statesregion2.json", function(error, regions) {  
 	if (error) throw error;
 
   window.onload = function(){
@@ -318,12 +317,6 @@ function clicked(d) {
   g.selectAll(".region")
     .classed("active", centered && function(d) { return d.id === centered.id; });
 
-//transitions the map.
-  g.transition()
-      .duration(750)
-      .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")scale(" + k + ")translate(" + -x + "," + -y + ")")
-      .style("stroke-width", 1.5 / k + "px");
-
 // k===2 is when it is clicked
   if (k === 2) {
     g.selectAll(".bubble")
@@ -333,7 +326,11 @@ function clicked(d) {
     g.selectAll(".region-title")
       .transition()
       .attr("fill-opacity","0")
-        
+    //transitions the map.
+  g.transition()
+      .duration(750)
+      .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")scale(" + 1.4 + ")translate(" + -x + "," + -y + ")")
+      .style("stroke-width", 1.5 / k + "px");    
   } 
   // below is the clickout
   else if (k === 1){
@@ -342,13 +339,17 @@ function clicked(d) {
       .duration(750)
       .attr("r", function(d) { 
           return width / 25;            
-        })
-    
+        })    
     g.selectAll(".region-title")
       .transition()
       .attr("fill-opacity","1")
       .duration(100)
       .delay(1000)
+        //transitions the map.
+  g.transition()
+      .duration(750)
+      .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")scale(" + 1 + ")translate(" + -x + "," + -y + ")")
+      .style("stroke-width", 1.5 / k + "px");
   };
 
     // Add the dom elements. HTML, basically no D3
