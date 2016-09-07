@@ -183,9 +183,7 @@ d3.json("data/usa2.json", function(error, regions) {
         return d.id + "-title"
       })
       .attr("transform", function(d) { 
-        // console.log(path.centroid(d))
         var center = path.centroid(d)
-        // center[0] = center[0] + 1;
         return "translate(" + center + ")"; 
       })          
       .attr("text-anchor","middle");
@@ -398,12 +396,36 @@ function BuildTable(d) {
   (function ($) { 
     for (var z = d.datesAvail.length - 1; z >= 0; z--) {    
       // Build the FORM!!!
-      console.log(d.datesAvail[z])
+
     };  
 
 
   }(jQuery));  
 }
+
+
+$( "#formsubmit" ).click(function() {
+// put ids here, capture values, make into a json, send to the INTERNET!!!!!
+  var firstname = $('#firstname').val();
+  var lastname = $('#lastname').val();
+  var email = $('#email').val();
+  var company = $('#company').val();
+  console.log(firstname)
+  console.log(lastname)
+  console.log(email)
+  console.log(company)
+
+  var senddata = [{
+    "firstname": firstname,
+    "lastname": lastname,
+    "email": email,
+    "company": company,
+    "dates": []
+  }]
+
+  console.log(senddata)
+});
+
 
 
 function ReadMore() { 
