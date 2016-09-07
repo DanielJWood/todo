@@ -117,7 +117,6 @@ d3.json("data/usa2.json", function(error, regions) {
           .style("fill","#E7BBBF")
       })
       .on("mouseleave",function(d){
-        console.log(d3.select(this).selectAll("path"))
         d3.select(this).selectAll("path")
           .style("fill","#fff")
       });;
@@ -143,14 +142,8 @@ d3.json("data/usa2.json", function(error, regions) {
 
   var BigBubbles = regionContainers2.append("circle")
         .attr("class", "bubble")
-        .attr("transform", function(d) { 
-          // console.log(d)
-          if (d.id === "West") {
-            var center = path.centroid(d)
-            center[0] = center[0] - (width/ 20) ;
-          } else {
-            var center = path.centroid(d)
-          };
+        .attr("transform", function(d) {           
+          var center = path.centroid(d)
           return "translate(" + center + ")"; })          
         .attr("r", function(d) { 
           return width / 25;            
@@ -160,7 +153,42 @@ d3.json("data/usa2.json", function(error, regions) {
         .on('mouseover', hoverbubba)
         .on('mouseout', mouseout);
   
-// Add city points
+    // Add titles to regions
+  var regionTitles = g.selectAll(".region-title")
+    .data(topojson.feature(regions, regions.objects.regions3).features.filter(function(d){return d.id !== "Null"}))
+    .enter()
+    .append("svg:text")
+    .attr("class","region-title")
+    .attr("id", function(d){
+      return d.id + "-title"
+    })
+    .attr("transform", function(d) { 
+      // console.log(path.centroid(d))
+      var center = path.centroid(d)
+      // center[0] = center[0] + 1;
+      return "translate(" + center + ")"; 
+    })          
+    .attr("text-anchor","middle");
+
+    regionTitles.append("tspan")
+    .text(function(d){
+      var needates;
+      for (var i = datesdata.length - 1; i >= 0; i--) {
+        if (datesdata[i].id === d.id) {
+          needates = datesdata[i].available;
+          break;
+        };
+      };
+      return needates;
+    })
+
+    regionTitles.append("tspan")
+    .text("Dates")
+    .attr("class","dates")
+    .attr("x",0)
+    .attr("y",20);
+
+    // Add city points
   var citys = g.selectAll(".bubblecontainer")
     .data(cities)
     .enter().append("g").attr("class","bubblecontainer")
@@ -176,67 +204,38 @@ d3.json("data/usa2.json", function(error, regions) {
     })
     .attr("class", "city")
   
-  var citytext = citys.on("mouseover",function(d){
-      d3.select(this).append("svg:text")
-        .text(function(d){
-          return d.name;
-        })
-        .attr("transform", function(d) {      
-          var latlong = projection([d.longitude,d.latitude])
-          latlong[0] = latlong[0] + 10;
-          latlong[1] = latlong[1] + 4;
-          return "translate(" + latlong + ")";
-        })
-        .attr("opacity","0")
-        .attr("text-anchor","start")
-        .attr("class", "citytext")
-        .attr("id",function(d){
-          return d.id;
-        })
+    var citytext = citys.on("mouseover",function(d){
+        d3.select(this).append("svg:text")
+          .text(function(d){
+            return d.name;
+          })
+          .attr("transform", function(d) {      
+            var latlong = projection([d.longitude,d.latitude])
+            latlong[0] = latlong[0] + 10;
+            latlong[1] = latlong[1] + 4;
+            return "translate(" + latlong + ")";
+          })
+          .attr("opacity","0")
+          .attr("text-anchor","start")
+          .attr("class", "citytext")
+          .attr("id",function(d){
+            return d.id;
+          })
 
-      var now = d.id;
-      g.select("#"+now)
-        .transition().duration(750)      
-        .attr("opacity","1")
-    })
-    .on("mouseout",function(d){
-      g.selectAll(".citytext")
-        .transition().duration(750)        
-        .attr("opacity","0")
-        .remove()
-    })
+        var now = d.id;
+        g.select("#"+now)
+          .transition().duration(750)      
+          .attr("opacity","1")
+      })
+      .on("mouseout",function(d){
+        g.selectAll(".citytext")
+          .transition().duration(750)        
+          .attr("opacity","0")
+          .remove()
+      })
 
-    // Add titles to regions
-  g.selectAll(".region-title")
-    .data(topojson.feature(regions, regions.objects.regions3).features.filter(function(d){return d.id !== "Null"}))
-    .enter()
-    .append("svg:text")
-    .attr("class","region-title")
-    .attr("id", function(d){
-      return d.id + "-title"
-    })
-    .text(function(d){
-        // return "15"
-        var needates;
-        for (var i = datesdata.length - 1; i >= 0; i--) {
-          if (datesdata[i].id === d.id) {
-            needates = datesdata[i].available;
-          };
-        };
-        return needates;
-    })
-    .attr("transform", function(d) { 
-      if (d.id === "West") {
-        var center = path.centroid(d)
-        center[0] = center[0] - (width/ 20) ;
-        center[1] = center[1] + 5;
-      } else {
-        var center = path.centroid(d)
-        center[1] = center[1] + 5;
-      };
-      return "translate(" + center + ")"; 
-    })          
-    .attr("text-anchor","middle")
+
+
   });
 });
 

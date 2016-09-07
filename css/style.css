@@ -129,6 +129,10 @@ Map
     cursor: pointer;
 }
 
+.region-title .dates {
+    font-size: 20px !important;
+}
+
 .region-subtitle {
     font-size: 20px !important;
     fill: #fff;
