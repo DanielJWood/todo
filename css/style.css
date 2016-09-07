@@ -74,19 +74,19 @@ Map
 
 .subunit { opacity: 0; fill:none; }
 
-#regions .active {
+.active {
   /*opacity: .8*/
-  fill: #E7BBBF;
+  fill: #E7BBBF !important;
 }
 
 
-#regions .region:hover {
+.region:hover {
     cursor: pointer;
-    fill: #E7BBBF;
+    /*fill: #E7BBBF;*/
     /*opacity: .8;*/
 }
 
-#regions .region.Null, #regions .region.Null:hover {
+.region.Null, .region.Null:hover {
     cursor: auto;
     fill:#444;
     opacity: 1;
@@ -106,7 +106,7 @@ Map
 /* Bubbles and SHIT*/
 .bubble {
     cursor: pointer;
-    fill: #000;
+    fill: #000 !important;
     opacity: .5;
 }
 
@@ -124,11 +124,16 @@ Map
 }
 
 .region-title {
-    font-size: 44px !important;
+    font-size: 30px !important;
     fill: #fff;
     cursor: pointer;
 }
 
+.region-subtitle {
+    font-size: 20px !important;
+    fill: #fff;
+    cursor: pointer;   
+}
 
 .subheadline {
     transition: background-color 750ms ease-out;

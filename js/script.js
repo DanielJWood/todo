@@ -74,14 +74,14 @@ var rect = svg.append("rect")
 var g = svg.append("g");
 
 // d3.json("js/statesregionspr.json", function(error, regions) {
-d3.json("js/usa.json", function(error, regions) {
+d3.json("data/usa2.json", function(error, regions) {
   if (error) throw error;
   d3.csv("data/cities.csv", function(error, cities){
   // d3.json("http://energyapps.github.io/climate-frame/js/statesregion2.json", function(error, regions) {  
 	if (error) throw error;
 
   window.onload = function(){
-    var dataLoad = topojson.feature(regions, regions.objects.regions1).features;
+    var dataLoad = topojson.feature(regions, regions.objects.regions3).features;
     var hash = (window.location.hash).replace('#', '');
     if (hash.length != 0) {
       for (var i = 0; i < dataLoad.length; i++) {
@@ -99,7 +99,7 @@ d3.json("js/usa.json", function(error, regions) {
 
 // The background coastal boundary goes first cuz its underneath
   g.append("path")
-    .datum(topojson.mesh(regions, regions.objects.regions1, function(a, b) { 
+    .datum(topojson.mesh(regions, regions.objects.regions3, function(a, b) { 
       return a === b }))
     .attr("d", function(d){      
       return path(d)
@@ -108,22 +108,24 @@ d3.json("js/usa.json", function(error, regions) {
     .attr("class", "coast-boundary");  
 
 // next the regions color
-	var regionColor = g.append("g")
-		.attr("id","regions")
-		.selectAll(".region")
-      .data(topojson.feature(regions, regions.objects.regions1).features)
-    .enter().append("path")
+	var regionContainers = g.selectAll(".region")
+      .data(topojson.feature(regions, regions.objects.regions3).features);
+
+  var regionContainers2 = regionContainers.enter().append("g")
+      .on("mouseenter",function(d){
+        d3.select(this).selectAll("path")
+          .style("fill","#E7BBBF")
+      })
+      .on("mouseleave",function(d){
+        console.log(d3.select(this).selectAll("path"))
+        d3.select(this).selectAll("path")
+          .style("fill","#fff")
+      });;
+
+  var regionContainersGeo = regionContainers2.append("path")
       .attr("class", function(d) { return "region " + d.id; })
       .attr("d", path)
-      .on("click", clicked)
-      // .on("mouseenter",function(d){
-      //   d3.select(this)
-      //     .style("fill","#E7BBBF")
-      // })
-      // .on("mouseleave",function(d){
-      //   d3.select(this)
-      //     .style("fill","#fff")
-      // });
+      .on("click", clicked)      
 
 // states boundary
 	g.append("path")
@@ -133,17 +135,13 @@ d3.json("js/usa.json", function(error, regions) {
     .attr("class", "subunit-boundary");	    
 
 // Regions boundary
-g.append("path")
-    .datum(topojson.mesh(regions, regions.objects.regions1, function(a, b) { 
+ g.append("path")
+    .datum(topojson.mesh(regions, regions.objects.regions3, function(a, b) { 
       return a !== b }))
     .attr("d", path)
     .attr("class", "main-boundary");
 
-  var BigBubbles = g.selectAll("circle")
-    .data(topojson.feature(regions, regions.objects.regions1).features.filter(function(d){
-      console.log(d)
-      return d.id !== "Null"}))
-      .enter().append("circle")
+  var BigBubbles = regionContainers2.append("circle")
         .attr("class", "bubble")
         .attr("transform", function(d) { 
           // console.log(d)
@@ -155,7 +153,7 @@ g.append("path")
           };
           return "translate(" + center + ")"; })          
         .attr("r", function(d) { 
-          return width / 20;            
+          return width / 25;            
         })
         .on("click", clicked)
          // .attr("text", function(d){ return d.properties.name})
@@ -208,36 +206,9 @@ g.append("path")
         .remove()
     })
 
-
-
-  // g.selectAll(".citytext")
-  //   .data(cities)
-  //   .enter()
-  //   .append("svg:text")
-    // .attr("text",function(d){
-    //   return d.name;
-    // })
-    // .text(function(d){
-    //   return d.name;
-    // })
-    // .attr("transform", function(d) {      
-    //   var latlong = projection([d.longitude,d.latitude])      
-    //   // latlong[0] = latlong[0] + 10;
-    //   latlong[0] = latlong[0] + 10;
-    //   latlong[1] = latlong[1] + 4;
-    //   return "translate(" + latlong + ")";
-    // })
-    // .attr("opacity","0")
-    // .attr("display","none")
-    // .attr("text-anchor","start")
-    // .attr("class", "citytext")
-    // .attr("id",function(d){
-    //   return d.id;
-    // })
-
     // Add titles to regions
   g.selectAll(".region-title")
-    .data(topojson.feature(regions, regions.objects.regions1).features.filter(function(d){return d.id !== "Null"}))
+    .data(topojson.feature(regions, regions.objects.regions3).features.filter(function(d){return d.id !== "Null"}))
     .enter()
     .append("svg:text")
     .attr("class","region-title")
@@ -258,10 +229,10 @@ g.append("path")
       if (d.id === "West") {
         var center = path.centroid(d)
         center[0] = center[0] - (width/ 20) ;
-        center[1] = center[1] + 15;
+        center[1] = center[1] + 5;
       } else {
         var center = path.centroid(d)
-        center[1] = center[1] + 15;
+        center[1] = center[1] + 5;
       };
       return "translate(" + center + ")"; 
     })          
@@ -344,9 +315,9 @@ function clicked(d) {
     $('#linkbutton').attr("href",url)
   }(jQuery));  
 
-// Sets the active topography so that it highlights the states
-  g.selectAll("path")
-      .classed("active", centered && function(d) { return d.id === centered.id; });
+// Sets the active topography so that it highlights the states MAY NOT BE WORKING?
+  g.selectAll(".region")
+    .classed("active", centered && function(d) { return d.id === centered.id; });
 
 //transitions the map.
   g.transition()
@@ -354,21 +325,24 @@ function clicked(d) {
       .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")scale(" + k + ")translate(" + -x + "," + -y + ")")
       .style("stroke-width", 1.5 / k + "px");
 
+// k===2 is when it is clicked
   if (k === 2) {
     g.selectAll(".bubble")
       .transition()
       .duration(750)
-      .attr("r","0")
-    
+      .attr("r","0")    
     g.selectAll(".region-title")
       .transition()
       .attr("fill-opacity","0")
-  } else if (k === 1){
+        
+  } 
+  // below is the clickout
+  else if (k === 1){
     g.selectAll(".bubble")
       .transition()
       .duration(750)
       .attr("r", function(d) { 
-          return width / 20;            
+          return width / 25;            
         })
     
     g.selectAll(".region-title")
