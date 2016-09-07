@@ -8,29 +8,35 @@ var datesdata = [
   {
     "id": "Northeast",
     "short_id": "NE",
-    "available": 0
+    "available": 0,
+    "datesAvail": []
   },
   {
     "id": "Midwest",
     "short_id": "MW",
-    "available": 0
+    "available": 0,
+    "datesAvail": []
   },
   {
     "id": "Southeast",
     "short_id": "SE",
-    "available": 0
+    "available": 0,
+    "datesAvail": []
   },
   {
     "id": "Southwest",
     "short_id": "SW",
-    "available": 0
+    "available": 0,
+    "datesAvail": []
   },
   {
     "id": "West",
     "short_id": "WC",
-    "available": 0
+    "available": 0,
+    "datesAvail": []
   }
 ];
+
 
 function getMaxOfArray(numArray) {
   return Math.max.apply(null, numArray);
@@ -91,9 +97,10 @@ d3.json("data/usa2.json", function(error, regions) {
       for (var z = dates.length - 1; z >= 0; z--) {    
         if (datesdata[x].id === dates[z].region) {
           datesdata[x].available += 1;
+          datesdata[x].datesAvail.push(dates[z])
         } 
       };  
-    };
+    };    
 
     window.onload = function(){
       var dataLoad = topojson.feature(regions, regions.objects.regions3).features;
@@ -164,9 +171,7 @@ d3.json("data/usa2.json", function(error, regions) {
             return width / 25;            
           })
           .on("click", clicked)
-           // .attr("text", function(d){ return d.properties.name})
-          .on('mouseover', hoverbubba)
-          .on('mouseout', mouseout);
+           // .attr("text", function(d){ return d.properties.name})          
     
       // Add titles to regions
     var regionTitles = g.selectAll(".region-title")
@@ -348,7 +353,16 @@ function clicked(d) {
       .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")scale(" + 1.4 + ")translate(" + -x + "," + -y + ")")
       .style("stroke-width", 1.5 / k + "px");    
 
-      console.log(id)
+      var nowData;
+      // build the table (function defined below)
+      for (var s = datesdata.length - 1; s >= 0; s--) {
+        if (datesdata[s].id === id) {
+          nowData = datesdata[s];
+          break;
+        };        
+      };
+      
+      BuildTable(nowData);
   } 
   // below is the clickout
   else if (k === 1){
@@ -399,18 +413,20 @@ function clicked(d) {
 
 }
 
-// keep the color highlighted when you're over a bubble THIS ISNT WORKING
-function hoverbubba(d) {
-  // console.log(d)
-  // console.log(centered)
-  // g.selectAll("path")
-  //   .classed("active", centered && function(d) { return d.id === centered.id; });  
-  // g.select("path.region .West").attr("class","active region West");
+
+function BuildTable(d) { 
+  (function ($) { 
+
+    console.log(d.datesAvail)
+    for (var z = d.datesAvail.length - 1; z >= 0; z--) {    
+      // Build the FORM!!!
+      console.log(d.datesAvail[z])
+    };  
+
+
+  }(jQuery));  
 }
 
-function mouseout(d) {
-  // console.log(d)   
-}
 
 function ReadMore() { 
   (function ($) {   
