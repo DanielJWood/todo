@@ -287,26 +287,6 @@ function clicked(d) {
       }(jQuery));  
     }, 1000);  
 
-    for (var i = context_data.length - 1; i >= 0; i--) {
-      if (d.id == context_data[i].Name) {
-        // summary = context_data[i].summary;
-        // properties = context_data[i].properties;
-        // url = "http://energy.gov/sites/prod/files/2015/10/f27/" + context_data[i].uri;
-        // for (var key in properties) {
-        //   order = properties[key].charAt(0);
-        //   propinter = properties[key].substring(2);
-
-        //   if (properties[key] != "") {
-        //     boxHeight += 1
-        //     p[0].push(order);
-        //     p[1].push(key);
-        //     p[2].push(propinter)
-        //     p[3].push(key.length);            
-        //     p[4].push(propinter.length);            
-        //   };              
-        // }   
-      } 
-    };  
     var centroid = path.centroid(d);
     // the x and y are from the json and its how it knows where to zoom to 
     x = centroid[0];
@@ -416,8 +396,6 @@ function clicked(d) {
 
 function BuildTable(d) { 
   (function ($) { 
-
-    console.log(d.datesAvail)
     for (var z = d.datesAvail.length - 1; z >= 0; z--) {    
       // Build the FORM!!!
       console.log(d.datesAvail[z])

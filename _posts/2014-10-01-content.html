@@ -19,8 +19,8 @@ layout: post
 <![endif]-->
 
 <!-- Fallback info -->
-    <div class="rowDOE fallback">
-      <div class="large-12 columnsDOE" style="background-color: #fbedc2; height:40px; padding-top:11px;">
+    <div class="row fallback">
+      <div class="large-12 columns" style="background-color: #fbedc2; height:40px; padding-top:11px;">
         <center>Want to view this interactive graphic in all its glory? Upgrade to a modern browser!</center>
       </div>
     </div>
@@ -29,16 +29,16 @@ layout: post
     </div> -->
   <div id="master_container" class="m_container">        
 
-    <div class="rowDOE execclass" id="execid">
-      <!-- <div class="large-12 columnsDOE headline">
+    <div class="row execclass" id="execid">
+      <!-- <div class="large-12 columns headline">
         <center><h2><span class="change-text green-text">Climate Change</span> and the U.S. Energy Sector</h2></center>
       </div> -->
-      <div id="subber" class="large-12 columnsDOE subheadline">
+      <div id="subber" class="large-12 columns subheadline">
         <h4>Select a region to see available dates</h4>
         <!-- <p>Select a region to see available dates.</p> -->
         <!-- <div class="arrow black"></div> -->
       </div>
-      <div id="exec" class="large-12 columnsDOE">
+      <div id="exec" class="large-12 columns">
       </div>
     </div>
     <div id="map">
@@ -50,13 +50,48 @@ layout: post
       </a>
     </div>
     <div id="summary">
-      <div id="clickstate" class="large-12 columnsDOE subheadline">
+      <div id="clickstate" class="large-12 columns subheadline">
         <p>Click on a region to learn more</p>
       </div>
       <div id="region-text">
       </div>
-      <div class="rowDOE">      
-        <div  class="small-8 medium-4 large-3 small-centered columnsDOE">
+
+      <!-- add the form here? -->
+       <div class="row">
+        <div class="large-6 small-centered columns">
+          <div class="signup-panel">
+            <!-- <p class="welcome"> Welcome to this awesome app!</p> -->
+            <form>
+              <div class="row collapse">                
+                <div class="small-6  columns input">
+                  <input type="text" placeholder="first name">
+                </div>
+                <div class="small-6  columns input">
+                  <input type="text" placeholder="last name">
+                </div>
+              </div>
+              <div class="row collapse">                
+                <div class="small-6  columns input">
+                  <input type="text" placeholder="email">
+                </div>
+                <div class="small-6  columns input">
+                  <input type="text" placeholder="company">
+                </div>
+              </div>
+              <div class="row collapse">                
+                <div class="small-10 columns ">
+                  <input type="text" placeholder="password">
+                </div>
+              </div>
+            </form>
+            <a href="#" class="button ">Sign Up! </a>
+             <p>Already have an account? <a href="#">Login here &raquo</a></p>
+          </div>
+        </div>
+       </div>
+
+      <div class="row">      
+        <div  class="small-8 medium-4 large-3 small-centered columns">
           <a id="linkbutton" href="http://energy.gov/node/1298916/" class="button1" target="blank">
             <h3>Submit</h3>
           </a>
@@ -64,90 +99,6 @@ layout: post
       </div>  
     </div>
 </div>    
-<script type="text/javascript">
-var context_data = [
-  {
-    "id":"NW",
-    "Name":"West",
-    "uri":"Northwest.pdf",
-    "summary":"Hydropower is a major source of electricity in the Northwest, providing more than 70% of the region’s power. Warmer temperatures and less mountain snowpack will cause streams fed by melting snow to reach their peak flow earlier in spring, leading to less available hydropower during the hot summer months when demand is highest. Increased wildfire threat also has the potential to disrupt electricity transmission.",
-    "properties":{
-        "ElectricGrid":"3,a,d",
-        "ElectricityDemand":"2,a",
-        "FuelTransport":"5,b,e",
-        "Hydropower":"1,c",
-        "OilGas":"",
-        "Thermoelectric":"4,a,e",
-        "WindPower":"",
-        "Bioenergy":""
-    }
-  },
-  {
-    "id":"SW",
-    "Name":"Southwest",
-    "uri":"Southwest.pdf",
-    "summary":"Many energy systems in the Southwest are already designed for hot and arid conditions, but climate change is going to put additional pressure on the region. More frequent and severe heat waves will drive up electricity demand as people try to stay cool, while at the same time hampering the ability of natural gas- and coal-fired power plants to meet that demand. Other concerns as the region becomes drier include decreasing hydropower resources and wildfires threatening transmission lines.",
-    "properties":{
-        "ElectricGrid":"4,a,d,e",
-        "ElectricityDemand":"1,a",
-        "FuelTransport":"6,e",
-        "Hydropower":"3,c",
-        "OilGas":"5,c,e",
-        "Thermoelectric":"2,a,c,e",
-        "WindPower":"",
-        "Bioenergy":""
-    }
-  },
-  {
-    "id":"MW",
-    "Name":"Midwest",
-    "uri":"Midwest.pdf",
-    "summary":"More than 90% of the Midwest’s electricity is generated by coal-fired and other thermoelectric power plants. High temperatures can reduce both the generation capacity of those plants and the transmission capacity of power lines, while simultaneously increasing electricity demand for cooling. Drought and flooding can further disrupt fuel transport over land and water, in addition to hurting biofuel production and refining capacity in the region.",
-    "properties":{
-        "ElectricGrid":"4,a",
-        "ElectricityDemand":"3,a",
-        "FuelTransport":"2,a,b,c",
-        "Hydropower":"",
-        "OilGas":"",
-        "Thermoelectric":"1,a,b,c",
-        "WindPower":"",
-        "Bioenergy":"5,a,b,c"
-    }
-  },
-  {
-    "id":"SE",
-    "Name":"Southeast",
-    "uri":"Southeast.pdf",
-    "summary":"The Southeast, especially the Gulf Coast, has a great deal of energy infrastructure situated in low-lying areas prone to flooding. High winds, coastal erosion, storm surge and hurricanes threaten oil and gas production, ports, pipelines, refineries and storage facilities. Higher temperatures and more frequent, severe, and longer-lasting heat waves are also expected to increase peak electricity demand while reducing the capacity of thermoelectric generation and transmission systems needed to meet that demand.",
-    "properties":{
-        "ElectricGrid":"3,a,e,f",
-        "ElectricityDemand":"5,a",
-        "FuelTransport":"2,c,e,f",
-        "Hydropower":"6,c",
-        "OilGas":"1,c,e,f",
-        "Thermoelectric":"4,a,c,e,f",
-        "WindPower":"",
-        "Bioenergy":""
-    }
-  },
-  {
-    "id":"NE",
-    "Name":"Northeast",
-    "uri":"Northeast.pdf",
-    "summary":"The Northeast region is comparatively cool, so as temperatures rise, increasing use of air conditioners is likely to drive up electricity demand. Hotter temperatures can also reduce the capacity of power plants and electric grid transmission during periods of high demand. Along the coast, sea level rise and storm surge can threaten ports, electric grid equipment and power plants, while flooding from heavy rains can endanger energy infrastructure further inland such as roads, railroads, refineries and power lines.",
-    "properties":{
-        "ElectricGrid":"3,a,e,f",
-        "ElectricityDemand":"1,a",
-        "FuelTransport":"4,b,e,f",
-        "Hydropower":"",
-        "OilGas":"",
-        "Thermoelectric":"2,a,b,c,e,f",
-        "WindPower":"",
-        "Bioenergy":""
-    }
-  }
-]
-</script>
 <script>
   (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
   (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
