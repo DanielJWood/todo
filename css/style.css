@@ -143,6 +143,76 @@ Map
     transition: background-color 750ms ease-out;
 }
 
+/*The forms */
+.signup-panel {
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  padding: 15px;
+  margin-top: 30px;
+}
+.signup-panel i {
+  font-size: 30px;
+  line-height: 50px;
+  color: #999;
+}
+.signup-panel form input, .signup-panel form span {
+  height: 50px;
+}
+
+.check-head {
+    text-transform: uppercase;
+    font-size: 140%;
+}
+
+.signup-panel form input[type=checkbox] {
+    height: auto;
+    margin-bottom: 0px;
+}
+
+.signup-panel .welcome {
+  font-size: 26px;
+  text-align: center;
+  margin-left: 0;
+}
+.signup-panel p {
+  font-size: 13px;
+  font-weight: 200;
+  /*margin-left: 25%;*/
+}
+
+.signup-panel div#signup {
+    /*margin: 0 auto;*/
+    /*position: relative;*/
+    text-align: center;
+    width: 100%;
+}
+
+
+
+/*
+.signup-panel .input {
+    padding-right: 0.9375rem !important;
+    padding-left: 0.9375rem !important;
+}
+
+.signup-panel form input {
+    width: 100%;
+    border: 1px solid #000;
+}
+*/
+
+
+
+
+
+
+
+
+
+
+
+
+
 #exec {
     max-height: 0;
     overflow: hidden;
@@ -188,7 +258,9 @@ a#link-below, #below p:hover {
     opacity: 1;
     width: 50%;
     /*height: 60px;*/
-    text-align: center;    
+    text-align: center; 
+    border-radius: 5px;   
+    /*border: 1px solid #ccc;*/
 }
 
 #below.active, #threats.active {
@@ -312,11 +384,11 @@ rect.threat.f {fill:hsl(250,100%,50%)}*/
 Foundation pieces and DOM
 ***********************************************/
 
-        .rowDOE {
+        .row {
             margin-bottom: 10px;
         }
 
-        .rowDOE .green-text    {
+        .row .green-text    {
             color: rgb(140,198,63) !important;
         }
 
@@ -335,18 +407,18 @@ Foundation pieces and DOM
         .change-text.SE {color: #7FF5A5;}
         .change-text.NE {color: #FF9E9A;}
 
-        .rowDOE .white-text    {
+        .row .white-text    {
             color: #fff !important;
         }
 
         /*Typography*/
 
-        .rowDOE h1, .rowDOE h2, .rowDOE h3, .rowDOE h4 {
+        .row h1, .row h2, .row h3, .row h4 {
             text-align: center;
             border:none
         }
 
-        .rowDOE h1 {
+        .row h1 {
             font-size: 33px;
             letter-spacing: 7px;
             color: rgb(51,51,51) !important;
@@ -356,7 +428,7 @@ Foundation pieces and DOM
             text-decoration: none !important;
         }
 
-        .rowDOE h2 {
+        .row h2 {
             font-size: 38px;
             color: #fff !important;
             text-transform: none;
@@ -367,7 +439,7 @@ Foundation pieces and DOM
             letter-spacing: .1rem;
         }
 
-        .rowDOE h3 {
+        .row h3 {
             font-size: 26px;
             color: #fff !important;
             margin-top: 0.5rem;
@@ -376,7 +448,7 @@ Foundation pieces and DOM
             line-height: normal;
         }
 
-        .rowDOE h4 {
+        .row h4 {
             font-size: 20px;
             text-transform: uppercase;
             margin-top: 0.5rem;
@@ -384,7 +456,7 @@ Foundation pieces and DOM
             color: rgb(0, 0, 0) !important;
         }
 
-        .rowDOE .inner-text {
+        .row .inner-text {
             font-size: 28px;
             text-transform: uppercase;
             font-family: "Avenir LT W02 85 Heavy",verdana,sans-serif;
@@ -395,7 +467,7 @@ Foundation pieces and DOM
             color: #fff !important;
         }
 
-        .rowDOE .inner-text.large-8 {position: absolute;}
+        .row .inner-text.large-8 {position: absolute;}
 
         .inner-text p {
             text-align: center;
@@ -603,7 +675,7 @@ Foundation pieces and DOM
             font-size: 14px; 
             display: inline-block;
         }
-        .rowDOE h1 {
+        .row h1 {
             font-size: 52px;        
             letter-spacing: 15px;
             padding-top: 1rem;
@@ -650,7 +722,7 @@ Foundation pieces and DOM
             display: none;
         }
 
-        .rowDOE h2 {
+        .row h2 {
             font-size: 30px;
             padding-top: 0.5rem;
             padding-bottom: 0.5rem;
@@ -662,7 +734,7 @@ Foundation pieces and DOM
             padding-bottom: .2rem
         }
         
-        .rowDOE h3 {
+        .row h3 {
             font-size: 16px;
             margin-top: .25rem;
             margin-bottom: .25rem;
@@ -682,7 +754,7 @@ Foundation pieces and DOM
             height: 300px
         }
 
-        .rowDOE .inner-text {
+        .row .inner-text {
             font-size: 18px !important;
             line-height: 18px !important; 
             letter-spacing: 0rem;
@@ -698,10 +770,10 @@ Foundation pieces and DOM
     #sub-blocks-full {
         height: 300px;
     }
-    .rowDOE h1 {
+    .row h1 {
         font-size: 28px
     }
-    .rowDOE h2 {
+    .row h2 {
             font-size: 26px;
             padding-top: 0.25rem;
             padding-bottom: 0.25rem;

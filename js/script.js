@@ -3,29 +3,40 @@
 // Initiate pym
 var pymChild = new pym.Child();
 
-// fake data
+// inital data
 var datesdata = [
   {
     "id": "Northeast",
-    "available": 25
+    "short_id": "NE",
+    "available": 0,
+    "datesAvail": []
   },
   {
     "id": "Midwest",
-    "available": 15
+    "short_id": "MW",
+    "available": 0,
+    "datesAvail": []
   },
   {
     "id": "Southeast",
-    "available": 10
+    "short_id": "SE",
+    "available": 0,
+    "datesAvail": []
   },
   {
     "id": "Southwest",
-    "available": 7
+    "short_id": "SW",
+    "available": 0,
+    "datesAvail": []
   },
   {
     "id": "West",
-    "available": 19
+    "short_id": "WC",
+    "available": 0,
+    "datesAvail": []
   }
 ];
+
 
 function getMaxOfArray(numArray) {
   return Math.max.apply(null, numArray);
@@ -77,164 +88,172 @@ var g = svg.append("g");
 d3.json("data/usa2.json", function(error, regions) {
   if (error) throw error;
   d3.csv("data/cities.csv", function(error, cities){
-	if (error) throw error;
+	 if (error) throw error;
+    d3.csv("data/dates/dates_9_7_16.csv", function(error, dates){
+      if (error) throw error;
 
-  window.onload = function(){
-    var dataLoad = topojson.feature(regions, regions.objects.regions3).features;
-    var hash = (window.location.hash).replace('#', '');
-    if (hash.length != 0) {
-      for (var i = 0; i < dataLoad.length; i++) {
-        dhash = dataLoad[i].properties.name.replace(/\s+/g, '-').toLowerCase();
-        if (dhash == hash) {
-          clicked(dataLoad[i])
-          break
-        };
-      };      
+    //populate the array that will fill the bubbles with the number of dates  
+    for (var x = datesdata.length - 1; x >= 0; x--) {
+      for (var z = dates.length - 1; z >= 0; z--) {    
+        if (datesdata[x].id === dates[z].region) {
+          datesdata[x].available += 1;
+          datesdata[x].datesAvail.push(dates[z])
+        } 
+      };  
+    };    
+
+    window.onload = function(){
+      var dataLoad = topojson.feature(regions, regions.objects.regions3).features;
+      var hash = (window.location.hash).replace('#', '');
+      if (hash.length != 0) {
+        for (var i = 0; i < dataLoad.length; i++) {
+          dhash = dataLoad[i].properties.name.replace(/\s+/g, '-').toLowerCase();
+          if (dhash == hash) {
+            clicked(dataLoad[i])
+            break
+          };
+        };      
+      }
+
+      // Make sure its big enough on the parent!
+      pymChild.sendHeight();
     }
 
-    // Make sure its big enough on the parent!
-    pymChild.sendHeight();
-  }
-
-// The background coastal boundary goes first cuz its underneath
-  g.append("path")
-    .datum(topojson.mesh(regions, regions.objects.regions3, function(a, b) { 
-      return a === b }))
-    .attr("d", function(d){      
-      return path(d)
-    })
-    .attr("d", path2)
-    .attr("class", "coast-boundary");  
-
-// next the regions color
-	var regionContainers = g.selectAll(".region")
-      .data(topojson.feature(regions, regions.objects.regions3).features);
-
-  var regionContainers2 = regionContainers.enter().append("g")
-      .on("mouseenter",function(d){
-        d3.select(this).selectAll("path")
-          .style("fill","#E7BBBF")
+  // The background coastal boundary goes first cuz its underneath
+    g.append("path")
+      .datum(topojson.mesh(regions, regions.objects.regions3, function(a, b) { 
+        return a === b }))
+      .attr("d", function(d){      
+        return path(d)
       })
-      .on("mouseleave",function(d){
-        d3.select(this).selectAll("path")
-          .style("fill","#fff")
-      });;
+      .attr("d", path2)
+      .attr("class", "coast-boundary");  
 
-  var regionContainersGeo = regionContainers2.append("path")
-      .attr("class", function(d) { return "region " + d.id; })
-      .attr("d", path)
-      .on("click", clicked)      
+  // next the regions color
+  	var regionContainers = g.selectAll(".region")
+        .data(topojson.feature(regions, regions.objects.regions3).features);
 
-// states boundary
-	g.append("path")
-    .datum(topojson.mesh(regions, regions.objects.states1, function(a, b) { return a !== b}))
-    .attr("d", path)
-    .attr("cursor","pointer")
-    .attr("class", "subunit-boundary");	    
-
-// Regions boundary
- g.append("path")
-    .datum(topojson.mesh(regions, regions.objects.regions3, function(a, b) { 
-      return a !== b }))
-    .attr("d", path)
-    .attr("class", "main-boundary");
-
-  var BigBubbles = regionContainers2.append("circle")
-        .attr("class", "bubble")
-        .attr("transform", function(d) {           
-          var center = path.centroid(d)
-          return "translate(" + center + ")"; })          
-        .attr("r", function(d) { 
-          return width / 25;            
+    var regionContainers2 = regionContainers.enter().append("g")
+        .on("mouseenter",function(d){
+          d3.select(this).selectAll("path")
+            .style("fill","#E7BBBF")
         })
-        .on("click", clicked)
-         // .attr("text", function(d){ return d.properties.name})
-        .on('mouseover', hoverbubba)
-        .on('mouseout', mouseout);
-  
-    // Add titles to regions
-  var regionTitles = g.selectAll(".region-title")
-    .data(topojson.feature(regions, regions.objects.regions3).features.filter(function(d){return d.id !== "Null"}))
-    .enter()
-    .append("svg:text")
-    .attr("class","region-title")
-    .attr("id", function(d){
-      return d.id + "-title"
-    })
-    .attr("transform", function(d) { 
-      // console.log(path.centroid(d))
-      var center = path.centroid(d)
-      // center[0] = center[0] + 1;
-      return "translate(" + center + ")"; 
-    })          
-    .attr("text-anchor","middle");
+        .on("mouseleave",function(d){
+          d3.select(this).selectAll("path")
+            .style("fill","#fff")
+        });;
 
-    regionTitles.append("tspan")
-    .text(function(d){
-      var needates;
-      for (var i = datesdata.length - 1; i >= 0; i--) {
-        if (datesdata[i].id === d.id) {
-          needates = datesdata[i].available;
-          break;
+    var regionContainersGeo = regionContainers2.append("path")
+        .attr("class", function(d) { return "region " + d.id; })
+        .attr("d", path)
+        .on("click", clicked)      
+
+  // states boundary
+  	g.append("path")
+      .datum(topojson.mesh(regions, regions.objects.states1, function(a, b) { return a !== b}))
+      .attr("d", path)
+      .attr("cursor","pointer")
+      .attr("class", "subunit-boundary");	    
+
+  // Regions boundary
+   g.append("path")
+      .datum(topojson.mesh(regions, regions.objects.regions3, function(a, b) { 
+        return a !== b }))
+      .attr("d", path)
+      .attr("class", "main-boundary");
+
+    var BigBubbles = regionContainers2.append("circle")
+          .attr("class", "bubble")
+          .attr("transform", function(d) {           
+            var center = path.centroid(d)
+            return "translate(" + center + ")"; })          
+          .attr("r", function(d) { 
+            return width / 25;            
+          })
+          .on("click", clicked)
+           // .attr("text", function(d){ return d.properties.name})          
+    
+      // Add titles to regions
+    var regionTitles = g.selectAll(".region-title")
+      .data(topojson.feature(regions, regions.objects.regions3).features.filter(function(d){return d.id !== "Null"}))
+      .enter()
+      .append("svg:text")
+      .attr("class","region-title")
+      .attr("id", function(d){
+        return d.id + "-title"
+      })
+      .attr("transform", function(d) { 
+        var center = path.centroid(d)
+        return "translate(" + center + ")"; 
+      })          
+      .attr("text-anchor","middle");
+
+      regionTitles.append("tspan")
+      .text(function(d){
+        var needates;
+        for (var i = datesdata.length - 1; i >= 0; i--) {
+          if (datesdata[i].id === d.id) {
+            needates = datesdata[i].available;
+            break;
+          };
         };
-      };
-      return needates;
-    })
-
-    regionTitles.append("tspan")
-    .text("Dates")
-    .attr("class","dates")
-    .attr("x",0)
-    .attr("y",20);
-
-    // Add city points
-  var citys = g.selectAll(".bubblecontainer")
-    .data(cities)
-    .enter().append("g").attr("class","bubblecontainer")
-
-  var citysinner = citys.append("circle")
-    .attr("r",3)
-    .attr("text",function(d){
-      return d.name;
-    })
-    .attr("transform", function(d) {
-      var latlong = projection([d.longitude,d.latitude])
-      return "translate(" + latlong + ")";
-    })
-    .attr("class", "city")
-  
-    var citytext = citys.on("mouseover",function(d){
-        d3.select(this).append("svg:text")
-          .text(function(d){
-            return d.name;
-          })
-          .attr("transform", function(d) {      
-            var latlong = projection([d.longitude,d.latitude])
-            latlong[0] = latlong[0] + 10;
-            latlong[1] = latlong[1] + 4;
-            return "translate(" + latlong + ")";
-          })
-          .attr("opacity","0")
-          .attr("text-anchor","start")
-          .attr("class", "citytext")
-          .attr("id",function(d){
-            return d.id;
-          })
-
-        var now = d.id;
-        g.select("#"+now)
-          .transition().duration(750)      
-          .attr("opacity","1")
-      })
-      .on("mouseout",function(d){
-        g.selectAll(".citytext")
-          .transition().duration(750)        
-          .attr("opacity","0")
-          .remove()
+        return needates;
       })
 
+      regionTitles.append("tspan")
+      .text("Dates")
+      .attr("class","dates")
+      .attr("x",0)
+      .attr("y",20);
+
+      // Add city points
+    var citys = g.selectAll(".bubblecontainer")
+      .data(cities)
+      .enter().append("g").attr("class","bubblecontainer")
+
+    var citysinner = citys.append("circle")
+      .attr("r",3)
+      .attr("text",function(d){
+        return d.name;
+      })
+      .attr("transform", function(d) {
+        var latlong = projection([d.longitude,d.latitude])
+        return "translate(" + latlong + ")";
+      })
+      .attr("class", "city")
+    
+      var citytext = citys.on("mouseover",function(d){
+          d3.select(this).append("svg:text")
+            .text(function(d){
+              return d.name;
+            })
+            .attr("transform", function(d) {      
+              var latlong = projection([d.longitude,d.latitude])
+              latlong[0] = latlong[0] + 10;
+              latlong[1] = latlong[1] + 4;
+              return "translate(" + latlong + ")";
+            })
+            .attr("opacity","0")
+            .attr("text-anchor","start")
+            .attr("class", "citytext")
+            .attr("id",function(d){
+              return d.id;
+            })
+
+          var now = d.id;
+          g.select("#"+now)
+            .transition().duration(750)      
+            .attr("opacity","1")
+        })
+        .on("mouseout",function(d){
+          g.selectAll(".citytext")
+            .transition().duration(750)        
+            .attr("opacity","0")
+            .remove()
+        })
 
 
+    });
   });
 });
 
@@ -262,30 +281,10 @@ function clicked(d) {
     function() 
     {
       (function ($) {   
-        // $('#summary').scrollView();
+        $('#summary').scrollView();
       }(jQuery));  
     }, 1000);  
 
-    for (var i = context_data.length - 1; i >= 0; i--) {
-      if (d.id == context_data[i].Name) {
-        // summary = context_data[i].summary;
-        // properties = context_data[i].properties;
-        // url = "http://energy.gov/sites/prod/files/2015/10/f27/" + context_data[i].uri;
-        // for (var key in properties) {
-        //   order = properties[key].charAt(0);
-        //   propinter = properties[key].substring(2);
-
-        //   if (properties[key] != "") {
-        //     boxHeight += 1
-        //     p[0].push(order);
-        //     p[1].push(key);
-        //     p[2].push(propinter)
-        //     p[3].push(key.length);            
-        //     p[4].push(propinter.length);            
-        //   };              
-        // }   
-      } 
-    };  
     var centroid = path.centroid(d);
     // the x and y are from the json and its how it knows where to zoom to 
     x = centroid[0];
@@ -331,6 +330,17 @@ function clicked(d) {
       .duration(750)
       .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")scale(" + 1.4 + ")translate(" + -x + "," + -y + ")")
       .style("stroke-width", 1.5 / k + "px");    
+
+      var nowData;
+      // build the table (function defined below)
+      for (var s = datesdata.length - 1; s >= 0; s--) {
+        if (datesdata[s].id === id) {
+          nowData = datesdata[s];
+          break;
+        };        
+      };
+      
+      BuildTable(nowData);
   } 
   // below is the clickout
   else if (k === 1){
@@ -350,13 +360,15 @@ function clicked(d) {
       .duration(750)
       .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")scale(" + 1 + ")translate(" + -x + "," + -y + ")")
       .style("stroke-width", 1.5 / k + "px");
+
+  ClearTable();
   };
 
     // Add the dom elements. HTML, basically no D3
       //Change the color of the header based on the region.
-      var clickstate = document.getElementById("clickstate")
-      clickstate.className = "large-12 columnsDOE subheadline " + id;
-      clickstate.innerHTML = "<p>" + name + "</p>";
+      var regionspan = document.getElementById("regionspan")
+      console.log(d.id)
+      regionspan.innerHTML = d.id;
 
       //change bottom tab/button
       var below = document.getElementById("below")
@@ -374,25 +386,61 @@ function clicked(d) {
         greenTextchange[i].className = "change-text " + green;    
       };
 
-      var region_text = document.getElementById("region-text")
-      region_text.innerHTML = "<p style='padding-top: 50px;'>" + summary + "</p>";
-
   pymChild.sendHeight();
 
 }
 
-// keep the color highlighted when you're over a bubble THIS ISNT WORKING
-function hoverbubba(d) {
-  // console.log(d)
-  // console.log(centered)
-  // g.selectAll("path")
-  //   .classed("active", centered && function(d) { return d.id === centered.id; });  
-  // g.select("path.region .West").attr("class","active region West");
+
+function BuildTable(d) { 
+  (function ($) { 
+    var data = d.datesAvail;
+
+    var datesTable = document.getElementById("dates-list")
+    datesTable.innerHTML = "";
+
+    var first = "<div class='large-12 columns'><div class='row'>";
+    var main = "<div class='large-4 columns'>"
+    var closer = "</div>"
+    var last = "</div></div>"  
+    for (var z = data.length - 1; z >= 0; z--) {    
+      // Build the FORM!!!
+      // console.log(data[z])
+      var location = data[z].city + ", " + data[z].state;
+      var startend = data[z].start + "-" + data[z].finish;
+      var checkbox = "<div class='checkbox-container'><input id='"+ data[z].post_id +"' type='checkbox'></div>";
+
+      var complete = first + main + location + closer + main + startend + closer + main + checkbox + closer + last;
+
+      datesTable.innerHTML = datesTable.innerHTML + complete;
+    };  
+  }(jQuery));  
 }
 
-function mouseout(d) {
-  // console.log(d)   
+function ClearTable(d) {
+  var datesTable = document.getElementById("dates-list")
+  datesTable.innerHTML = "";
 }
+
+$( "#formsubmit" ).click(function() {
+
+// put ids here, capture values, make into a json, send to the INTERNET!!!!!
+  var firstname = $('#firstname').val();
+  var lastname = $('#lastname').val();
+  var email = $('#email').val();
+  var company = $('#company').val();
+
+  var senddata = [{
+    "firstname": firstname,
+    "lastname": lastname,
+    "email": email,
+    "company": company,
+    "dates": []
+  }]
+
+  console.log(senddata)
+});
+
+
 
 function ReadMore() { 
   (function ($) {   

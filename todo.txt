@@ -1,7 +1,0 @@
-Files 
-1) 	- Hawaii, Alaska = NULL
-	- OK, KS = NULL
-	- MN, IA = MIDWEST
-	- WV = SOUTH
-2) 	- HI, AK = name
-	- 
