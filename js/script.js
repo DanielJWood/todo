@@ -1,7 +1,27 @@
 // TO Do
 
+console.log(document.getElementsByTagName('body')[0].offsetHeight.toString());
+
+
+// var pymChild = new pym.Child({ id: 'example-follow-links' });
+
 // Initiate pym
 var pymChild = new pym.Child();
+
+
+  window.onload = function(){
+    console.log('test')
+    console.log('new')
+    pymChild.sendHeight();
+  };
+
+  $(window).load(function(){
+    console.log('ne1w')
+    pymChild.sendHeight();    
+  });
+      
+
+
 
 // inital data
 var datesdata = [
@@ -420,7 +440,6 @@ function clicked(d) {
     // Add the dom elements. HTML, basically no D3
       //Change the color of the header based on the region.
       var regionspan = document.getElementById("regionspan")
-      console.log(d.id)
       regionspan.innerHTML = d.id;
 
       //change bottom tab/button
@@ -452,12 +471,12 @@ function BuildTable(d) {
     datesTable.innerHTML = "";
 
     var first = "<div class='large-12 columns'><div class='row'>";
-    var main = "<div class='large-4 columns'>"
+    var main = "<div class='small-4 columns'>"
     var closer = "</div>"
     var last = "</div></div>"  
     for (var z = data.length - 1; z >= 0; z--) {    
       // Build the FORM!!!
-      // console.log(data[z])
+
       var location = data[z].city + ", " + data[z].state;
       var startend = data[z].start + "-" + data[z].finish;
       var checkbox = "<div class='checkbox-container'><input name=" + data[z].post_id + " id='"+ data[z].post_id +"' type='checkbox'></div>";
@@ -499,7 +518,7 @@ $( "#formsubmit" ).click(function() {
   });
 
   // console.log(ischecked)
-  console.log(senddata)
+  // console.log(senddata)
 });
 
 
@@ -511,7 +530,7 @@ function ReadMore() {
 }
 
 (function ($) { 
-  $(document).ready(function() { 
+  $(document).ready(function() {     
     $.fn.scrollView = function () {
       return this.each(function () {
         $('html, body').animate({
@@ -522,7 +541,7 @@ function ReadMore() {
   });  
 }(jQuery));  
 
-d3.select("#execid").on("mouseover",function(){pymChild.sendHeight();})    
-d3.select("#execid").on("mouseleave",function(){
-  pymChild.sendHeight();
-})    
+// d3.select("#execid").on("mouseover",function(){pymChild.sendHeight();})    
+// d3.select("#execid").on("mouseleave",function(){
+//   pymChild.sendHeight();
+// })    
