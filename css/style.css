@@ -173,6 +173,17 @@ Map
     margin-bottom: 0px;
 }
 
+.signup-panel form input[type=submit] {
+    width: 100%;
+    font-family: "Avenir LT W02 35 Light",verdana,sans-serif;
+    font-size: 26px;
+    color: #fff !important;
+    /*margin-top: 0.5rem;
+    margin-bottom: 0.6rem;*/
+    text-transform: none;
+    line-height: normal;
+}
+
 .signup-panel .welcome {
   font-size: 26px;
   text-align: center;
