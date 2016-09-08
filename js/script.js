@@ -259,7 +259,6 @@ d3.json("data/usa2.json", function(error, regions) {
         };
       });
 
-
       // Add city points
     var citys = g.selectAll(".bubblecontainer")
       .data(cities)
@@ -482,15 +481,24 @@ $( "#formsubmit" ).click(function() {
   var lastname = $('#lastname').val();
   var email = $('#email').val();
   var company = $('#company').val();
-
-  var senddata = [{
+  // var ischecked = [];
+  var senddata = {
     "firstname": firstname,
     "lastname": lastname,
     "email": email,
     "company": company,
     "dates": []
-  }]
+  }
 
+  $("input:checkbox").each(function(){
+      var $this = $(this);
+
+      if($this.is(":checked")){
+        senddata.dates.push($this.attr("id"));
+      }
+  });
+
+  // console.log(ischecked)
   console.log(senddata)
 });
 
