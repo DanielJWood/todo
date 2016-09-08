@@ -188,23 +188,77 @@ d3.json("data/usa2.json", function(error, regions) {
       })          
       .attr("text-anchor","middle");
 
+    // Append Sum of Dates 
       regionTitles.append("tspan")
+      .attr("y",function(d){
+        for (var i = datesdata.length - 1; i >= 0; i--) {
+          if (datesdata[i].id === d.id) {
+            if (datesdata[i].available !== 0) {
+              needates = datesdata[i].available;  
+              return "0"
+            } else {
+              return "-5"
+            }            
+            break;
+          };
+        };
+      })
       .text(function(d){
         var needates;
         for (var i = datesdata.length - 1; i >= 0; i--) {
           if (datesdata[i].id === d.id) {
-            needates = datesdata[i].available;
+            if (datesdata[i].available !== 0) {
+              needates = datesdata[i].available;  
+              return needates;
+            } else {
+              return "Coming"              
+            }            
             break;
           };
-        };
-        return needates;
+        };        
+      })
+      .attr("class",function(d){
+        for (var i = datesdata.length - 1; i >= 0; i--) {
+          if (datesdata[i].id === d.id) {
+            if (datesdata[i].available !== 0) {              
+              return "large-bubble";
+            } else {
+              return "small-bubble"              
+            }            
+            break;
+          };
+        };        
       })
 
       regionTitles.append("tspan")
-      .text("Dates")
+      .text(function(d){
+        for (var i = datesdata.length - 1; i >= 0; i--) {
+          if (datesdata[i].id === d.id) {
+            if (datesdata[i].available !== 0) {
+              return "Dates"
+            } else {
+              return "Soon"
+            }            
+            break;
+          };
+        };
+      })
       .attr("class","dates")
       .attr("x",0)
-      .attr("y",20);
+      .attr("y",function(d){
+        for (var i = datesdata.length - 1; i >= 0; i--) {
+          if (datesdata[i].id === d.id) {
+            if (datesdata[i].available !== 0) {
+              needates = datesdata[i].available;  
+              return "20"
+            } else {
+              return "15"
+            }            
+            break;
+          };
+        };
+      });
+
 
       // Add city points
     var citys = g.selectAll(".bubblecontainer")
