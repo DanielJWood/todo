@@ -3,7 +3,7 @@ layout: post
 ---
 <!-- If local  -->
 <!-- <script type="text/javascript" src="/js/pym.js"></script>     -->
-<script type="text/javascript" src="js/pym.js"></script>    
+<script type="text/javascript" src="https://pym.nprapps.org/pym.v1.min.js"></script>    
 
 <!--[if IE]>
 <style type="text/css">
@@ -55,7 +55,16 @@ layout: post
         <div class="large-6 small-centered columns">
           <div class="signup-panel">
             <p class="welcome"> Select dates for the <span id="regionspan"></span></p>
-            <form>
+            <!-- <form action="https://getsimpleform.com/messages?form_api_token=7977e80a0331156427e2222236200007" method="post"> -->
+              <!-- the redirect_to is optional, the form will redirect to the referrer on submission -->
+              <!-- <input type='hidden' name='redirect_to' value='<the complete return url e.g. http://fooey.com/thank-you.html>' /> -->
+              <!-- all your input fields here.... -->
+              <!-- <input type='text' placeholder="fart" name='FARM' />
+              <input type='text' placeholder="fart" name='FARM22' /> -->
+              <!-- <input type='submit'  value='submit' /> -->
+            <!-- </form> -->
+
+            <form action="https://getsimpleform.com/messages?form_api_token=7977e80a0331156427e2222236200007" method="post">
               <div class="row collapse">
                 <div class="large-12 columns">
                   <div class="row">
@@ -69,30 +78,33 @@ layout: post
                 </div>                
               </div>
               <p class="welcome"> Tell Us About Yourself</p>
+
               <div class="row collapse">
                 <div class="small-6  columns input">
-                  <input id="firstname" type="text" placeholder="first name">
+                  <input name="firstname" id="firstname" type="text" placeholder="first name">
                 </div>
                 <div class="small-6  columns input">
-                  <input id="lastname" type="text" placeholder="last name">
+                  <input name="lastname" id="lastname" type="text" placeholder="last name">
                 </div>
               </div>
               <div class="row collapse">                
                 <div class="small-6  columns input">
-                  <input id="email" type="text" placeholder="email">
+                  <input name="email" id="email" type="text" placeholder="email">
                 </div>
                 <div class="small-6  columns input">
-                  <input id="company" type="text" placeholder="company">
+                  <input name="company" id="company" type="text" placeholder="company">
                 </div>
               </div>
-            </form>
-            <div class="row">      
+              <div class="row">      
               <div  class="small-8 medium-8 large-8 small-centered columns">
                 <a id="formsubmit" class="button1">
-                  <h3>Submit</h3>
+                  <!-- <h3>Submit</h3> -->
+                  <input type='submit'  value='submit' />
                 </a>
               </div>      
             </div>  
+              
+            </form>            
             <div id="signup">
               <p>Want to keep your eye on a particular city?<a href="#"> Set Your Alerts Here &raquo</a></p>
             </div>            

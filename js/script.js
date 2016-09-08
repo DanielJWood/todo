@@ -460,7 +460,7 @@ function BuildTable(d) {
       // console.log(data[z])
       var location = data[z].city + ", " + data[z].state;
       var startend = data[z].start + "-" + data[z].finish;
-      var checkbox = "<div class='checkbox-container'><input id='"+ data[z].post_id +"' type='checkbox'></div>";
+      var checkbox = "<div class='checkbox-container'><input name=" + data[z].post_id + " id='"+ data[z].post_id +"' type='checkbox'></div>";
 
       var complete = first + main + location + closer + main + startend + closer + main + checkbox + closer + last;
 
