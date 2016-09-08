@@ -281,7 +281,7 @@ function clicked(d) {
     function() 
     {
       (function ($) {   
-        // $('#summary').scrollView();
+        $('#summary').scrollView();
       }(jQuery));  
     }, 1000);  
 
@@ -360,13 +360,15 @@ function clicked(d) {
       .duration(750)
       .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")scale(" + 1 + ")translate(" + -x + "," + -y + ")")
       .style("stroke-width", 1.5 / k + "px");
+
+  ClearTable();
   };
 
     // Add the dom elements. HTML, basically no D3
       //Change the color of the header based on the region.
-      var clickstate = document.getElementById("clickstate")
-      clickstate.className = "large-12 columnsDOE subheadline " + id;
-      clickstate.innerHTML = "<p>" + name + "</p>";
+      var regionspan = document.getElementById("regionspan")
+      console.log(d.id)
+      regionspan.innerHTML = d.id;
 
       //change bottom tab/button
       var below = document.getElementById("below")
@@ -384,9 +386,6 @@ function clicked(d) {
         greenTextchange[i].className = "change-text " + green;    
       };
 
-      var region_text = document.getElementById("region-text")
-      region_text.innerHTML = "<p style='padding-top: 50px;'>" + summary + "</p>";
-
   pymChild.sendHeight();
 
 }
@@ -394,13 +393,33 @@ function clicked(d) {
 
 function BuildTable(d) { 
   (function ($) { 
-    for (var z = d.datesAvail.length - 1; z >= 0; z--) {    
-      // Build the FORM!!!
+    var data = d.datesAvail;
 
+    var datesTable = document.getElementById("dates-list")
+    datesTable.innerHTML = "";
+
+    var first = "<div class='large-12 columns'><div class='row'>";
+    var main = "<div class='large-4 columns'>"
+    var closer = "</div>"
+    var last = "</div></div>"  
+    for (var z = data.length - 1; z >= 0; z--) {    
+      // Build the FORM!!!
+      // console.log(data[z])
+      var location = data[z].city + ", " + data[z].state;
+      var startend = data[z].start + "-" + data[z].finish;
+      var checkbox = "<div class='checkbox-container'><input id='"+ data[z].post_id +"' type='checkbox'></div>";
+
+      var complete = first + main + location + closer + main + startend + closer + main + checkbox + closer + last;
+
+      datesTable.innerHTML = datesTable.innerHTML + complete;
     };  
   }(jQuery));  
 }
 
+function ClearTable(d) {
+  var datesTable = document.getElementById("dates-list")
+  datesTable.innerHTML = "";
+}
 
 $( "#formsubmit" ).click(function() {
 

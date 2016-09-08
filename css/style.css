@@ -166,6 +166,7 @@ Map
 
 .signup-panel form input[type=checkbox] {
     height: auto;
+    margin-bottom: 0px;
 }
 
 .signup-panel .welcome {
@@ -176,11 +177,16 @@ Map
 .signup-panel p {
   font-size: 13px;
   font-weight: 200;
-  margin-left: 25%;
+  /*margin-left: 25%;*/
 }
-.signup-panel .button {
-  margin-left: 35%;
+
+.signup-panel div#signup {
+    /*margin: 0 auto;*/
+    /*position: relative;*/
+    text-align: center;
+    width: 100%;
 }
+
 
 
 /*
@@ -252,7 +258,9 @@ a#link-below, #below p:hover {
     opacity: 1;
     width: 50%;
     /*height: 60px;*/
-    text-align: center;    
+    text-align: center; 
+    border-radius: 5px;   
+    /*border: 1px solid #ccc;*/
 }
 
 #below.active, #threats.active {
