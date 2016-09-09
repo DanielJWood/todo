@@ -156,11 +156,11 @@ d3.json("data/usa2.json", function(error, regions) {
     var regionContainers2 = regionContainers.enter().append("g")
         .on("mouseenter",function(d){
           d3.select(this).selectAll("path")
-            .style("fill","#E7BBBF")
+            .style("fill","rgb(180,49,60)")
         })
         .on("mouseleave",function(d){
           d3.select(this).selectAll("path")
-            .style("fill","#fff")
+            .style("fill","#E7BBBF")
         });;
 
     var regionContainersGeo = regionContainers2.append("path")
@@ -412,6 +412,9 @@ function clicked(d) {
           break;
         };        
       };
+
+      var regionspan = document.getElementById("regionspan")
+      regionspan.innerHTML = d.id;
       
       BuildTable(nowData);
   } 
@@ -434,13 +437,13 @@ function clicked(d) {
       .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")scale(" + 1 + ")translate(" + -x + "," + -y + ")")
       .style("stroke-width", 1.5 / k + "px");
 
+      var regionspan = document.getElementById("regionspan");
+      regionspan.innerHTML = "";
+
   ClearTable();
   };
 
     // Add the dom elements. HTML, basically no D3
-      //Change the color of the header based on the region.
-      var regionspan = document.getElementById("regionspan")
-      regionspan.innerHTML = d.id;
 
       //change bottom tab/button
       var below = document.getElementById("below")

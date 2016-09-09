@@ -48,8 +48,8 @@ Map
 }
 .main-boundary {
   fill: none;
-  stroke: #777;
-  stroke:rgb(180,49,60);
+  stroke: #fff;
+  /*stroke:rgb(180,49,60);*/
   stroke-width:2px;
   stroke-linejoin: round;
 }
@@ -69,14 +69,14 @@ Map
 .region.Midwest { fill: #FEF55B; }
 .region.Southeast { fill: #7FF5A5; }
 .region.Northeast { fill: #FF9E9A; }*/
-.region {fill: #fff; opacity: 1;}
+.region {fill: #E7BBBF; opacity: 1;}
 .region.Null {fill: #444;}
 
 .subunit { opacity: 0; fill:none; }
 
 .active {
   /*opacity: .8*/
-  fill: #E7BBBF !important;
+  fill: rgb(180,49,60) !important;
 }
 
 
@@ -166,6 +166,12 @@ Map
 .check-head {
     text-transform: uppercase;
     font-size: 140%;
+    text-align: center;
+}
+
+.checkbox-container {
+    width: 10px;
+    margin: 0 auto;
 }
 
 .signup-panel form input[type=checkbox] {

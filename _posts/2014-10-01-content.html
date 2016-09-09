@@ -54,7 +54,7 @@ layout: post
        <div class="row">
         <div class="large-6 medium-10 small-12 small-centered columns">
           <div class="signup-panel">
-            <p class="welcome"> Select dates for the <span id="regionspan"></span></p>
+            <p class="welcome"><span id="regionspan"></span></p>
             <!-- <form action="https://getsimpleform.com/messages?form_api_token=7977e80a0331156427e2222236200007" method="post"> -->
               <!-- the redirect_to is optional, the form will redirect to the referrer on submission -->
               <!-- <input type='hidden' name='redirect_to' value='<the complete return url e.g. http://fooey.com/thank-you.html>' /> -->
@@ -77,29 +77,29 @@ layout: post
 
                 </div>                
               </div>
-              <p class="welcome"> Tell Us About Yourself</p>
+              <p class="welcome"> Fill out the below for more info!</p>
 
               <div class="row collapse">
                 <div class="small-6  columns input">
-                  <input name="firstname" id="firstname" type="text" placeholder="first name">
+                  <input required name="name" id="name" type="text" placeholder="name*">
                 </div>
                 <div class="small-6  columns input">
-                  <input name="lastname" id="lastname" type="text" placeholder="last name">
+                  <input required name="email" id="email" type="text" placeholder="email*">
                 </div>
               </div>
-              <div class="row collapse">                
+              <!-- <div class="row collapse">                
                 <div class="small-6  columns input">
                   <input name="email" id="email" type="text" placeholder="email">
                 </div>
                 <div class="small-6  columns input">
                   <input name="company" id="company" type="text" placeholder="company">
                 </div>
-              </div>
+              </div> -->
               <div class="row">      
               <div  class="small-8 medium-8 large-8 small-centered columns">
                 <a id="formsubmit" class="button1">
                   <!-- <h3>Submit</h3> -->
-                  <input type='submit'  value='Submit' />
+                  <input type='submit'  value='Submit!' />
                 </a>
               </div>      
             </div>  
