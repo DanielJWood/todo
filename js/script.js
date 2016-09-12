@@ -109,7 +109,7 @@ d3.json("data/usa2.json", function(error, regions) {
   if (error) throw error;
   d3.csv("data/cities.csv", function(error, cities){
 	 if (error) throw error;
-    d3.csv("data/dates/dates_9_7_16.csv", function(error, dates){
+    d3.csv("data/dates/dates_9_12_16.csv", function(error, dates){
       if (error) throw error;
 
     //populate the array that will fill the bubbles with the number of dates  
