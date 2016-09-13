@@ -516,7 +516,9 @@ Foundation pieces and DOM
 
         #subber h4 {
             text-transform: capitalize;
-            font-size: 26px;
+            font-size: 36px;
+            font-family: "Avenir LT W02 85 Heavy",verdana,sans-serif;
+            color: rgb(148,19,24) !important;
         }
 
     /* The Colors duke, the colors*/
