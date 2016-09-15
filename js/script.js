@@ -20,7 +20,7 @@
     });
 
     // Scroll into view of next to do
-    // $('#id4').scrollView();
+    $('#id4').scrollView();
 
     var deadline = 'January 14 2017 15:00:00 GMT-0500';      
     initializeClock('clockdiv', deadline);

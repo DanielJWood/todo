@@ -94,6 +94,14 @@ Yellow: #f6f171;
     font-size: 16px;
 }
 
+#copyright {
+    text-align: center;    
+}
+
+#copyright p {
+    font-size: 20px;
+}
+
 /**********************************************
 Foundation pieces and DOM
 ***********************************************/
