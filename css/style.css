@@ -16,8 +16,8 @@ Map
  }
 
 #content1 {
-    /*background-color: rgba(255,255,255,.2);*/
-
+    background-color: rgba(0,0,0,.7);
+    border-radius:2px;
 }
 
 .head-box {
@@ -26,7 +26,7 @@ Map
     height: 240px;    
     float: left;
     display: table;
-    border: 15px solid rgb(51,51,51);
+    border: 15px solid #fff;
     border-radius: 5px;
     cursor: pointer;
 }
@@ -41,6 +41,10 @@ Map
 
 .head-box.complete img {
     display: block;
+}
+
+.head-box.complete.restricted img {
+    display: none;
 }
 
 .item-box {
@@ -61,6 +65,11 @@ Map
 
 .restricted-container {
     position: relative;
+    display: none;
+}
+
+.restricted-container.restricted {
+    display: block;
 }
 
 .restricted-text {
@@ -69,21 +78,26 @@ Map
     -ms-transform: rotate(10deg); /* IE 9 */
     -webkit-transform: rotate(10deg); /* Chrome, Safari, Opera */
     transform: rotate(10deg);
-    background-color: rgba(73,168,144,0.8)
+    background-color: rgba(72,230,190, 0.8);
+    border-radius:2px;
 }
 
 .restricted-text h1 {
     color:  #d2454e !important;
+    text-shadow: 4px 4px 2px rgba(73,168,144,1);
 }
 
 /*Colors
 White: #000;
 Gray: #44403D;
 Reddish: #d2454e;
+Fuscia: #FF70AD;
 Orange: #f47b5e;
+Lighter Orange: #FF9878;
 Pink: #DC6E9D;
 Blue: #294e8b;
 Blue-Green: #49A890;
+Lighter Teal: #48E6BE;
 Blue-Gray: #7099a2;
 Yellow: #f6f171;
 */
@@ -117,10 +131,12 @@ Yellow: #f6f171;
 
 #copyright {
     text-align: center;    
+    /*background-color: #fff;*/
 }
 
 #copyright p {
-    font-size: 20px;
+    font-size: 30px;
+
 }
 
 /**********************************************
@@ -151,7 +167,7 @@ Foundation pieces and DOM
         .row h1 {
             font-size: 33px;
             letter-spacing: 7px;
-            color: rgb(51,51,51);
+            color: #fff;
             line-height: 30px;
             /*padding-top: 0.5rem;*/
             padding-bottom: 0.5rem;            
@@ -164,7 +180,7 @@ Foundation pieces and DOM
         }
 
         .row h2 {
-            color: rgb(51,51,51);
+            color: #fff;
             font-size: 38px;            
             text-transform: none;
             line-height: 30px;
@@ -176,7 +192,7 @@ Foundation pieces and DOM
 
         .row h3 {
             font-size: 26px;
-            color: rgb(51,51,51);            
+            color: #fff;            
             text-transform: none;
             line-height: normal;
         }
@@ -186,7 +202,7 @@ Foundation pieces and DOM
             text-transform: uppercase;
             margin-top: 0.5rem;
             margin-bottom: 0.4rem;
-            color: rgb(51,51,51);
+            color: #fff;
         }
 
 

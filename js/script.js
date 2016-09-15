@@ -12,7 +12,7 @@
 
     // Onload create the items    
     for (var i = 0; i < tasks.length; i++) {
-      // buildItem(tasks[i]);
+      buildItem(tasks[i]);
     };
 
     // Set the onclick;
