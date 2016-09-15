@@ -1,11 +1,6 @@
-
-/*experimental*/
-.enter {
-  fill: #333;
-}
-
-.update {
-  fill: #333;
+body {
+    background-image: url("../img/back1.png");
+    background-repeat: repeat;
 }
 
 /*+++++++++++++++++++++++++++
@@ -17,7 +12,87 @@ Map
     position: relative;
     width: 100%;
     /*height: 800px;*/
+
  }
+
+#content1 {
+    /*background-color: rgba(255,255,255,.4);*/
+
+}
+
+.head-box {
+    min-width: 100px;
+    width: 25%;
+    height: 240px;    
+    float: left;
+    display: table;
+    border: 15px solid rgb(51,51,51);
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.head-box img {
+  display: inline-block;
+  vertical-align: middle;  
+  max-width: 150%;
+  margin-left: -25%;
+  display: none;
+}
+
+.head-box.active img {
+    display: block;
+}
+
+.item-box {
+    height: 250px;
+    float: left;   
+    width: 75%;
+    display: table;
+}
+
+.item-box .item-box-text {
+  display: table-cell;
+  vertical-align: middle;
+}
+
+/*Colors
+White: #000;
+Gray: #44403D;
+Reddish: #d2454e;
+Orange: #f47b5e;
+Pink: #DC6E9D;
+Blue: #294e8b;
+Blue-Green: #44a98f;
+Blue-Gray: #7099a2;
+Yellow: #f6f171;
+*/
+
+#clockdiv{
+    font-family: sans-serif;
+    color: #fff;
+    font-weight: 100;
+    text-align: center;
+    font-size: 30px;
+}
+
+#clockdiv > div{
+    padding: 10px;
+    border-radius: 3px;
+    background: #d2454e;
+    display: inline-block;
+}
+
+#clockdiv div > span{
+    padding: 15px;
+    border-radius: 3px;
+    background: #DC6E9D;
+    display: inline-block;
+}
+
+.smalltext{
+    padding-top: 5px;
+    font-size: 16px;
+}
 
 /**********************************************
 Foundation pieces and DOM
@@ -48,30 +123,31 @@ Foundation pieces and DOM
             font-size: 33px;
             letter-spacing: 7px;
             color: rgb(51,51,51) !important;
-            line-height: normal;
-            padding-top: 0.5rem;
+            line-height: 30px;
+            /*padding-top: 0.5rem;*/
             padding-bottom: 0.5rem;            
-            text-decoration: none !important;
+            text-decoration: none;
             font-family: 'Permanent Marker', cursive;
+        }
 
+        .row h1.active {
+            text-decoration: line-through; 
         }
 
         .row h2 {
-            font-size: 38px;
-            color: #fff !important;
+            color: rgb(51,51,51) !important;
+            font-size: 38px;            
             text-transform: none;
-            line-height: normal;
+            line-height: 30px;
             padding-top: 1rem;
-            padding-bottom: 1rem;
+            /*padding-bottom: 1rem;*/
             font-family: 'Permanent Marker', cursive;
             letter-spacing: .1rem;
         }
 
         .row h3 {
             font-size: 26px;
-            color: #fff !important;
-            margin-top: 0.5rem;
-            margin-bottom: 0.6rem;
+            color: rgb(51,51,51) !important;            
             text-transform: none;
             line-height: normal;
         }
@@ -81,7 +157,7 @@ Foundation pieces and DOM
             text-transform: uppercase;
             margin-top: 0.5rem;
             margin-bottom: 0.4rem;
-            color: rgb(0, 0, 0) !important;
+            color: rgb(51,51,51) !important;
         }
 
 
@@ -92,8 +168,13 @@ Foundation pieces and DOM
         .row h1 {
             font-size: 52px;        
             letter-spacing: 15px;
-            padding-top: 1rem;
+            padding-top: 0.5rem;
             padding-bottom: 1rem;
+            line-height: 49px;
+        }
+
+        .row h3 {
+
         }
 
     } /* min-width 641px, medium screens */
@@ -112,8 +193,7 @@ Foundation pieces and DOM
 
         .row h3 {
             font-size: 16px;
-            margin-top: .25rem;
-            margin-bottom: .25rem;
+            
         }
 
 }
