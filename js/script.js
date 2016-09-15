@@ -1,3 +1,4 @@
+// OH LORDIE!
 
 (function ($) { 
   $(document).ready(function() { 
@@ -5,22 +6,26 @@
       return this.each(function () {
         $('html, body').animate({
             scrollTop: $(this).offset().top
-        }, 1000);
+        }, 2000);
       });
     }
 
     // Onload create the items    
     for (var i = 0; i < tasks.length; i++) {
-      buildItem(tasks[i]);
+      // buildItem(tasks[i]);
     };
 
     // Set the onclick;
     $('.head-box').click(function(){
-      $( this ).toggleClass( "active" );
+      $( this ).toggleClass( "complete" );
+    });
+
+    $(window).load(function(){
+      // $('#id4').scrollView();
     });
 
     // Scroll into view of next to do
-    $('#id4').scrollView();
+    
 
     var deadline = 'January 14 2017 15:00:00 GMT-0500';      
     initializeClock('clockdiv', deadline);
@@ -33,7 +38,7 @@ function buildItem(d) {
   var id = 'id' + d.id;
   if (d.completed === "yes") {
     var img = '<img src="img/danwhit.png">';
-    var complete = "active";
+    var complete = "complete";
   } else {
     var img = '<img src="img/danwhit.png">';
     var complete = "";
