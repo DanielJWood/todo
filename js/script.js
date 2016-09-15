@@ -10,10 +10,21 @@
       });
     }
 
+    var icomp = 0;
+
     // Onload create the items    
     for (var i = 0; i < tasks.length; i++) {
       buildItem(tasks[i]);
+      if (tasks[i].completed === "yes") {
+        icomp += 1;
+      };
     };
+
+    var itemscomplete = document.getElementById("items-complete");
+    var itemsremain = document.getElementById("items-remain");
+
+    itemscomplete.innerHTML = icomp;
+    itemsremain.innerHTML = tasks.length - icomp;
 
     // Set the onclick;
     $('.head-box').click(function(){
@@ -25,7 +36,6 @@
     });
 
     // Scroll into view of next to do
-    
 
     var deadline = 'January 14 2017 15:00:00 GMT-0500';      
     initializeClock('clockdiv', deadline);
