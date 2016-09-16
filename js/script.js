@@ -1,6 +1,25 @@
-
 d3.csv("/js/tasks.csv", function(data) {
-  console.log(data.length);
+
+  var icomp = 0;
+
+  // Onload create the items    
+  for (var i = 0; i < data.length; i++) {
+    // buildItem(tasks[i]);
+    if (data[i].completed === "complete") {
+      icomp += 1;
+    };
+    if (data[i].chained != "") {
+      chainMaker(data[i],data)      
+    };
+
+  };
+
+  var itemscomplete = document.getElementById("items-complete");
+  var itemsremain = document.getElementById("items-remain");
+
+  itemscomplete.innerHTML = icomp;
+  itemsremain.innerHTML = data.length - icomp;
+
 });
 
 (function ($) { 
@@ -13,25 +32,12 @@ d3.csv("/js/tasks.csv", function(data) {
       });
     }
 
-    var icomp = 0;
-
-    // Onload create the items    
-    for (var i = 0; i < tasks.length; i++) {
-      // buildItem(tasks[i]);
-      if (tasks[i].completed === "yes") {
-        icomp += 1;
-      };
-    };
-
-    var itemscomplete = document.getElementById("items-complete");
-    var itemsremain = document.getElementById("items-remain");
-
-    itemscomplete.innerHTML = icomp;
-    itemsremain.innerHTML = tasks.length - icomp;
-
     // Set the onclick;
     $('.head-box').click(function(){
-      $( this ).toggleClass( "complete" );
+      $( this ).toggleClass( "complete" );      
+      var friend = $(this).context.parentNode.childNodes[3].childNodes[1].childNodes[1];      
+      $(friend).toggleClass( "complete" );
+
     });
 
     $(window).load(function(){
@@ -46,29 +52,21 @@ d3.csv("/js/tasks.csv", function(data) {
   });  
 }(jQuery));  
 
-function buildItem(d) {
-  var t1 = '<div class="row" id="';
-  var id = 'id' + d.id;
-  if (d.completed === "yes") {
-    var img = '<img src="img/danwhit.png">';
-    var complete = "complete";
-  } else {
-    var img = '<img src="img/danwhit.png">';
-    var complete = "";
-  }
-  var t2 = '"><div class="head-box ' + complete +'">';
-  var t3 ='</div><div class="item-box"><div class="item-box-text"><h1 class="' + complete +'">';
-  var item = d.item;
-  var t4 ='</h1><h3>Due: ';
-  var due = d.due;
-  var t5 ='</h3><h3>Point: ';
-  var point = d.responsible;
-  var t6 ='</h3></div></div></div>';
+function chainMaker(d,data) {
+  console.log(d.item)
+  var spaniel = document.getElementById("R" + d.chained + d.id);
+  console.log(spaniel)
 
-  var itemDom = t1 + id + t2 + img + t3 + item + t4 + due + t5 + point + t6;
+  for (var i = 0; i < data.length; i++) {    
+    if (data[i].id === d.chained) {
+      console.log(d.item)
+      console.log(data[i].item)
+      var restricted = data[i].item;
+      break;
+    };
+  };
 
-  var itemTable = document.getElementById("all-the-items");
-  itemTable.innerHTML = itemTable.innerHTML + itemDom;
+  spaniel.innerHTML = restricted;
 }
 
 // Clock Functions
