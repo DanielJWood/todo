@@ -1,4 +1,7 @@
-// OH LORDIE!
+
+d3.csv("/js/tasks.csv", function(data) {
+  console.log(data.length);
+});
 
 (function ($) { 
   $(document).ready(function() { 
@@ -14,7 +17,7 @@
 
     // Onload create the items    
     for (var i = 0; i < tasks.length; i++) {
-      buildItem(tasks[i]);
+      // buildItem(tasks[i]);
       if (tasks[i].completed === "yes") {
         icomp += 1;
       };
