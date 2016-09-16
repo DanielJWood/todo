@@ -78,6 +78,7 @@ Yellow: #f6f171;
               
 
               {% for tasks in site.data.tasks %}
+              {% if tasks.hidden != "yes" %}
                 <div class="row" id="b{{tasks.id}}">
                   
                   {% if tasks.chained != Null %}
@@ -110,6 +111,7 @@ Yellow: #f6f171;
                   </div>                                
                 </div>                
 
+              {% endif %}
               {% endfor %}
               <!-- <div class="row" id="b1">
                 <div class="restricted-container restricted">
