@@ -1,4 +1,4 @@
-d3.csv("/js/tasks.csv", function(data) {
+d3.csv("js/tasks.csv", function(data) {
 
   var icomp = 0;
 
