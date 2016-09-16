@@ -53,9 +53,10 @@ d3.csv("/js/tasks.csv", function(data) {
 }(jQuery));  
 
 function chainMaker(d,data) {
-  console.log(d.item)
-  var spaniel = document.getElementById("R" + d.chained + d.id);
-  console.log(spaniel)
+  
+  var weirdid = "R" + d.chained + d.id;
+  var spaniel = document.getElementById(weirdid);
+  
 
   for (var i = 0; i < data.length; i++) {    
     if (data[i].id === d.chained) {
@@ -66,7 +67,7 @@ function chainMaker(d,data) {
     };
   };
 
-  spaniel.innerHTML = restricted;
+  spaniel.innerHTML  = restricted;
 }
 
 // Clock Functions
