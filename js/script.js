@@ -60,8 +60,8 @@ function chainMaker(d,data) {
 
   for (var i = 0; i < data.length; i++) {    
     if (data[i].id === d.chained) {
-      console.log(d.item)
-      console.log(data[i].item)
+      // console.log(d.item)
+      // console.log(data[i].item)
       var restricted = data[i].item;
       break;
     };
