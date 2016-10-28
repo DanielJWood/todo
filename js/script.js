@@ -9,8 +9,19 @@ d3.csv("js/tasks.csv", function(data) {
       icomp += 1;
     };
     if (data[i].chained != "") {
-      chainMaker(data[i],data)      
+      var chainer = data[i].chained;
+      var parentid = data[i].id;
+      for (var p = 0; p < data.length; p++) {
+
+        if (chainer === data[p].id && data[p].completed != "complete") {
+          chainMaker(data[i],data);
+          
+        } else if (chainer === data[p].id && data[p].completed === "complete") {          
+          $("#b" + parentid + " > div.restricted-container").hide();
+        }
+      };
     };
+
 
   };
 
@@ -41,7 +52,7 @@ d3.csv("js/tasks.csv", function(data) {
     });
 
     $(window).load(function(){
-      $('#bBDUFFW').scrollView();
+      $('#bXMWLPD').scrollView();
     });
 
     // Scroll into view of next to do

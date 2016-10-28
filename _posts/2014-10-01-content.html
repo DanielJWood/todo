@@ -78,40 +78,40 @@ Yellow: #f6f171;
               
 
               {% for tasks in site.data.tasks %}
-              {% if tasks.hidden != "yes" %}
-                <div class="row" id="b{{tasks.id}}">
-                  
-                  {% if tasks.chained != Null %}
-                    <div class="restricted-container restricted">
-                      <div class="restricted-text">
-                        <h1>Unlock <span id="R{{tasks.chained}}{{tasks.id}}"></span> to Complete</h1>
+                {% if tasks.hidden != "yes" %}
+                  <div class="row" id="b{{tasks.id}}">
+                    
+                    {% if tasks.chained != Null %}
+                      <div class="restricted-container restricted {{ tasks.completed }}">
+                        <div class="restricted-text">
+                          <h1>Unlock <span id="R{{tasks.chained}}{{tasks.id}}"></span> to Complete</h1>
+                        </div>
                       </div>
+                      <div class="{{ tasks.completed }} head-box restricted">
+                    {% else %}
+                      <div class="{{ tasks.completed }} head-box">
+                    {% endif %}
+                      <div class="optional-container {{ tasks.optional }}">
+                        <div class="optional-text">
+                          <p>Optional</p>
+                        </div>
+                        <div class="left_corner"></div>
+                        <div class="right_corner"></div>
+                      </div>                
+                      <img src="img/danwhit.png">
                     </div>
-                    <div class="{{ tasks.completed }} head-box restricted">
-                  {% else %}
-                    <div class="{{ tasks.completed }} head-box">
-                  {% endif %}
-                    <div class="optional-container {{ tasks.optional }}">
-                      <div class="optional-text">
-                        <p>Optional</p>
-                      </div>
-                      <div class="left_corner"></div>
-                      <div class="right_corner"></div>
-                    </div>                
-                    <img src="img/danwhit.png">
-                  </div>
-                  <div class="item-box">
-                    <div class="item-box-text">
-                      <h1 class="{{ tasks.completed }}">
-                        {{ tasks.item}}
-                      </h1>
-                      <h3>Due: {{tasks.due}}</h3>
-                      <h3>Point: {{tasks.responsible}}</h3>
-                    </div>                
-                  </div>                                
-                </div>                
+                    <div class="item-box">
+                      <div class="item-box-text">
+                        <h1 class="{{ tasks.completed }}">
+                          {{ tasks.item}}
+                        </h1>
+                        <h3>Due: {{tasks.due}}</h3>
+                        <h3>Point: {{tasks.responsible}}</h3>
+                      </div>                
+                    </div>                                
+                  </div>                
 
-              {% endif %}
+                {% endif %}
               {% endfor %}
               <!-- <div class="row" id="b1">
                 <div class="restricted-container restricted">
