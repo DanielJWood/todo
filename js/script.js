@@ -52,7 +52,7 @@ d3.csv("js/tasks.csv", function(data) {
     });
 
     $(window).load(function(){
-      $('#bXMWLPD').scrollView();
+      $('#bNCGCNN').scrollView();
     });
 
     // Scroll into view of next to do

@@ -6,6 +6,10 @@ body {
 /*+++++++++++++++++++++++++++
 Map
 ++++++++++++++++++++++++++++++++++++++*/
+.github-corner {
+    display: none;
+}
+
  #master_container {
  	font-family: 'Lato', sans-serif;
     text-transform: none !important;
@@ -15,8 +19,8 @@ Map
 
  }
 
-#content1 {
-    margin-top: 100px;
+#content1 {    
+    margin-top: 5px;
     background-color: rgba(0,0,0,.7);
     border-radius:2px;
 }
@@ -24,7 +28,8 @@ Map
 .head-box {
     min-width: 100px;
     width: 25%;
-    height: 240px;    
+    /*height: 240px;    */
+    padding-top: 21%;
     float: left;
     display: table;
     border: 15px solid #fff;
@@ -54,8 +59,12 @@ Map
     /*display: none;*/
 }
 
+.item {
+    padding-top: 20px;
+}
+
 .item-box {
-    height: 250px;
+    /*height: 250px;*/
     float: left;   
     width: 75%;
     display: table;
@@ -104,6 +113,7 @@ Map
     height: 125px;
     overflow: hidden;
     margin-left: 20px;
+    margin-top: -105%;
 }
 
 .optional-text {
@@ -250,10 +260,10 @@ Foundation pieces and DOM
         }
 
         .row h1 {
-            font-size: 33px;
-            letter-spacing: 7px;
+            font-size: 26px;
+            letter-spacing: 3px;
             color: #fff;
-            line-height: 30px;
+            line-height: 25px;
             /*padding-top: 0.5rem;*/
             padding-bottom: 0.5rem;            
             text-decoration: none;
@@ -293,11 +303,17 @@ Foundation pieces and DOM
 
 
 @media only screen and (min-width: 40.063em) { 
-        /*D3 fixes*/
+        #content1 {
+            margin-top: 100px;
+        }
+
+        .github-corner {
+            display: block !important;
+        }
 
         .row h1 {
-            font-size: 52px;        
-            letter-spacing: 15px;
+            font-size: 46px;        
+            letter-spacing: 12px;
             padding-top: 0.5rem;
             padding-bottom: 1rem;
             line-height: 49px;
@@ -308,8 +324,14 @@ Foundation pieces and DOM
         }
 
     } /* min-width 641px, medium screens */
-@media only screen and (min-width: 64.063em) { 
-
+@media only screen and (min-width: 30.063em) { 
+        .row h1 {
+            font-size: 36px;        
+            letter-spacing: 8px;
+            padding-top: 0.5rem;
+            padding-bottom: 1rem;
+            line-height: 39px;
+        }
     } /* min-width 1025px, large screens */
 
 
@@ -323,7 +345,9 @@ Foundation pieces and DOM
 
         .row h3 {
             font-size: 16px;
-            
+        }
+                .optional {
+            display: none !important;
         }
 
 }
